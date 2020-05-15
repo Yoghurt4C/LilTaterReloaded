@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "meditation.CriterionsInvoker",
+    "meditation.LilTaterMeditationAbilityMixin",
+    "meditation.LilTaterMeditationCounterMixin",
+    "meditation.PlayerAbilitiesS2CPacketMixin",
+    "meditation.PlayerManagerMixin"
+  ],
+  "client": [
+    "LilTaterModelItemRendererMixin",
+    "SpriteAccessor",
+    "meditation.ClientPlayNetworkHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

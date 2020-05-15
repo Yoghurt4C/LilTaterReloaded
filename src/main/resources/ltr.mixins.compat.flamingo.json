@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.compat.flamingo",
+  "plugin": "mods.ltr.mixins.compat.plugins.FlamingoCompatMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockEntityMixin",
+    "FlamingoBlockEntityMixin",
+    "FlamingoBlockMixin"
+  ],
+  "client": [
+    "FlamingoBlockEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

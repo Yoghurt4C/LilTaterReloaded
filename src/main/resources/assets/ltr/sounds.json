@@ -1,0 +1,16 @@
+{
+  "do_it": {
+    "category": "block",
+    "sounds": [
+      "ltr:do_it"
+    ],
+    "subtitle": "text.ltr.do_it"
+  },
+  "hwndu": {
+    "category": "block",
+    "sounds": [
+      "ltr:hwndu"
+    ],
+    "subtitle": "subtitle.ltr.hwndu"
+  }
+}

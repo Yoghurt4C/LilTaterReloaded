@@ -1,0 +1,26 @@
+{
+  "lil_tater": "lil_tater.png",
+  "irritated_lil_tater": "irritated_lil_tater.png",
+  "irritater": "irritated_lil_tater.png",
+  "kyle_hyde": "grayscale_tater.png",
+  "grayscale_tater": "grayscale_tater.png",
+  "palettater": "blank_tater.png",
+  "tiny_potato": "tiny_potato.png",
+  "the_o.g.": "tiny_potato.png",
+  "shia_labeouf": "shia_labeouf.png",
+  "spook_tater": {
+    "animation": {
+      "frametime": "40",
+      "frames": [
+        0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,5,6,5,6,5,6,5,4,4,3,3,3,2,2,1,0,0
+      ]
+    },
+    "0" : "spook/spook_tater_0.png",
+    "1" : "spook/spook_tater_1.png",
+    "2" : "spook/spook_tater_2.png",
+    "3" : "spook/spook_tater_3.png",
+    "4" : "spook/spook_tater_4.png",
+    "5" : "spook/spook_tater_5.png",
+    "6" : "spook/spook_tater_6.png"
+  }
+}
