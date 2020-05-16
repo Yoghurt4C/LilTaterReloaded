@@ -27,7 +27,7 @@ public abstract class FlamingoBlockMixin extends Block {
 
     public FlamingoBlockMixin(Settings settings) { super(settings); }
 
-    @Inject(method = "onUse", at=@At(value = "INVOKE", target = "Lcom/reddit/user/koppeh/flamingo/FlamingoBlockEntity;wiggle()V"),remap = false)
+    @Inject(method = "onUse", at=@At(value = "INVOKE", target = "Lcom/reddit/user/koppeh/flamingo/FlamingoBlockEntity;wiggle()V", remap = false))
     public void ltr_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> ctx){
         FlamingoBlockEntity flamingo = (FlamingoBlockEntity)world.getBlockEntity(pos);
         FlamingoAccessor flamingoAccessor = (FlamingoAccessor)flamingo;
