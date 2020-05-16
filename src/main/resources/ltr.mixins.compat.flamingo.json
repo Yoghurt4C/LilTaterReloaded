@@ -6,7 +6,8 @@
   "mixins": [
     "BlockEntityMixin",
     "FlamingoBlockEntityMixin",
-    "FlamingoBlockMixin"
+    "FlamingoBlockMixin",
+    "UseFlamingoCallbackRegistrar"
   ],
   "client": [
     "FlamingoBlockEntityRendererMixin"
