@@ -1,0 +1,57 @@
+{
+	"textures": {
+		"0": "ltr:tater/tofu_survivor",
+		"particle": "ltr:tater/tofu_survivor"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 6],
+			"to": [10, 7, 10],
+			"faces": {
+				"north": {"uv": [0, 4, 4, 11], "texture": "#0"},
+				"east": {"uv": [4, 4, 8, 11], "texture": "#0"},
+				"south": {"uv": [4, 4, 8, 11], "texture": "#0"},
+				"west": {"uv": [4, 4, 8, 11], "texture": "#0"},
+				"up": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 7, 6],
+			"to": [10, 7.5, 9],
+			"faces": {
+				"north": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"east": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"south": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"west": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"up": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"},
+				"down": {"uv": [4, 3.5, 4.5, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.75, 7.5, 5.75],
+			"to": [10, 9, 9.25],
+			"faces": {
+				"north": {"uv": [4, 2, 7.5, 3.5], "texture": "#0"},
+				"east": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"south": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"west": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"up": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"down": {"uv": [4, 2, 5, 3], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9.67444, 7.76317, 5.761],
+			"to": [10.92444, 9.36317, 9.251],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8.92431, 8.36317, 8.00902]},
+			"faces": {
+				"north": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"east": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"south": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"west": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"up": {"uv": [4, 2, 5, 3], "texture": "#0"},
+				"down": {"uv": [4, 2, 5, 3], "texture": "#0"}
+			}
+		}
+	]
+}

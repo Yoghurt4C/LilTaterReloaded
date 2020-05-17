@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": {
+      "item": "ltr:lil_tater"
+    },
+    "title": "Ascended Meditater",
+    "description": "Peered into the belly of the beast, and obtained newfound knowledge.",
+    "background": "minecraft:textures/block/snow.png",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "standing": {
+      "trigger": "ltr:meditated"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "ltr",
+  "version": "${version}",
+
+  "name": "LilTaterReloaded",
+  "description": "LTR aims to automate a number of tasks that previously would be difficult, boring, or...",
+  "authors": [
+    "Yoghurt4C",
+    "Juuz",
+    "therealfarfetchd",
+    "Draylar"
+  ],
+  "contact": {
+    "homepage": "fecalfunny.com",
+    "sources": ""
+  },
+
+  "license": "MMPL-J 1.0",
+  "icon": "assets/ltr/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "mods.ltr.LilTaterReloaded"
+    ],
+    "client": [
+      "mods.ltr.client.LilTaterReloadedClient"
+    ],
+    "rei_plugins_v0": [
+      "mods.ltr.compat.rei.LilTaterReloadedREIPlugin"
+    ]
+  },
+  "mixins": [
+    "ltr.mixins.json",
+    "ltr.mixins.compat.flamingo.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.2",
+    "fabric": "*",
+    "minecraft": "1.16.*"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
