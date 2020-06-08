@@ -29,10 +29,16 @@
     ],
     "rei_plugins_v0": [
       "mods.ltr.compat.rei.LilTaterReloadedREIPlugin"
+    ],
+    "libcd": [
+      "mods.ltr.compat.libcd.LTRLibCDInitializer"
     ]
   },
   "mixins": [
     "ltr.mixins.json",
+    "ltr.mixins.meditation.json",
+    "ltr.mixins.barter.json",
+    "ltr.mixins.trading.json",
     "ltr.mixins.compat.flamingo.json"
   ],
 

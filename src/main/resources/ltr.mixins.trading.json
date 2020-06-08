@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.trading",
+  "plugin": "mods.ltr.mixins.plugins.LilTaterTradingMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TradeOffersMixin",
+    "TradeOfferRegistrar"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -2,13 +2,10 @@ package mods.ltr.compat.rei;
 
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
-import mods.ltr.compat.LilTaterMeditationAbility;
+import mods.ltr.client.config.LilTaterReloadedConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
 import static mods.ltr.LilTaterReloaded.getId;
@@ -21,7 +18,7 @@ public class LilTaterReloadedREIPlugin implements REIPluginV0 {
     private static final MinecraftClient client = MinecraftClient.getInstance();
     public static final Identifier PLUGIN = getId("rei_plugin");
     public static final Identifier LTR = getId("ltr_catalogue");
-    private static boolean SHOW_TATERS = false;
+    public static boolean SHOW_TATERS = !LilTaterReloadedConfig.isMeditationEnabled();
 
     @Override
     public Identifier getPluginIdentifier() {
@@ -72,21 +69,6 @@ public class LilTaterReloadedREIPlugin implements REIPluginV0 {
     //todo handle
     @Override
     public void registerOthers(RecipeHelper recipeHelper) {
-        recipeHelper.registerRecipeVisibilityHandler(((category, display) -> {
-            if (!SHOW_TATERS) {
-                if (display.getRecipeCategory().equals(LTR)) {
-                    ClientPlayerEntity player = client.player;
-                    if (player != null) {
-                        PlayerEntity playerEntity = player.world.getPlayerByUuid(player.getUuid());
-                        if (((LilTaterMeditationAbility) playerEntity.abilities).ltr_hasMeditated()) {
-                            SHOW_TATERS=true;
-                            return ActionResult.SUCCESS;
-                        } else return ActionResult.FAIL;
-                    }
-                }
-            }
-            return ActionResult.PASS;
-        }));
         recipeHelper.removeAutoCraftButton(LTR);
     }
 }

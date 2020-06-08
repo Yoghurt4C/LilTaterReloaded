@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class RenderStateSetup {
     static final Pattern pattern = Pattern.compile("[^-\\d]*(-?\\d?\\.?\\d+|0x[a-fA-F0-9]{6})[_].*");
+    public static Pattern jsonRegex = Pattern.compile("([a-zA-Z0-9\\s_\\\\.\\-():]+).json");
 
     public static List<String> validPrefixes = Util.make(new ArrayList<>(), list -> list.addAll(ImmutableSet.of(
             "ghastly",

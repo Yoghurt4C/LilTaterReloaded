@@ -11,12 +11,20 @@ public class LilTaterReloadedConfig {
 
     private static int totalMeditationTicks = 72000;
     private static boolean areNamesAlwaysVisible = false;
+    private static boolean enableMeditation = true;
+    private static boolean enableTaterBarter = true;
+    private static boolean enableTaterTrading = true;
+    private static boolean loadDefaultTradingOffers = true;
     private static int taterItemRendererCacheSize = 96;
 
     public static void init() {
         Properties configuration = new Properties();
         configuration.setProperty("totalMeditationTicks", String.valueOf(totalMeditationTicks));
         configuration.setProperty("areNamesAlwaysVisible", String.valueOf(areNamesAlwaysVisible));
+        configuration.setProperty("enableMeditation", String.valueOf(enableMeditation));
+        configuration.setProperty("enableTaterBarter", String.valueOf(enableTaterBarter));
+        configuration.setProperty("enableTaterTrading", String.valueOf(enableTaterTrading));
+        configuration.setProperty("loadDefaultTradingOffers", String.valueOf(loadDefaultTradingOffers));
         configuration.setProperty("taterItemRendererCacheSize", String.valueOf(taterItemRendererCacheSize));
 
         File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
@@ -62,6 +70,42 @@ public class LilTaterReloadedConfig {
             LOGGER.error("[LTR] Using default value \"" + areNamesAlwaysVisible + "\" instead.");
         }
 
+        String enableTaterBarterProperty = configuration.getProperty("enableTaterBarter");
+        try {
+            enableTaterBarter = Boolean.parseBoolean(enableTaterBarterProperty);
+        } catch (NumberFormatException e) {
+            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+            LOGGER.error("[LTR] Expected configuration value for enableTaterBarter to be a boolean, found \"" + enableTaterBarterProperty + "\".");
+            LOGGER.error("[LTR] Using default value \"" + enableTaterBarter + "\" instead.");
+        }
+
+        String enableMeditationProperty = configuration.getProperty("enableMeditation");
+        try {
+            enableMeditation = Boolean.parseBoolean(enableMeditationProperty);
+        } catch (NumberFormatException e) {
+            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+            LOGGER.error("[LTR] Expected configuration value for enableMeditation to be a boolean, found \"" + enableMeditationProperty + "\".");
+            LOGGER.error("[LTR] Using default value \"" + enableMeditation + "\" instead.");
+        }
+
+        String enableTaterTradingProperty = configuration.getProperty("enableTaterTrading");
+        try {
+            enableTaterTrading = Boolean.parseBoolean(enableTaterTradingProperty);
+        } catch (NumberFormatException e) {
+            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+            LOGGER.error("[LTR] Expected configuration value for enableTaterTrading to be a boolean, found \"" + enableTaterTradingProperty + "\".");
+            LOGGER.error("[LTR] Using default value \"" + enableTaterTrading + "\" instead.");
+        }
+
+        String loadDefaultTradingOffersProperty = configuration.getProperty("loadDefaultTradingOffers");
+        try {
+            loadDefaultTradingOffers = Boolean.parseBoolean(loadDefaultTradingOffersProperty);
+        } catch (NumberFormatException e) {
+            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+            LOGGER.error("[LTR] Expected configuration value for loadDefaultTradingOffers to be a boolean, found \"" + loadDefaultTradingOffersProperty + "\".");
+            LOGGER.error("[LTR] Using default value \"" + loadDefaultTradingOffers + "\" instead.");
+        }
+
         String taterItemRendererCacheSizeProperty = configuration.getProperty("taterItemRendererCacheSize");
         try {
             taterItemRendererCacheSize = Integer.parseInt(taterItemRendererCacheSizeProperty);
@@ -72,13 +116,17 @@ public class LilTaterReloadedConfig {
         }
     }
 
-    public static int getTotalMeditationTicks() {
-        return totalMeditationTicks;
-    }
+    public static int getTotalMeditationTicks() { return totalMeditationTicks; }
 
-    public static boolean areNamesAlwaysVisible() {
-        return areNamesAlwaysVisible;
-    }
+    public static boolean areNamesAlwaysVisible() { return areNamesAlwaysVisible; }
+
+    public static boolean isMeditationEnabled() { return enableMeditation; }
+
+    public static boolean isTaterBarterEnabled() { return enableTaterBarter; }
+
+    public static boolean isTaterTradingEnabled() { return enableTaterTrading; }
+
+    public static boolean areDefaultTradingOffersLoaded() { return loadDefaultTradingOffers; }
 
     public static int getTaterItemRendererCacheSize() {
         return taterItemRendererCacheSize;

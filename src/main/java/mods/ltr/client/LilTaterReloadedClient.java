@@ -25,7 +25,6 @@ import static mods.ltr.registry.LilTaterBlocks.LIL_TATER_BLOCK_ENTITY;
 
 @Environment(EnvType.CLIENT)
 public class LilTaterReloadedClient implements ClientModInitializer {
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static LocalDateTime date = LocalDateTime.now();
     public static boolean isHalloween = false;
 

@@ -11,6 +11,7 @@ import me.shedaniel.rei.gui.widget.Widget;
 import mods.ltr.registry.LilTaterBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
@@ -43,16 +44,16 @@ public class LilTaterReloadedREICategory implements RecipeCategory<LilTaterReloa
     public List<Widget> setupDisplay(LilTaterReloadedREIDisplay display, Rectangle bounds) {
         final Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 13);
         List<Widget> widgets = Lists.newArrayList();
-        /*
-                this.minecraft.getTextureManager().bindTexture(RECIPECONTAINER);
-                //blit(startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15);
-        */
+
         if (REIHelper.getInstance().isDarkThemeEnabled()) {
             widgets.add(Widgets.createTexturedWidget(TATERDROP_DARK,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
         } else
             widgets.add(Widgets.createTexturedWidget(TATERDROP,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
-        //widgets.add(Widgets.createTexturedWidget(RECIPECONTAINER,startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15));
-        widgets.add(Widgets.createArrow(new Point(startPoint.x + 28, startPoint.y + 4)).animationDurationTicks(30).disableAnimation());
+
+        widgets.add(Widgets.createDrawableWidget((drawableHelper, matrixStack, i, i1, v) -> {
+            MinecraftClient.getInstance().getTextureManager().bindTexture(RECIPECONTAINER);
+            drawableHelper.drawTexture(matrixStack,startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15);
+        }));
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x - 4, startPoint.y + 5)).entry(display.getInput()));
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 16, startPoint.y + 14)).entry(display.getAnvil()).disableHighlight().disableBackground());

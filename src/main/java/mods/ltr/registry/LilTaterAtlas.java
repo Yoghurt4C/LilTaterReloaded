@@ -27,18 +27,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static mods.ltr.LilTaterReloaded.LOGGER;
-import static mods.ltr.LilTaterReloaded.getId;
-import static mods.ltr.client.LilTaterReloadedClient.GSON;
+import static mods.ltr.LilTaterReloaded.*;
+import static mods.ltr.util.RenderStateSetup.jsonRegex;
 
 @Environment(EnvType.CLIENT)
 public class LilTaterAtlas {
-    private static final Identifier listenerId = getId("resourcelistener");
+    private static final Identifier listenerId = getId("atlas_resourcelistener");
     public static Object2ObjectOpenHashMap<String, Either<Triple<List<Identifier>, IntList, Integer>, ModelIdentifier>> taterAtlas = new Object2ObjectOpenHashMap<>();
     public static Object2ObjectOpenHashMap<String, ModelIdentifier> taterAccessoryAtlas = new Object2ObjectOpenHashMap<>();
-    public static Pattern jsonRegex = Pattern.compile("([a-zA-Z0-9\\s_\\\\.\\-():]+).json$");
 
     public static void init() {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new LilTaterResourceListener());
@@ -138,7 +135,7 @@ public class LilTaterAtlas {
             }, executor);
         }
 
-        public static class LTRResourceCollections {
+        static class LTRResourceCollections {
             Collection<Identifier> resources;
             Collection<Identifier> models;
 

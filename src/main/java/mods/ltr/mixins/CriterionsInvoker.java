@@ -1,4 +1,4 @@
-package mods.ltr.mixins.meditation;
+package mods.ltr.mixins;
 
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;

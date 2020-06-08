@@ -45,7 +45,7 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
         int tick = this.ltr_getMeditationTicks() + 1;
         this.ltr_setMeditationTicks(tick);
         if (tick%(LilTaterReloadedConfig.getTotalMeditationTicks() /20) == 0) {
-            this.sendSystemMessage(new TranslatableText("text.ltr.meditation"+random.nextInt(10)).formatted(Formatting.GRAY, Formatting.ITALIC));
+            this.sendSystemMessage(new TranslatableText("text.ltr.meditation"+random.nextInt(10)).formatted(Formatting.GRAY, Formatting.ITALIC), this.uuid);
         }
         if (tick >= LilTaterReloadedConfig.getTotalMeditationTicks()) {
             ((LilTaterMeditationAbility)this.abilities).ltr_setMeditationState(true);

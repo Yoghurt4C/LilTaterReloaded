@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.barter",
+  "plugin": "mods.ltr.mixins.plugins.LilTaterBarterMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AdmireItemTaskMixin",
+    "BarterOfferPacketRegistrar",
+    "LookTargetUtilMixin",
+    "PiglinBrainMixin",
+    "PiglinEntityAccessor",
+    "PiglinEntityMixin",
+    "StopPiggerGrayonItemEntityMixin"
+  ],
+  "client": [
+    "ClientPlayNetworkHandleBarterMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -127,7 +127,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
                     text.append(sons + " ");
                     text.append(new TranslatableText("text.ltr.mySon_multiple"));
                 }
-                player.sendSystemMessage(text);
+                player.sendSystemMessage(text,player.getUuid());
             }
             this.renderColor=null;
         }

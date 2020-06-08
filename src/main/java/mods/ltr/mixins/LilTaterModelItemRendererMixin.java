@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ public abstract class LilTaterModelItemRendererMixin {
     public LRUCache<CompoundTag, LilTaterBlockEntity> ltr_taterItemRendererCache = new LRUCache<>(LilTaterReloadedConfig.getTaterItemRendererCacheSize());
 
     @Inject(method = "render", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/Block;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    public void renderLilTaterBlockItem(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, CallbackInfo ctx, Item item, Block block) {
+    public void renderLilTaterBlockItem(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, CallbackInfo ctx, Item item, Block block) {
         if (block instanceof LilTaterBlock) {
             if (stack.hasTag()) {
                 CompoundTag tag = stack.getTag();

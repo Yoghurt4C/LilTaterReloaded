@@ -1,9 +1,12 @@
 package mods.ltr;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import mods.ltr.client.config.LilTaterReloadedConfig;
 import mods.ltr.registry.LilTaterBlocks;
 import mods.ltr.registry.LilTaterCriterion;
 import mods.ltr.registry.LilTaterSounds;
+import mods.ltr.registry.LilTaterTradeOffers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -15,14 +18,15 @@ import org.apache.logging.log4j.Logger;
 import static mods.ltr.registry.LilTaterBlocks.LIL_TATER;
 
 public class LilTaterReloaded implements ModInitializer {
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Logger LOGGER = LogManager.getLogger("Lil Tater Reloaded");
     public static String modid = "ltr";
 
     @Override
     public void onInitialize(){
+        LilTaterReloadedConfig.init();
         LilTaterBlocks.init();
         LilTaterSounds.init();
-        LilTaterReloadedConfig.init();
         LilTaterCriterion.init();
     }
 

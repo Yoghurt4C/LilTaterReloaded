@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.meditation",
+  "plugin": "mods.ltr.mixins.plugins.LilTaterMeditationMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "LilTaterMeditationAbilityMixin",
+    "LilTaterMeditationCounterMixin",
+    "PlayerAbilitiesS2CPacketMixin",
+    "PlayerManagerMixin"
+  ],
+  "client": [
+    "ClientPlayNetworkHandlerMeditationMixin",
+    "LilTaterReloadedREIPluginMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

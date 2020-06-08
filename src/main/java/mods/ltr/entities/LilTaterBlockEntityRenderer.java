@@ -166,7 +166,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                 matrices.scale(1f, -1f, -1f);
                 matrices.translate(0.5f, -1.5624f, 0.5f);
                 matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(180));
-                client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState)), null, pot, r, g, b, light, overlay);
+                client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, pot, r, g, b, light, overlay);
                 matrices.pop();
                 matrices.translate(0f, -0.25f, 0f);
                 nameOffset[0] -= 0.25f;
@@ -197,7 +197,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
             matrices.translate(0.5f, -1.5624, 0.5f);
             matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
             BakedModel model = client.getBlockRenderManager().getModels().getModelManager().getModel(taterAtlas.get(name).right().get());
-            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState)), null, model, r, g, b, light, overlay);
+            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, model, r, g, b, light, overlay);
             matrices.pop();
             nameOffset[0] = 0.9f;
         } else {
@@ -259,7 +259,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
             matrices.translate(0.5f, -1.5625f, 0.5f);
             matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
             BakedModel model = client.getBlockRenderManager().getModels().getModelManager().getModel(taterAccessoryAtlas.get(prefix));
-            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState)), null, model, r, g, b, light, overlay);
+            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, model, r, g, b, light, overlay);
             matrices.pop();
             nameOffset[0] = 0.85f;
         }

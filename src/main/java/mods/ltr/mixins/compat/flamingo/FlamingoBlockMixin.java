@@ -19,7 +19,7 @@ public abstract class FlamingoBlockMixin extends Block {
     public FlamingoBlockMixin(Settings settings) { super(settings); }
 
     @Override
-    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (this.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
             BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof FlamingoBlockEntity) {

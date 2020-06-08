@@ -52,7 +52,7 @@ public class ImitaterModel {
             matrices.translate(-0.5f, -3.573f, -0.5f);
             sprite = MISSINGNO;
             BakedModel missingno = client.getBakedModelManager().getMissingModel();
-            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState)), null, missingno, r, g, b, light , overlay);
+            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, missingno, r, g, b, light , overlay);
         }
 
         int colorOffset = ColorSniffer.getAverageColor(sprite);

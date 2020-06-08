@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.2.7-SNAPSHOT'
+	id 'fabric-loom' version '0.4.3'
 	id 'maven-publish'
 }
 
@@ -16,6 +16,7 @@ minecraft {
 repositories {
 	maven { url = "https://maven.fabricmc.net/" }
 	maven { url = "https://jitpack.io" }
+	maven { url "https://server.bbkr.space/artifactory/libs-release" }
 	
 	flatDir {
 	  dirs "libs"
@@ -40,7 +41,8 @@ dependencies {
 	
 	//modImplementation "ninjaphenix.ninjatips:NinjaTips:1.0.31.15"
 	//modImplementation "java.io.github.giantnuker.fabric.tooltipwrap:tooltipwrap:1.0.2"
-	modImplementation "com.reddit.user.koppeh.flamingo.Flamingo:Flamingo:20w20b-1.16"
+	modImplementation "com.reddit.user.koppeh.flamingo.Flamingo:Flamingo:${project.flamingo_version}"
+	modImplementation "io.github.cottonmc:LibCD:${project.libcd_version}"
 }
 
 processResources {

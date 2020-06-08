@@ -25,7 +25,7 @@ public class ColorSniffer {
         long avgR = 0, avgG = 0, avgB = 0;
         for (int y = 0; y < sprite.getHeight(); y++) {
             for (int x = 0; x < sprite.getWidth(); x++) {
-                int c = image.getPixelRgba(x, y);
+                int c = image.getPixelColor(x, y);
                 if (((c >> 24) & 0xFF) != 0x00) {
                     avgB += ((c >> 16) & 0xFF)*((c >> 16) & 0xFF);
                     avgG += ((c >> 8) & 0xFF)*((c >> 8) & 0xFF);

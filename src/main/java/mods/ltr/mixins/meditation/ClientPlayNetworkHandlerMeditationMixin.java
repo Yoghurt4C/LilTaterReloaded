@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class ClientPlayNetworkHandlerMixin {
+public class ClientPlayNetworkHandlerMeditationMixin {
     @Inject(method = "onPlayerAbilities",at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void ltr_appendMeditation(PlayerAbilitiesS2CPacket packet, CallbackInfo ctx, PlayerEntity player){
         ((LilTaterMeditationAbility)player.abilities).ltr_setMeditationState(((LilTaterMeditationAbility)packet).ltr_hasMeditated());
