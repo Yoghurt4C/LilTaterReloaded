@@ -2,7 +2,7 @@ package mods.ltr.compat.rei;
 
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
-import mods.ltr.client.config.LilTaterReloadedConfig;
+import mods.ltr.config.LilTaterReloadedConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

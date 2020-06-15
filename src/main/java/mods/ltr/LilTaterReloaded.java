@@ -2,11 +2,10 @@ package mods.ltr;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import mods.ltr.client.config.LilTaterReloadedConfig;
+import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.registry.LilTaterBlocks;
 import mods.ltr.registry.LilTaterCriterion;
 import mods.ltr.registry.LilTaterSounds;
-import mods.ltr.registry.LilTaterTradeOffers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -24,7 +23,7 @@ public class LilTaterReloaded implements ModInitializer {
 
     @Override
     public void onInitialize(){
-        LilTaterReloadedConfig.init();
+        LilTaterReloadedConfig.tryInit();
         LilTaterBlocks.init();
         LilTaterSounds.init();
         LilTaterCriterion.init();

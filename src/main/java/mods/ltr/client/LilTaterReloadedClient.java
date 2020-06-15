@@ -1,7 +1,5 @@
 package mods.ltr.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import mods.ltr.LilTaterReloaded;
 import mods.ltr.entities.LilTaterBlockEntityRenderer;
 import mods.ltr.registry.LilTaterAtlas;
@@ -32,7 +30,6 @@ public class LilTaterReloadedClient implements ClientModInitializer {
     public void onInitializeClient() {
         BlockEntityRendererRegistry.INSTANCE.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
         LilTaterAtlas.init();
-
         if (date.getMonth() == Month.OCTOBER) { isHalloween = true; }
 
         ModelLoadingRegistry.INSTANCE.registerAppender((manager, consumer) -> {
@@ -54,7 +51,7 @@ public class LilTaterReloadedClient implements ClientModInitializer {
             for (Identifier input : models) {
                 String name = input.toString().replace(".json", "");
                 ModelIdentifier modelId = new ModelIdentifier(name, "");
-                if (modelIdentifier.equals(modelId)) {
+                if (modelIdentifier.getNamespace().equals(modelId.getNamespace()) && modelIdentifier.getPath().equals(modelId.getPath())) {
                     return modelProviderContext.loadModel(new Identifier(name.replace("models/","")));
                 }
             }

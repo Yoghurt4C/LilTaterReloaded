@@ -1,0 +1,163 @@
+package mods.ltr.config;
+
+import com.google.common.collect.ImmutableSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Date;
+import java.util.Map;
+import java.util.Properties;
+
+public class LilTaterReloadedConfig {
+    public static final Logger LOGGER = LogManager.getLogger("Lil Tater Reloaded");
+    static boolean isInitialized = false;
+    static LTRConfig ltrConfig;
+
+    public static void tryInit() {
+        if (!isInitialized()) { init(); }
+    }
+
+    public static void init() {
+        Object2ObjectOpenHashMap<String, String> map = new Object2ObjectOpenHashMap<>();
+        ImmutableSet<LTRConfigEntry<?>> entries = ImmutableSet.of(
+                LTRConfigEntry.of("totalMeditationTicks", 72000,
+                        "totalMeditationTicks: Amount of meditation ticks a player has to experience. [Side: SERVER | Default: 72000]"),
+                LTRConfigEntry.of("areNamesAlwaysVisible", false,
+                        "areNamesAlwaysVisible: Renders tater names regardless of whether the player is looking at one. [Side: CLIENT | Default: false]"),
+                LTRConfigEntry.of("enableMeditation", true,
+                        "enableMeditation: Toggles the \"Meditation\" module. [Side : SERVER | Default: true]\n#^If disabled, the meditation progress of all players will be lost permanently, along with the fun and soul of this feature."),
+                LTRConfigEntry.of("enableTaterBarter", true,
+                        "enableTaterBarter: Toggles the \"Barter\" module. [Side : SERVER | Default: true]\n#^If disabled, Piggers will no longer be attracted to taters, nor will they do anything with them."),
+                LTRConfigEntry.of("enableTaterTrading", true,
+                        "enableTaterTrading: Toggles the \"Trading\" module. [Side: SERVER | Default: true]\n#^If disabled, ALL custom trade offers won't be read, processed and given to Testificates."),
+                LTRConfigEntry.of("loadDefaultTradingOffers", true,
+                        "loadDefaultTradingOffers: Controls the loading of LTR's default trade offers. [Side: SERVER | Default: true]\n#^Useful if you don't have a tweaker to remove them with."),
+                LTRConfigEntry.of("taterItemRendererCacheSize", 96,
+                        "taterItemRendererCacheSize: Amount of taters that can be cached for ITEM rendering. [Side: CLIENT | Default: 96]\n#^Increase if your item taters start \"blinking\" and destroying FPS.")
+        );
+
+        File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
+        if (!subFolder.exists() && !subFolder.mkdir()) {
+            LOGGER.error("[LTR] Could not create configuration directory: " + subFolder.getAbsolutePath());
+        }
+        File subFolder2 = new File(subFolder, "liltaterreloaded");
+        if (!subFolder2.exists() && !subFolder2.mkdir()) {
+            LOGGER.error("[LTR] Could not create configuration directory: " + subFolder2.getAbsolutePath());
+        }
+        File configurationFile = new File(subFolder2, "ltr.properties");
+
+        Properties config = new Properties();
+        StringBuilder content = new StringBuilder().append("#Lil Tater Configuration.\n");
+        content.append("#Last generated at: ").append(new Date().toString()).append("\n\n");
+        try {
+            FileInputStream input = new FileInputStream(configurationFile);
+            config.load(input);
+            FileWriter fw = new FileWriter(configurationFile, false);
+            for (LTRConfigEntry<?> entry : entries) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                Class<?> cls = entry.getCls();
+                if (!config.containsKey(key)) {
+                    config.setProperty(key, value.toString());
+                }
+                if (config.containsKey(key)) {
+                    Object obj = config.getProperty(key);
+                    String s = String.valueOf(obj);
+                    if (s.equals(Strings.EMPTY)) {
+                        LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+                        LOGGER.error("[LTR] Expected configuration value for " + key + " to be present, found nothing. Using default value \"" + value + "\" instead.");
+                        map.put(key, value.toString());
+                    } else if (cls.equals(Integer.class)) {
+                        try {
+                            Integer.parseInt(s);
+                            map.put(key, s);
+                        } catch (NumberFormatException e) {
+                            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+                            LOGGER.error("[LTR] Expected configuration value for " + key + " to be an integer number, found \"" + s + "\". Using default value \"" + value + "\" instead.");
+                            map.put(key, value.toString());
+                        }
+                    } else if (entry.getCls().equals(Boolean.class)) {
+                        if (!"true".equals(s.toLowerCase()) && !"false".equals(s.toLowerCase())) {
+                            LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
+                            LOGGER.error("[LTR] Expected configuration value for " + key + " to be a boolean, found \"" + s + "\". Using default value \"" + value + "\" instead.");
+                            map.put(key, value.toString());
+                        } else map.put(key, s);
+                    }
+                }
+                content.append("#").append(entry.getComment()).append("\n");
+                content.append(key).append("=").append(map.get(key)).append("\n");
+            }
+            fw.write(content.toString());
+            fw.close();
+            ltrConfig = new LTRConfig(map);
+            isInitialized = true;
+        } catch (IOException e) {
+            LOGGER.error("[LTR] Could not read/write config! Stacktrace: "+ e);
+        }
+    }
+
+    public static class LTRConfig {
+        int totalMeditationTicks;
+        boolean areNamesAlwaysVisible;
+        boolean enableMeditation;
+        boolean enableTaterBarter;
+        boolean enableTaterTrading;
+        boolean loadDefaultTradingOffers;
+        int taterItemRendererCacheSize;
+
+        public LTRConfig(Map<String, String> map) {
+            totalMeditationTicks = Integer.parseInt(map.get("totalMeditationTicks"));
+            areNamesAlwaysVisible = Boolean.parseBoolean(map.get("areNamesAlwaysVisible"));
+            enableMeditation = Boolean.parseBoolean(map.get("enableMeditation"));
+            enableTaterBarter = Boolean.parseBoolean(map.get("enableTaterBarter"));
+            enableTaterTrading = Boolean.parseBoolean(map.get("enableTaterTrading"));
+            loadDefaultTradingOffers = Boolean.parseBoolean(map.get("loadDefaultTradingOffers"));
+            taterItemRendererCacheSize = Integer.parseInt(map.get("taterItemRendererCacheSize"));
+        }
+    }
+
+    public static boolean isInitialized() { return isInitialized; }
+
+    public static int getTotalMeditationTicks() { return ltrConfig.totalMeditationTicks; }
+    public static boolean areNamesAlwaysVisible() { return ltrConfig.areNamesAlwaysVisible; }
+    public static boolean isMeditationEnabled() { return ltrConfig.enableMeditation; }
+    public static boolean isTaterBarterEnabled() { return ltrConfig.enableTaterBarter; }
+    public static boolean isTaterTradingEnabled() { return ltrConfig.enableTaterTrading; }
+    public static boolean areDefaultTradingOffersLoaded() { return ltrConfig.loadDefaultTradingOffers; }
+    public static int getTaterItemRendererCacheSize() { return ltrConfig.taterItemRendererCacheSize; }
+
+    private static class LTRConfigEntry<T> {
+        private final String key;
+        private final T value;
+        private final WeakReference<String> comment;
+        private final Class<T> cls;
+
+        private LTRConfigEntry(String key, T value, String comment, Class<T> cls) {
+            this.key = key;
+            this.value = value;
+            this.comment = new WeakReference<>(comment);
+            this.cls = cls;
+        }
+
+        public static LTRConfigEntry<Integer> of(String key, int value, String comment) {
+            return new LTRConfigEntry<>(key, value, comment, Integer.class);
+        }
+
+        public static LTRConfigEntry<Boolean> of(String key, boolean value, String comment) {
+            return new LTRConfigEntry<>(key, value, comment, Boolean.class);
+        }
+
+        public String getKey() { return key; }
+        public T getValue() { return value; }
+        public String getComment() { return comment.get(); }
+        public Class<T> getCls() { return cls; }
+    }
+}

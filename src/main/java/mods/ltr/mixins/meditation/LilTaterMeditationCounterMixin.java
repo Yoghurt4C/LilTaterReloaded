@@ -1,9 +1,9 @@
 package mods.ltr.mixins.meditation;
 
 import mods.ltr.blocks.LilTaterBlock;
-import mods.ltr.client.config.LilTaterReloadedConfig;
 import mods.ltr.compat.LilTaterMeditationAbility;
 import mods.ltr.compat.LilTaterMeditationCounter;
+import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.registry.LilTaterCriterion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

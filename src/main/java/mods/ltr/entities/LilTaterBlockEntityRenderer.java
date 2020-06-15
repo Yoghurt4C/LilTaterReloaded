@@ -1,8 +1,8 @@
 package mods.ltr.entities;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-import mods.ltr.client.config.LilTaterReloadedConfig;
 import mods.ltr.client.models.ImitaterModel;
+import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
 import mods.ltr.items.LilTaterBlockItem;
 import mods.ltr.registry.LilTaterBlocks;

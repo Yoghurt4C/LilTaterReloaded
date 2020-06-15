@@ -1,5 +1,6 @@
 package mods.ltr.mixins.compat.plugins;
 
+import mods.ltr.config.LilTaterReloadedConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -16,6 +17,7 @@ public class FlamingoCompatMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
+        LilTaterReloadedConfig.tryInit();
     }
 
     @Override

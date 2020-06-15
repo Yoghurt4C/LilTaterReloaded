@@ -3,8 +3,7 @@
   "package": "mods.ltr.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CriterionsInvoker",
-    "trading.TradeOffersMixin"
+    "CriterionsInvoker"
   ],
   "client": [
     "LilTaterModelItemRendererMixin",

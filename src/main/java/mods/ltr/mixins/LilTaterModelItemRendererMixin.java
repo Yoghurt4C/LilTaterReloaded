@@ -1,7 +1,7 @@
 package mods.ltr.mixins;
 
 import mods.ltr.blocks.LilTaterBlock;
-import mods.ltr.client.config.LilTaterReloadedConfig;
+import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity;
 import mods.ltr.util.LRUCache;
 import net.fabricmc.api.EnvType;

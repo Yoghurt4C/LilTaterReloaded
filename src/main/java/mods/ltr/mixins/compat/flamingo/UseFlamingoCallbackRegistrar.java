@@ -32,7 +32,7 @@ public abstract class UseFlamingoCallbackRegistrar {
                 if (!taterStack.isEmpty() && player.isSneaking()) {
                     ItemScatterer.spawn(world, pos, DefaultedList.copyOf(ItemStack.EMPTY, taterStack));
                     flamingoAccessor.ltr_setTater(ItemStack.EMPTY);
-                } else if (!stack.isEmpty() && stack.getItem() instanceof LilTaterBlockItem) {
+                } else if (taterStack.isEmpty() && !stack.isEmpty() && stack.getItem() instanceof LilTaterBlockItem) {
                     flamingoAccessor.ltr_setTater(stack.split(1));
                 } else world.addSyncedBlockEvent(pos, world.getBlockState(pos).getBlock(), 0, 0);
                 if (!world.isClient()) {
