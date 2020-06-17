@@ -20,7 +20,7 @@ import java.util.Optional;
 public abstract class PlayerManagerMixin {
 
     @Inject(method = "respawnPlayer",at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void respawnPlayerWithMeditationTicks(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> ctx, BlockPos pos, boolean bl, Optional optional, RegistryKey<World> registryKey, ServerPlayerInteractionManager manager, ServerWorld world, ServerPlayerEntity serverPlayerEntity){
+    public void respawnPlayerWithMeditationTicks(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> ctx, BlockPos pos, boolean bl, ServerWorld world, Optional optional, ServerPlayerInteractionManager manager, ServerWorld sworld, ServerPlayerEntity serverPlayerEntity){
         int meditationTicks = ((LilTaterMeditationCounter)player).ltr_getMeditationTicks();
         ((LilTaterMeditationCounter)serverPlayerEntity).ltr_setMeditationTicks(meditationTicks);
     }

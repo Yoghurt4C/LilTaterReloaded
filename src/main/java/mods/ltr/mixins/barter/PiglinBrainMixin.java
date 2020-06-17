@@ -36,15 +36,15 @@ public abstract class PiglinBrainMixin {
         }
     }
 
-    @Inject(method = "loot",at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private static void ltr_lootTater(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx, ItemStack stack, Item item) {
+    @Inject(method = "loot",at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private static void ltr_lootTater(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx, ItemStack itemStack2, Item item) {
         if (item instanceof LilTaterBlockItem) {
             ctx.cancel();
             if (hasItemInOffHand(piglin)) {
                 piglin.dropStack(piglin.getStackInHand(Hand.OFF_HAND));
             }
 
-            ((PiglinEntityAccessor) piglin).ltr_equipToOffHand(stack);
+            ((PiglinEntityAccessor) piglin).ltr_equipToOffHand(itemStack2);
             setAdmiringItem(piglin);
         }
     }
