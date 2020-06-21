@@ -60,7 +60,8 @@ public class ImitaterModel {
         int smileG = (colorOffset >> 8) & 0xFF;
         int smileB = colorOffset & 0xFF;
 
-        int red = (int) (r*255)-350, green = (int) (g*255)-350, blue = (int) (b*255)-350, alpha = (int) (a*255);
+        float o = 0.4f;
+        int red = (int) ((r-o)*255), green = (int) ((g-o)*255), blue = (int) ((b-o)*255), alpha = (int) (a*255);
 
         matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
         matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
@@ -74,7 +75,7 @@ public class ImitaterModel {
         Matrix4f model = matrices.peek().getModel();
         Matrix3f normal = matrices.peek().getNormal();
         VertexConsumer v = vcon.getBuffer(RenderLayer.getCutout());
-        ImitaterModel.drawHorizontalFace(v, model, normal, Math.max(0, red + smileR), Math.max(0, green + smileG), Math.max(0, blue + smileB), alpha, light, overlay);
+        ImitaterModel.drawHorizontalFace(v, model, normal, Math.max(0, smileR - red), Math.max(0, smileG - green), Math.max(0, smileB - blue), alpha, light, overlay);
         matrices.pop();
     }
 

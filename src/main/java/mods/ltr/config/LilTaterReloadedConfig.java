@@ -53,6 +53,13 @@ public class LilTaterReloadedConfig {
             LOGGER.error("[LTR] Could not create configuration directory: " + subFolder2.getAbsolutePath());
         }
         File configurationFile = new File(subFolder2, "ltr.properties");
+        try {
+            if (!configurationFile.exists() && !configurationFile.createNewFile()) {
+                LOGGER.error("[LTR] Could not create configuration file: " + configurationFile.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            LOGGER.error("[LTR] Error while writing configuration file: " + e);
+        }
 
         Properties config = new Properties();
         StringBuilder content = new StringBuilder().append("#Lil Tater Configuration.\n");
