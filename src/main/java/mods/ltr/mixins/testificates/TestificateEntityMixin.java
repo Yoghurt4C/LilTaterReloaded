@@ -52,14 +52,15 @@ public abstract class TestificateEntityMixin extends AbstractTraderEntity implem
     @Inject(method = "interactMob", at=@At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/PlayerEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void ltr_interact(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> ctx, ItemStack stack){
         if (stack.getItem() instanceof ShearsItem) {
-            if (this.ltr_getTaterStack()!=ItemStack.EMPTY) {
+            boolean holdingTater = player.getOffHandStack().getItem() instanceof LilTaterBlockItem;
+            if (this.ltr_getTaterStack()!=ItemStack.EMPTY && !holdingTater) {
                 ItemStack copy = ltr_getTaterStack().copy();
                 ltr_setTaterStack(ItemStack.EMPTY);
                 dropStack(copy);
                 player.getMainHandStack().damage(1, player, playerEntity -> {});
                 player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1f, 1f);
                 ctx.setReturnValue(ActionResult.SUCCESS);
-            } else if (player.getOffHandStack().getItem() instanceof LilTaterBlockItem) {
+            } else if (holdingTater) {
                 player.getMainHandStack().damage(1, player, playerEntity -> {});
                 this.ltr_setTaterStack(player.getOffHandStack().split(1));
                 player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1f, 1f);

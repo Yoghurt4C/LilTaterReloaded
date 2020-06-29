@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Environment(EnvType.CLIENT)
 @Mixin(LambdaControlsHud.class)
 public abstract class LambdaControlsHudMixin {
-    @Shadow private BlockHitResult placeHitResult;
-    @Shadow private MinecraftClient client;
+    @Shadow(remap = false) private BlockHitResult placeHitResult;
+    @Shadow(remap = false) private MinecraftClient client;
 
     @Unique LilTaterBlockEntity ltr_tater = null;
 
-    @ModifyVariable(method = "tick()V", at=@At(value = "FIELD", target = "Lme/lambdaurora/lambdacontrols/client/gui/LambdaControlsHud;placeAction:Ljava/lang/String;", opcode = Opcodes.PUTFIELD, shift = At.Shift.BEFORE, remap = false), remap = false)
+    @ModifyVariable(method = "tick()V", at=@At(value = "FIELD", target = "Lme/lambdaurora/lambdacontrols/client/gui/LambdaControlsHud;placeAction:Ljava/lang/String;", opcode = Opcodes.PUTFIELD, shift = At.Shift.BEFORE, remap = false), name = "placeAction", remap = false)
     private String ltr_determineAction(String placeAction){
         ClientPlayerEntity player = this.client.player;
         if (player == null) { return placeAction; }
@@ -35,12 +35,14 @@ public abstract class LambdaControlsHudMixin {
             }
             ItemStack taterStack = this.ltr_tater!=null ? ltr_tater.getStackForSide(this.placeHitResult.getSide()) : ItemStack.EMPTY;
             if (stack.isEmpty()) {
-                if (taterStack.isEmpty()) {
-                    return "lambdacontrols.ltr.pet";
-                } else {
+                if (player.isSneaking() && !taterStack.isEmpty()) {
                     return "lambdacontrols.ltr.disrobe";
+                } else {
+                    return "lambdacontrols.ltr.pet";
                 }
-            } else return "lambdacontrols.ltr.furnish";
+            } else if (!player.isSneaking() && taterStack.isEmpty()) {
+                return "lambdacontrols.ltr.furnish";
+            }
         } else if (this.ltr_tater!=null) {
             this.ltr_tater = null;
         }
