@@ -46,20 +46,22 @@ public class LilTaterReloadedClient implements ClientModInitializer {
             });
         });
 
-        ModelLoadingRegistry.INSTANCE.registerVariantProvider(manager -> ((modelIdentifier, modelProviderContext) -> {
+        ModelLoadingRegistry.INSTANCE.registerVariantProvider(manager -> {
             Collection<Identifier> models = manager.findResources("models/tater", s -> s.endsWith(".json"));
-            for (Identifier input : models) {
-                String name = input.toString().replace(".json", "");
-                ModelIdentifier modelId = new ModelIdentifier(name, "");
-                if (modelIdentifier.getNamespace().equals(modelId.getNamespace()) && modelIdentifier.getPath().equals(modelId.getPath())) {
-                    return modelProviderContext.loadModel(new Identifier(name.replace("models/","")));
+            return ((modelIdentifier, modelProviderContext) -> {
+                for (Identifier input : models) {
+                    if (input.getNamespace().equals(modelIdentifier.getNamespace())) {
+                        String name = input.toString().replace(".json", "");
+                        ModelIdentifier modelId = new ModelIdentifier(name, "");
+                        if (modelIdentifier.getPath().equals(modelId.getPath())) {
+                            return modelProviderContext.loadModel(new Identifier(name.replace("models/", "")));
+                        }
+                    }
                 }
-            }
-            return null;
-        }));
-
-        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
-            registry.register(LilTaterReloaded.getId("block/imitater_smile"));
+                return null;
+            });
         });
+
+        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> registry.register(LilTaterReloaded.getId("block/imitater_smile")));
     }
 }

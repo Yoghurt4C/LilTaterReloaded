@@ -53,7 +53,7 @@ public abstract class TestificateEntityMixin extends AbstractTraderEntity implem
     public void ltr_interact(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> ctx, ItemStack stack){
         if (stack.getItem() instanceof ShearsItem) {
             boolean holdingTater = player.getOffHandStack().getItem() instanceof LilTaterBlockItem;
-            if (this.ltr_getTaterStack()!=ItemStack.EMPTY && !holdingTater) {
+            if (!this.ltr_getTaterStack().isEmpty() && !holdingTater) {
                 ItemStack copy = ltr_getTaterStack().copy();
                 ltr_setTaterStack(ItemStack.EMPTY);
                 dropStack(copy);
@@ -61,6 +61,11 @@ public abstract class TestificateEntityMixin extends AbstractTraderEntity implem
                 player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1f, 1f);
                 ctx.setReturnValue(ActionResult.SUCCESS);
             } else if (holdingTater) {
+                if (!this.ltr_getTaterStack().isEmpty()) {
+                    ItemStack copy = ltr_getTaterStack().copy();
+                    ltr_setTaterStack(ItemStack.EMPTY);
+                    dropStack(copy);
+                }
                 player.getMainHandStack().damage(1, player, playerEntity -> {});
                 this.ltr_setTaterStack(player.getOffHandStack().split(1));
                 player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1f, 1f);
