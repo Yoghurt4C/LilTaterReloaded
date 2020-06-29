@@ -58,7 +58,7 @@ public abstract class PiglinBrainMixin {
         }
     }
 
-    @Inject(method = "method_27086",at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isWillingToTrade",at = @At("HEAD"), cancellable = true)
     private static void ltr_method27086(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx){
         if (!hasBeenHitByPlayer(piglin) && !isAdmiringItem(piglin) && piglin.isAdult() && stack.getItem() instanceof LilTaterBlockItem) {
             ctx.setReturnValue(true);

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.compat.lambdacontrols",
+  "plugin": "mods.ltr.mixins.compat.plugins.LambdaControlsCompatMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "LambdaControlsHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

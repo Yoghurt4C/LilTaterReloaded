@@ -4,8 +4,8 @@
   "plugin": "mods.ltr.mixins.plugins.LilTaterTradingMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "TradeOffersMixin",
-    "TradeOfferRegistrar"
+    "TradeOfferRegistrar",
+    "TradeOffersMixin"
   ],
   "client": [
   ],

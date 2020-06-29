@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.4-SNAPSHOT'
 	id 'maven-publish'
+	id 'org.jetbrains.gradle.plugin.idea-ext' version '0.7'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -43,6 +44,8 @@ dependencies {
 	//modImplementation "java.io.github.giantnuker.fabric.tooltipwrap:tooltipwrap:1.0.2"
 	modImplementation "com.reddit.user.koppeh.flamingo.Flamingo:Flamingo:${project.flamingo_version}"
 	modImplementation "io.github.cottonmc:LibCD:${project.libcd_version}"
+	modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+	modImplementation "com.github.lambdaurora.LambdaControls:fabric:${project.lambdacontrols_version}"
 }
 
 processResources {
@@ -75,6 +78,13 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
 	from "LICENSE.md"
+}
+
+idea.project.settings {
+    delegateActions {
+        delegateBuildRunToGradle = false
+        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.PLATFORM
+    }
 }
 
 // configure the maven publication

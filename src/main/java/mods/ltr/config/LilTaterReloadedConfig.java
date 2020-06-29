@@ -33,7 +33,7 @@ public class LilTaterReloadedConfig {
                 LTRConfigEntry.of("areNamesAlwaysVisible", false,
                         "areNamesAlwaysVisible: Renders tater names regardless of whether the player is looking at one. [Side: CLIENT | Default: false]"),
                 LTRConfigEntry.of("enableMeditation", true,
-                        "enableMeditation: Toggles the \"Meditation\" module. [Side : SERVER | Default: true]\n#^If disabled, the meditation progress of all players will be lost permanently, along with the fun and soul of this feature."),
+                        "enableMeditation: Toggles the \"Meditation\" module. [Side : BOTH | Default: true]\n#^If disabled, the meditation progress of all players will be lost permanently, along with the fun and soul of this feature."),
                 LTRConfigEntry.of("enableTaterBarter", true,
                         "enableTaterBarter: Toggles the \"Barter\" module. [Side : SERVER | Default: true]\n#^If disabled, Piggers will no longer be attracted to taters, nor will they do anything with them."),
                 LTRConfigEntry.of("enableTaterTrading", true,
@@ -41,7 +41,11 @@ public class LilTaterReloadedConfig {
                 LTRConfigEntry.of("loadDefaultTradingOffers", true,
                         "loadDefaultTradingOffers: Controls the loading of LTR's default trade offers. [Side: SERVER | Default: true]\n#^Useful if you don't have a tweaker to remove them with."),
                 LTRConfigEntry.of("taterItemRendererCacheSize", 96,
-                        "taterItemRendererCacheSize: Amount of taters that can be cached for ITEM rendering. [Side: CLIENT | Default: 96]\n#^Increase if your item taters start \"blinking\" and destroying FPS.")
+                        "taterItemRendererCacheSize: Amount of taters that can be cached for ITEM rendering. [Side: CLIENT | Default: 96]\n#^Increase if your item taters start \"blinking\" and destroying FPS."),
+                LTRConfigEntry.of("loadLambdaControlsCompat", true,
+                        "loadLambdaControlsCompat: Toggles the small Mixin into LambdaControls. [Side: CLIENT | Default: true]"),
+                LTRConfigEntry.of("enableTestificateSecret", false,
+                        "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]")
         );
 
         File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
@@ -119,6 +123,8 @@ public class LilTaterReloadedConfig {
         boolean enableTaterTrading;
         boolean loadDefaultTradingOffers;
         int taterItemRendererCacheSize;
+        boolean loadLambdaControlsCompat;
+        boolean enableTestificateSecret;
 
         public LTRConfig(Map<String, String> map) {
             totalMeditationTicks = Integer.parseInt(map.get("totalMeditationTicks"));
@@ -128,6 +134,8 @@ public class LilTaterReloadedConfig {
             enableTaterTrading = Boolean.parseBoolean(map.get("enableTaterTrading"));
             loadDefaultTradingOffers = Boolean.parseBoolean(map.get("loadDefaultTradingOffers"));
             taterItemRendererCacheSize = Integer.parseInt(map.get("taterItemRendererCacheSize"));
+            loadLambdaControlsCompat = Boolean.parseBoolean(map.get("loadLambdaControlsCompat"));
+            enableTestificateSecret = Boolean.parseBoolean(map.get("enableTestificateSecret"));
         }
     }
 
@@ -140,6 +148,8 @@ public class LilTaterReloadedConfig {
     public static boolean isTaterTradingEnabled() { return ltrConfig.enableTaterTrading; }
     public static boolean areDefaultTradingOffersLoaded() { return ltrConfig.loadDefaultTradingOffers; }
     public static int getTaterItemRendererCacheSize() { return ltrConfig.taterItemRendererCacheSize; }
+    public static boolean isLambdaControlsCompatEnabled() { return ltrConfig.loadLambdaControlsCompat; }
+    public static boolean isSecretTestificateFeatureEnabled() { return ltrConfig.enableTestificateSecret; }
 
     private static class LTRConfigEntry<T> {
         private final String key;

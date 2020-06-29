@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "mods.ltr.mixins.testificates",
+  "plugin": "mods.ltr.mixins.plugins.LilTaterTestificatesMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TestificateEntityMixin"
+  ],
+  "client": [
+    "TestificateEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

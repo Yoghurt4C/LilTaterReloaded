@@ -80,9 +80,9 @@ public class ImitaterModel {
     }
 
     private static void drawHorizontalFace(VertexConsumer v, Matrix4f model, Matrix3f normal, int red, int green, int blue, int alpha, int light, int overlay){
-        v.vertex(model, 0, 0, 1).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,0,1).next();
-        v.vertex(model, 0, 1, 1).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,1,1).next();
-        v.vertex(model, 0, 1, 0).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal,0,1,0).next();
+        v.vertex(model, 0, 0, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,0,1).next();
+        v.vertex(model, 0, 2, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,1,1).next();
+        v.vertex(model, 0, 2, 0).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal,0,1,0).next();
         v.vertex(model, 0, 0, 0).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal,0,0,0).next();
     }
 }

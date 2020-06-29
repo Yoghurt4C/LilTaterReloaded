@@ -240,8 +240,10 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
 
     @Override
     public ItemStack getStack(int slot) {
-        return items.get(slot);
+        return this.items.get(slot);
     }
+
+    public ItemStack getStackForSide(Direction side) { return this.items.get(this.slotMap.getInt(side)); }
 
     @Override
     public ItemStack removeStack(int slot, int count) {

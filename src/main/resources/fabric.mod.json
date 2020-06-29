@@ -39,7 +39,9 @@
     "ltr.mixins.meditation.json",
     "ltr.mixins.barter.json",
     "ltr.mixins.trading.json",
-    "ltr.mixins.compat.flamingo.json"
+    "ltr.mixins.testificates.json",
+    "ltr.mixins.compat.flamingo.json",
+    "ltr.mixins.compat.lambdacontrols.json"
   ],
 
   "depends": {

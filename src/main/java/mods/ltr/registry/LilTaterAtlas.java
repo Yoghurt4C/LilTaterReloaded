@@ -92,7 +92,7 @@ public class LilTaterAtlas {
                                     } else {
                                         int spriteIndex = Integer.parseInt(nestedEntry.getKey());
                                         String sprite = nestedEntry.getValue().getAsString();
-                                        idList.add(spriteIndex, getId("textures/tater/" + sprite));
+                                        idList.add(spriteIndex, new Identifier(id.getNamespace(),"textures/tater/" + sprite));
                                     }
                                 });
                                 taterAtlas.put(name, Either.left(Triple.of(idList, frames, frametime[0])));
@@ -102,7 +102,7 @@ public class LilTaterAtlas {
                                     LOGGER.warn("Warning! The sprite identifier for \"" + name + "\" in " + br + " does not end with '.png'! Sprite will not be loaded!");
                                 }// hopefully there's no race condition and the overwrites happen intentionally
                                 if (!name.equals("LTRSyntaxComment")) {
-                                    idList.add(getId("textures/tater/" + sprite));
+                                    idList.add(new Identifier(id.getNamespace(),"textures/tater/" + sprite));
                                     taterAtlas.put(name, Either.left(Triple.of(idList, frames, 0)));
                                 }
                             }

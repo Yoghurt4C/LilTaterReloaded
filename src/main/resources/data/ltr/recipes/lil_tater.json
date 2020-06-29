@@ -1,8 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SPS",
-    "SNS"
+    "CPC",
+    "SNS",
+    " S "
   ],
   "key": {
     "S": {
@@ -13,6 +14,9 @@
     },
     "P": {
       "item": "minecraft:potato"
+    },
+    "C": {
+      "item": "minecraft:cocoa_beans"
     }
   },
   "result": {
