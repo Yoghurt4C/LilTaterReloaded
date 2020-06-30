@@ -1,6 +1,6 @@
 package mods.ltr.mixins.meditation;
 
-import mods.ltr.compat.LilTaterMeditationAbility;
+import mods.ltr.meditation.LilTaterMeditationAbility;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;

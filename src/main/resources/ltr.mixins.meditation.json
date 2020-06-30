@@ -6,11 +6,11 @@
   "mixins": [
     "LilTaterMeditationAbilityMixin",
     "LilTaterMeditationCounterMixin",
-    "PlayerAbilitiesS2CPacketMixin",
     "PlayerManagerMixin"
   ],
   "client": [
-    "ClientPlayNetworkHandlerMeditationMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "LilTaterMeditationPacketRegistrar",
     "LilTaterReloadedREIPluginMixin"
   ],
   "injectors": {

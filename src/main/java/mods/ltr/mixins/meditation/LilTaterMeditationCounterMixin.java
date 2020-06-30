@@ -1,16 +1,16 @@
 package mods.ltr.mixins.meditation;
 
 import mods.ltr.blocks.LilTaterBlock;
-import mods.ltr.compat.LilTaterMeditationAbility;
-import mods.ltr.compat.LilTaterMeditationCounter;
 import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.meditation.LilTaterMeditationAbility;
+import mods.ltr.meditation.LilTaterMeditationCounter;
+import mods.ltr.meditation.MeditationSyncS2CPacket;
 import mods.ltr.registry.LilTaterCriterion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.text.TranslatableText;
@@ -52,7 +52,7 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
             MinecraftServer server = this.getServer();
             PlayerManager manager = server.getPlayerManager();
             LilTaterCriterion.MEDITATION.trigger(manager.getPlayer(this.uuid), ((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated());
-            manager.getPlayer(this.uuid).networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(this.abilities));
+            MeditationSyncS2CPacket.sendMeditationState(manager.getPlayer(this.uuid));
         }
     }
 

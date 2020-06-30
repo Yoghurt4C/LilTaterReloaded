@@ -1,4 +1,4 @@
-package mods.ltr.compat;
+package mods.ltr.meditation;
 
 public interface LilTaterMeditationAbility {
     boolean ltr_hasMeditated();

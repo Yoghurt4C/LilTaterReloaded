@@ -54,9 +54,11 @@ public class LilTaterReloadedClient implements ClientModInitializer {
                         String name = input.toString().replace(".json", "");
                         ModelIdentifier modelId = new ModelIdentifier(name, "");
                         if (modelIdentifier.getPath().equals(modelId.getPath())) {
+                            models.remove(input);
                             return modelProviderContext.loadModel(new Identifier(name.replace("models/", "")));
                         }
                     }
+                    if (models.isEmpty()) break;
                 }
                 return null;
             });

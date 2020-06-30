@@ -1,8 +1,8 @@
 package mods.ltr.mixins.meditation;
 
 import me.shedaniel.rei.api.RecipeHelper;
-import mods.ltr.compat.LilTaterMeditationAbility;
 import mods.ltr.compat.rei.LilTaterReloadedREIPlugin;
+import mods.ltr.meditation.LilTaterMeditationAbility;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
