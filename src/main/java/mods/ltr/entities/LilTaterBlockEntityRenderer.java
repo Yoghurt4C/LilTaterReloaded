@@ -61,20 +61,6 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
      * {@see RenderStateSetup#validPrefixes} for the whole list of hardcoded prefixes
      */
     private static RenderLayer getRenderLayer(LilTaterBlockEntity tater) {
-        Item upItem = tater.getStackForSide(Direction.UP).getItem();
-
-        if (upItem instanceof BlockItem && ((BlockItem) upItem).getBlock() instanceof PistonBlock) {
-            List<Item> sides = new ArrayList<>();
-            Direction facing = tater.getCachedState().get(FACING);
-
-            sides.add(tater.getStackForSide(facing.rotateYClockwise()).getItem());
-            sides.add(tater.getStackForSide(facing.rotateYCounterclockwise()).getItem());
-
-            if (sides.contains(Items.END_ROD) && sides.contains(Items.LEVER)) {
-                return RenderLayer.getEntitySolid(tryToGetAnimatedTexture(tater, "concernedtater"));
-            }
-        }
-
         Identifier id = isHalloween ? tryToGetAnimatedTexture(tater, "spook_tater") : defaultId;
         RenderLayer layer;
         if (tater.renderState != null) {
@@ -83,6 +69,22 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
         if (tater.renderState != null && (tater.renderState.prefix.equals("ghastly") || tater.renderState.name.equals("imitater"))) {
             layer = RenderLayer.getEntityTranslucent(id, false);
         } else {
+            if (tater.renderState == null && LilTaterReloadedConfig.shouldConcernArmedTaters()) {
+                Item upItem = tater.getStackForSide(Direction.UP).getItem();
+
+                if (upItem instanceof BlockItem && ((BlockItem) upItem).getBlock() instanceof PistonBlock) {
+                    List<Item> sides = new ArrayList<>();
+                    Direction facing = tater.getCachedState().get(FACING);
+
+                    sides.add(tater.getStackForSide(facing.rotateYClockwise()).getItem());
+                    sides.add(tater.getStackForSide(facing.rotateYCounterclockwise()).getItem());
+
+                    if (sides.contains(Items.END_ROD) && sides.contains(Items.LEVER)) {
+                        return RenderLayer.getEntitySolid(tryToGetAnimatedTexture(tater, "concernedtater"));
+                    }
+                }
+            }
+
             layer = RenderLayer.getEntitySolid(id);
         }
         return layer;

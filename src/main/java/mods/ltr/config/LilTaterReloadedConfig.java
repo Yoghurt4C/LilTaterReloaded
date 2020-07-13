@@ -47,7 +47,7 @@ public class LilTaterReloadedConfig {
                 LTRConfigEntry.of("enableTestificateSecret", false,
                         "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]"),
                 LTRConfigEntry.of("concernArmedTaters", true,
-                        "concernArmedTaters: Converts all taters to concernedtaters if armed. [SIDE: CLIENT | Default: true]")
+                        "concernArmedTaters: Converts lil taters to concernedtaters if armed. [SIDE: CLIENT | Default: true]")
         );
 
         File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
@@ -127,6 +127,7 @@ public class LilTaterReloadedConfig {
         int taterItemRendererCacheSize;
         boolean loadLambdaControlsCompat;
         boolean enableTestificateSecret;
+        boolean concernArmedTaters;
 
         public LTRConfig(Map<String, String> map) {
             totalMeditationTicks = Integer.parseInt(map.get("totalMeditationTicks"));
@@ -138,6 +139,7 @@ public class LilTaterReloadedConfig {
             taterItemRendererCacheSize = Integer.parseInt(map.get("taterItemRendererCacheSize"));
             loadLambdaControlsCompat = Boolean.parseBoolean(map.get("loadLambdaControlsCompat"));
             enableTestificateSecret = Boolean.parseBoolean(map.get("enableTestificateSecret"));
+            concernArmedTaters = Boolean.parseBoolean(map.get("concernArmedTaters"));
         }
     }
 
@@ -152,6 +154,7 @@ public class LilTaterReloadedConfig {
     public static int getTaterItemRendererCacheSize() { return ltrConfig.taterItemRendererCacheSize; }
     public static boolean isLambdaControlsCompatEnabled() { return ltrConfig.loadLambdaControlsCompat; }
     public static boolean isSecretTestificateFeatureEnabled() { return ltrConfig.enableTestificateSecret; }
+    public static boolean shouldConcernArmedTaters() { return ltrConfig.concernArmedTaters; }
 
     private static class LTRConfigEntry<T> {
         private final String key;
