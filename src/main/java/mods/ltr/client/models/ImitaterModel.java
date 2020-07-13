@@ -67,7 +67,7 @@ public class ImitaterModel {
         matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
         if (isBlock){
             matrices.scale(0.5f, -0.5f, -0.5f);
-            matrices.translate(-0.501f, -0.5f, -0.5f);
+            matrices.translate(-0.505f, -0.5f, -0.5f);
         } else {
             matrices.scale(1f, -1f, -1f);
             matrices.translate(-0.001f, -1f, -1f);
