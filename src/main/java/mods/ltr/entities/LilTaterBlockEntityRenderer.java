@@ -1,6 +1,8 @@
 package mods.ltr.entities;
 
 import it.unimi.dsi.fastutil.ints.IntList;
+import java.util.ArrayList;
+import java.util.List;
 import mods.ltr.client.models.ImitaterModel;
 import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
@@ -9,6 +11,7 @@ import mods.ltr.registry.LilTaterBlocks;
 import mods.ltr.util.ColorSniffer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
@@ -24,13 +27,13 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.tuple.Triple;
-
-import java.util.List;
 
 import static mods.ltr.LilTaterReloaded.getId;
 import static mods.ltr.blocks.LilTaterBlock.FACING;
@@ -58,6 +61,20 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
      * {@see RenderStateSetup#validPrefixes} for the whole list of hardcoded prefixes
      */
     private static RenderLayer getRenderLayer(LilTaterBlockEntity tater) {
+        Item upItem = tater.getStackForSide(Direction.UP).getItem();
+
+        if (upItem instanceof BlockItem && ((BlockItem) upItem).getBlock() instanceof PistonBlock) {
+            List<Item> sides = new ArrayList<>();
+            Direction facing = tater.getCachedState().get(FACING);
+
+            sides.add(tater.getStackForSide(facing.rotateYClockwise()).getItem());
+            sides.add(tater.getStackForSide(facing.rotateYCounterclockwise()).getItem());
+
+            if (sides.contains(Items.END_ROD) && sides.contains(Items.LEVER)) {
+                return RenderLayer.getEntitySolid(tryToGetAnimatedTexture(tater, "concernedtater"));
+            }
+        }
+
         Identifier id = isHalloween ? tryToGetAnimatedTexture(tater, "spook_tater") : defaultId;
         RenderLayer layer;
         if (tater.renderState != null) {
@@ -190,6 +207,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                     b = (t & 0xFF) * 255;
                 }
         }
+
         // try to use a blockmodel, fallback to modelparts
         if (taterAtlas.get(name) != null && taterAtlas.get(name).right().isPresent()) {
             matrices.push();

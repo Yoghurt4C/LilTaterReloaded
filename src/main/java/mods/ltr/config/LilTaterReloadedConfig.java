@@ -45,7 +45,9 @@ public class LilTaterReloadedConfig {
                 LTRConfigEntry.of("loadLambdaControlsCompat", true,
                         "loadLambdaControlsCompat: Toggles the small Mixin into LambdaControls. [Side: CLIENT | Default: true]"),
                 LTRConfigEntry.of("enableTestificateSecret", false,
-                        "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]")
+                        "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]"),
+                LTRConfigEntry.of("concernArmedTaters", true,
+                        "concernArmedTaters: Converts all taters to concernedtaters if armed. [SIDE: CLIENT | Default: true]")
         );
 
         File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
