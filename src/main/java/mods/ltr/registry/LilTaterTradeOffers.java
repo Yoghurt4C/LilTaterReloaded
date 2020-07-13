@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import mods.ltr.LilTaterReloaded;
 import mods.ltr.config.LilTaterReloadedConfig;
@@ -13,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -33,7 +36,8 @@ import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 
 import static mods.ltr.LilTaterReloaded.GSON;
-import static mods.ltr.LilTaterReloaded.LOGGER;
+import static mods.ltr.config.LilTaterReloadedConfig.LOGGER;
+import static mods.ltr.config.LilTaterReloadedConfig.logDebug;
 import static mods.ltr.util.RenderStateSetup.jsonRegex;
 
 public class LilTaterTradeOffers {
@@ -54,19 +58,23 @@ public class LilTaterTradeOffers {
         @Override
         public CompletableFuture<Collection<Identifier>> load(ResourceManager manager, Profiler profiler, Executor executor) {
             return CompletableFuture.supplyAsync(()-> {
+                logDebug("Preparing the initialization of the Trade Offers. Collecting resources...");
                 tradeOffers.clear();
 
-                return manager.findResources("trades/tater", s -> {
+                Collection<Identifier> offers = manager.findResources("trades/tater", s -> {
                     if (LilTaterReloadedConfig.areDefaultTradingOffersLoaded()) {
                         return s.endsWith(".json");
                     } else return !s.contains("ltr_default_trade_offers") && s.endsWith(".json");
                 });
+                logDebug("Found "+offers.size()+" Trade Offer JSONs. Finished collecting resources.");
+                return offers;
             }, executor);
         }
 
         @Override
         public CompletableFuture<Void> apply(Collection<Identifier> collection, ResourceManager manager, Profiler profiler, Executor executor) {
             return CompletableFuture.runAsync(() -> {
+                logDebug("Applying Trade Offers...");
                 collection.forEach(id -> {
                     try {
                         InputStream input = manager.getResource(id).getInputStream();
@@ -93,106 +101,89 @@ public class LilTaterTradeOffers {
                         LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
                     }
                 });
+                logDebug("Finished initializing the Trade Offers.");
             }, executor);
         }
     }
 
     private static void handleTrade(Identifier id, String tradeId, JsonObject trade) {
-        VillagerProfession profession = null;
+        VillagerProfession profession = VillagerProfession.FARMER;
         int profession_level = 0;
-        Item buy = null;
+        Item buy = Items.EMERALD;
         Item buy2 = null;
-        Item sell = null;
+        Item sell = Items.EMERALD;
         int price = 1;
         int price2 = 1;
         int count = 1;
+        CompoundTag buyTag = null;
+        CompoundTag buy2Tag = null;
+        CompoundTag sellTag = null;
         int maxUses = 16;
         int experience = 2;
         float multiplier = 0.05f;
         try {
-            try {
-                profession = Registry.VILLAGER_PROFESSION.get(new Identifier(trade.get("profession").getAsString()));
-            } catch (JsonSyntaxException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-            try {
-                profession_level = trade.get("profession_level").getAsInt();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-            try {
-                JsonElement buyE = trade.get("buy");
-                if (buyE!=null) {
-                    buy = Registry.ITEM.get(new Identifier(trade.get("buy").getAsString()));
-                } else {
-                    buy = Items.EMERALD;
+            profession = Registry.VILLAGER_PROFESSION.get(new Identifier(trade.get("profession").getAsString()));
+            profession_level = trade.get("profession_level").getAsInt();
+            JsonElement buyE = trade.get("buy");
+            if (buyE != null) {
+                JsonObject obj = buyE.getAsJsonObject();
+                if (obj.get("item")!=null) {
+                    buy = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
                 }
-            } catch (JsonSyntaxException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-                e.printStackTrace();
-                LOGGER.fatal(trade.get("buy").getAsString() + " is an invalid \"buy\" item, trade will not be loaded!");
-            }
-            try {
-                JsonElement buy2E = trade.get("second_buy");
-                if (buy2E!=null) {
-                    buy2 = Registry.ITEM.get(new Identifier(trade.get("second_buy").getAsString()));
+                if (obj.get("count")!=null) {
+                    price = obj.get("count").getAsInt();
                 }
-            } catch (JsonSyntaxException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-                e.printStackTrace();
-                LOGGER.fatal(trade.get("second_buy").getAsString() + " is an invalid \"second_buy\" item, trade will not be loaded!");
-            }
-            try {
-                JsonElement sellE = trade.get("sell");
-                if (sellE!=null) {
-                    sell = Registry.ITEM.get(new Identifier(trade.get("sell").getAsString()));
-                } else {
-                    sell = Items.EMERALD;
+                if (obj.get("nbt")!=null){
+                    buyTag = StringNbtReader.parse(obj.get("nbt").getAsString());
                 }
-            } catch (JsonSyntaxException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-                LOGGER.fatal(trade.get("sell").getAsString() + " is an invalid \"sell\" item, trade will not be loaded!");
             }
-            try {
-                price = trade.get("price").getAsInt();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-            try {
-                JsonElement price2E = trade.get("second_price");
-                if (price2E!=null) {
-                    price2 = trade.get("second_price").getAsInt();
+            JsonElement buy2E = trade.get("second_buy");
+            if (buy2E != null) {
+                JsonObject obj = buy2E.getAsJsonObject();
+                if (obj.get("item")!=null) {
+                    buy2 = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
                 }
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
+                if (obj.get("count")!=null) {
+                    price2 = obj.get("count").getAsInt();
+                }
+                if (obj.get("nbt")!=null){
+                    buy2Tag = StringNbtReader.parse(obj.get("nbt").getAsString());
+                }
             }
-            try {
-                count = trade.get("count").getAsInt();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
+            JsonElement sellE = trade.get("sell");
+            if (sellE != null) {
+                JsonObject obj = sellE.getAsJsonObject();
+                if (obj.get("item")!=null) {
+                    sell = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
+                }
+                if (obj.get("count")!=null) {
+                    count = obj.get("count").getAsInt();
+                }
+                if (obj.get("nbt")!=null){
+                    sellTag = StringNbtReader.parse(obj.get("nbt").getAsString());
+                }
             }
-            try {
-                maxUses = trade.get("maxUses").getAsInt();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-            try {
-                experience = trade.get("experience").getAsInt();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-            try {
-                multiplier = trade.get("multiplier").getAsFloat();
-            } catch (NumberFormatException e) {
-                LOGGER.error("Error while loading an LTR trade JSON (" + id + "): " + e);
-            }
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
+            maxUses = trade.get("maxUses").getAsInt();
+            experience = trade.get("experience").getAsInt();
+            multiplier = trade.get("multiplier").getAsFloat();
+        } catch (JsonSyntaxException | CommandSyntaxException e) {
+            LOGGER.error("[LTR] Error while parsing Trade Offer '"+id+"'. Stacktrace: " + e);
         } finally {
-            if (profession!=null && profession!=VillagerProfession.NONE && buy !=null && sell!=null) {
+            ItemStack buyStack = new ItemStack(buy, price);
+            buyStack.setTag(buyTag);
+            ItemStack buy2Stack;
+            if (buy2!=null) {
+                buy2Stack = new ItemStack(buy2, price2);
+                buy2Stack.setTag(buy2Tag);
+            } else buy2Stack = ItemStack.EMPTY;
+            ItemStack sellStack = new ItemStack(sell, count);
+            sellStack.setTag(sellTag);
+            if (profession!=VillagerProfession.NONE && (buy !=Items.EMERALD && sell!=Items.EMERALD)) {
                 if (buy2!=null) {
-                    tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buy, buy2, sell, price, price2, count, maxUses, experience, multiplier)));
-                } else tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buy, sell, price, count, maxUses, experience, multiplier)));
+                    tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, buy2Stack, sellStack, maxUses, experience, multiplier)));
+                } else tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, sellStack, maxUses, experience, multiplier)));
+            } else {
+                LOGGER.error("[LTR] Couldn't add invalid Trade Offer '"+id+"'.");
             }
         }
     }
@@ -223,10 +214,6 @@ public class LilTaterTradeOffers {
         private final int experience;
         private final float multiplier;
 
-        public LTRTradeOfferFactory(Item buy, Item sell, int price, int count, int maxUses, int experience, float mult) {
-            this(new ItemStack(buy, price), new ItemStack(sell, count), maxUses, experience, mult);
-        }
-
         public LTRTradeOfferFactory(ItemStack buy, ItemStack sell, int maxUses, int experience, float multiplier) {
             this.buy = buy;
             this.buy2 = null;
@@ -234,10 +221,6 @@ public class LilTaterTradeOffers {
             this.maxUses = maxUses;
             this.experience = experience;
             this.multiplier = multiplier;
-        }
-
-        public LTRTradeOfferFactory(Item buy, Item buy2, Item sell, int price, int price2, int count, int maxUses, int experience, float mult) {
-            this(new ItemStack(buy, price), new ItemStack(buy2, price2), new ItemStack(sell, count), maxUses, experience, mult);
         }
 
         public LTRTradeOfferFactory(ItemStack buy, ItemStack buy2, ItemStack sell, int maxUses, int experience, float multiplier) {

@@ -24,6 +24,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
 
@@ -46,7 +47,12 @@ public class ImitaterModel {
             matrices.scale(0.5f, -0.875f, -0.5f);
             matrices.translate(0f, -1.5351f, 0f);
             sprite = client.getItemRenderer().getModels().getModel(stack).getSprite();
+            matrices.push();
+            if (item instanceof WallStandingBlockItem) {
+                matrices.scale(0.98f, 0.98f, 0.98f);
+            }
             client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED,light,overlay,matrices,vcon);
+            matrices.pop();
         } else {
             matrices.scale(0.25f, -0.4375f, -0.25f);
             matrices.translate(-0.5f, -3.573f, -0.5f);

@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "mods.ltr.mixins",
+  "plugin": "mods.ltr.mixins.plugins.LilTaterMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "CriterionsInvoker"

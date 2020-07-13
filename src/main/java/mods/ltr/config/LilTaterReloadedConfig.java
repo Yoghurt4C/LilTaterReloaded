@@ -2,6 +2,7 @@ package mods.ltr.config;
 
 import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import mods.ltr.util.DebugTimer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,12 @@ public class LilTaterReloadedConfig {
     public static final Logger LOGGER = LogManager.getLogger("Lil Tater Reloaded");
     static boolean isInitialized = false;
     static LTRConfig ltrConfig;
+
+    public static void logDebug(String info) {
+        if (shouldLogDebugInfo()) {
+            LOGGER.info("[LTR Debug] " + info);
+        }
+    }
 
     public static void tryInit() {
         if (!isInitialized()) { init(); }
@@ -45,7 +52,9 @@ public class LilTaterReloadedConfig {
                 LTRConfigEntry.of("loadLambdaControlsCompat", true,
                         "loadLambdaControlsCompat: Toggles the small Mixin into LambdaControls. [Side: CLIENT | Default: true]"),
                 LTRConfigEntry.of("enableTestificateSecret", false,
-                        "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]")
+                        "enableTestificateSecret: Toggles the Secret Testificate Feature. Only for the most deviant users. [Side: BOTH | Default: false]"),
+                LTRConfigEntry.of("logDebugInfo", false,
+                        "logDebugInfo: Toggles logging various information to help cherry-pick possible issues during init or post-init. [Side: BOTH | Default: false]")
         );
 
         File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
@@ -65,6 +74,7 @@ public class LilTaterReloadedConfig {
             LOGGER.error("[LTR] Error while writing configuration file: " + e);
         }
 
+        DebugTimer.INSTANCE = new DebugTimer();
         Properties config = new Properties();
         StringBuilder content = new StringBuilder().append("#Lil Tater Configuration.\n");
         content.append("#Last generated at: ").append(new Date().toString()).append("\n\n");
@@ -125,6 +135,7 @@ public class LilTaterReloadedConfig {
         int taterItemRendererCacheSize;
         boolean loadLambdaControlsCompat;
         boolean enableTestificateSecret;
+        boolean logDebugInfo;
 
         public LTRConfig(Map<String, String> map) {
             totalMeditationTicks = Integer.parseInt(map.get("totalMeditationTicks"));
@@ -136,6 +147,7 @@ public class LilTaterReloadedConfig {
             taterItemRendererCacheSize = Integer.parseInt(map.get("taterItemRendererCacheSize"));
             loadLambdaControlsCompat = Boolean.parseBoolean(map.get("loadLambdaControlsCompat"));
             enableTestificateSecret = Boolean.parseBoolean(map.get("enableTestificateSecret"));
+            logDebugInfo = Boolean.parseBoolean(map.get("logDebugInfo"));
         }
     }
 
@@ -150,6 +162,7 @@ public class LilTaterReloadedConfig {
     public static int getTaterItemRendererCacheSize() { return ltrConfig.taterItemRendererCacheSize; }
     public static boolean isLambdaControlsCompatEnabled() { return ltrConfig.loadLambdaControlsCompat; }
     public static boolean isSecretTestificateFeatureEnabled() { return ltrConfig.enableTestificateSecret; }
+    public static boolean shouldLogDebugInfo() { return ltrConfig.logDebugInfo; }
 
     private static class LTRConfigEntry<T> {
         private final String key;

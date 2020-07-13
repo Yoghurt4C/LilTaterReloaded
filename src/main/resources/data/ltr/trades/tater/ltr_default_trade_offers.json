@@ -2,10 +2,14 @@
   "potatoes_for_sugar" : {
     "profession": "minecraft:farmer",
     "profession_level": 1,
-    "buy": "minecraft:potato",
-    "sell": "minecraft:sugar",
-    "price": 8,
-    "count": 2,
+    "buy": {
+      "item": "minecraft:potato",
+      "count": 8
+    },
+    "sell": {
+      "item": "minecraft:sugar",
+      "count": 2
+    },
     "maxUses": 7,
     "experience": 10,
     "multiplier": 0.05
@@ -13,12 +17,17 @@
   "potatoes&sugar_for_cocoa_beans" : {
     "profession": "minecraft:farmer",
     "profession_level": 2,
-    "buy": "minecraft:potato",
-    "second_buy": "minecraft:sugar",
-    "sell": "minecraft:cocoa_beans",
-    "price": 6,
-    "second_price": 3,
-    "count": 1,
+    "buy": {
+      "item": "minecraft:potato",
+      "count": 6
+    },
+    "second_buy": {"item": "minecraft:sugar",
+      "count": 3
+    },
+    "sell": {
+      "item": "minecraft:cocoa_beans",
+      "count": 1
+    },
     "maxUses": 4,
     "experience": 20,
     "multiplier": 0.05
@@ -26,12 +35,18 @@
   "potatoes&cocoa_beans_for_slime" : {
     "profession": "minecraft:farmer",
     "profession_level": 3,
-    "buy": "minecraft:potato",
-    "second_buy": "minecraft:cocoa_beans",
-    "sell": "minecraft:slime_ball",
-    "price": 16,
-    "second_price": 4,
-    "count": 1,
+    "buy": {
+      "item": "minecraft:potato",
+      "count": 16
+    },
+    "second_buy": {
+      "item": "minecraft:cocoa_beans",
+      "count": 4
+    },
+    "sell": {
+      "item":  "minecraft:slime_ball",
+      "count": 1
+    },
     "maxUses": 2,
     "experience": 40,
     "multiplier": 0.05
@@ -39,12 +54,18 @@
   "potatoes&sugar_for_slime" : {
     "profession": "minecraft:farmer",
     "profession_level": 3,
-    "buy": "minecraft:potato",
-    "second_buy": "minecraft:sugar",
-    "sell": "minecraft:slime_ball",
-    "price": 32,
-    "second_price": 24,
-    "count": 1,
+    "buy": {
+      "item": "minecraft:potato",
+      "count": 32
+    },
+    "second_buy": {
+      "item": "minecraft:sugar",
+      "count": 24
+    },
+    "sell": {
+      "item": "minecraft:slime_ball",
+      "count": 1
+    },
     "maxUses": 4,
     "experience": 30,
     "multiplier": 0.05
@@ -52,12 +73,18 @@
   "poisonous_potatoes&sugar_for_potatoes" : {
     "profession": "minecraft:farmer",
     "profession_level": 1,
-    "buy": "minecraft:poisonous_potato",
-    "second_buy": "minecraft:sugar",
-    "sell": "minecraft:potato",
-    "price": 2,
-    "second_price": 1,
-    "count": 3,
+    "buy": {
+      "item": "minecraft:poisonous_potato",
+      "count": 2
+    },
+    "second_buy": {
+      "item": "minecraft:sugar",
+      "count": 1
+    },
+    "sell": {
+      "item": "minecraft:potato",
+      "count": 3
+    },
     "maxUses": 5,
     "experience": 10,
     "multiplier": 0.05

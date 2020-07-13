@@ -11,14 +11,11 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static mods.ltr.registry.LilTaterBlocks.LIL_TATER;
 
 public class LilTaterReloaded implements ModInitializer {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final Logger LOGGER = LogManager.getLogger("Lil Tater Reloaded");
     public static String modid = "ltr";
 
     @Override

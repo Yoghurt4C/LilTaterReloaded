@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import mods.ltr.util.DebugTimer;
 import mods.ltr.util.RenderStateSetup;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +30,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 
-import static mods.ltr.LilTaterReloaded.*;
+import static mods.ltr.LilTaterReloaded.GSON;
+import static mods.ltr.LilTaterReloaded.getId;
+import static mods.ltr.config.LilTaterReloadedConfig.LOGGER;
+import static mods.ltr.config.LilTaterReloadedConfig.logDebug;
 import static mods.ltr.util.RenderStateSetup.jsonRegex;
 
 @Environment(EnvType.CLIENT)
@@ -51,10 +56,15 @@ public class LilTaterAtlas {
         @Override
         public CompletableFuture<LTRResourceCollections> load(ResourceManager manager, Profiler profiler, Executor executor) {
             return CompletableFuture.supplyAsync(()-> {
+                logDebug("Preparing the initialization of the Tater Atlas. Collecting resources...");
+                Instant start = Instant.now();
                 taterAtlas.clear();
                 taterAccessoryAtlas.clear();
                 Collection<Identifier> resources = manager.findResources("powertaters/liltaterreloaded", s -> s.endsWith(".json"));
+                logDebug("Found "+resources.size()+" skin definition JSONs.");
                 Collection<Identifier> models = manager.findResources("models/tater", s -> s.endsWith(".json"));
+                logDebug("Found "+models.size()+" model JSONs. Finished collecting resources.");
+                DebugTimer.INSTANCE.addAtlas(start, Instant.now());
                 return new LTRResourceCollections(resources, models);
             }, executor);
         }
@@ -62,6 +72,8 @@ public class LilTaterAtlas {
         @Override
         public CompletableFuture<Void> apply(LTRResourceCollections resourceCollections, ResourceManager manager, Profiler profiler, Executor executor) {
             return CompletableFuture.runAsync(() -> {
+                logDebug("Applying resources...");
+                Instant start = Instant.now();
                 resourceCollections.resources.forEach(id -> {
                     try {
                         InputStream input = manager.getResource(id).getInputStream();
@@ -74,11 +86,11 @@ public class LilTaterAtlas {
                             IntList frames = new IntArrayList();
                             int[] frametime = new int[1];
                             if (element.isJsonObject()) {
-                                JsonObject animatedSprite = GSON.fromJson(element, JsonObject.class);
+                                JsonObject animatedSprite = element.getAsJsonObject();
                                 animatedSprite.entrySet().forEach(nestedEntry -> {
                                     if (nestedEntry.getKey().equals("animation")) {
                                         JsonElement nestedElement = nestedEntry.getValue();
-                                        JsonObject animation = GSON.fromJson(nestedElement, JsonObject.class);
+                                        JsonObject animation = nestedElement.getAsJsonObject();
                                         animation.entrySet().forEach(animationEntry -> {
                                             if (animationEntry.getKey().equals("frametime")) {
                                                 frametime[0] = Integer.parseInt(animationEntry.getValue().getAsString());
@@ -107,12 +119,14 @@ public class LilTaterAtlas {
                                 }
                             }
                         });
+                        logDebug("Successfully processed and applied " + id.toString());
                     } catch (JsonSyntaxException | JsonIOException | IOException e) {
                         LOGGER.error("Error while loading an LTR texture JSON (" + id + "): " + e);
                     }
                 });
 
                 //models
+                logDebug("Applying models...");
                 resourceCollections.models.forEach(id -> {
                     try {
                         Identifier input = manager.getResource(id).getId();
@@ -127,11 +141,15 @@ public class LilTaterAtlas {
                             } else {
                                 taterAtlas.put(name, Either.right(modelid));
                             }
+                            logDebug("Successfully processed and applied " + id.toString());
                         }
                     } catch (JsonSyntaxException | JsonIOException | IOException e) {
                         LOGGER.error("Error while loading an LTR model JSON (" + id + "): " + e);
                     }
                 });
+                logDebug("Finished initializing the Tater Atlas.");
+                DebugTimer.INSTANCE.addAtlas(start, Instant.now());
+                logDebug("[LTR] Tater Atlas initialization finished in: "+DebugTimer.INSTANCE.getFormattedAtlas()+" seconds. Model initialization finished in: "+DebugTimer.INSTANCE.getFormattedModels()+" seconds.");
             }, executor);
         }
 
