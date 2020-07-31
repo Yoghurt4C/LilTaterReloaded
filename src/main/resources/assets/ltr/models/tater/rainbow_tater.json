@@ -1,4 +1,5 @@
 {
+	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
 		"1": "ltr:tater/rainbow"
@@ -8,12 +9,12 @@
 			"from": [6, 0, 6],
 			"to": [10, 7, 10],
 			"faces": {
-				"north": {"uv": [0, 5.818, 5.818, 15.999], "texture": "#1"},
-				"east": {"uv": [5.818, 5.818, 11.636, 15.999], "texture": "#1"},
-				"south": {"uv": [5.818, 5.818, 11.636, 15.999], "texture": "#1"},
-				"west": {"uv": [11.636, 5.818, 5.818, 15.999], "texture": "#1"},
-				"up": {"uv": [0, 0, 5.818, 5.818], "texture": "#1"},
-				"down": {"uv": [0, 0, 5.818, 5.818], "texture": "#1"}
+				"north": {"uv": [0, 4, 4, 11], "texture": "#1"},
+				"east": {"uv": [4, 4, 8, 11], "texture": "#1"},
+				"south": {"uv": [4, 4, 8, 11], "texture": "#1"},
+				"west": {"uv": [4, 4, 8, 11], "texture": "#1"},
+				"up": {"uv": [0, 0, 4, 4], "texture": "#1"},
+				"down": {"uv": [0, 0, 4, 4], "texture": "#1"}
 			}
 		}
 	]

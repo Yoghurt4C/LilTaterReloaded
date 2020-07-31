@@ -30,7 +30,7 @@ public class LilTaterBarterOffers {
             }
         });
 
-        ServerSidePacketRegistry.INSTANCE.register(SEND_BARTER_PREFIX_POOLS, ((ctx, buf) -> {
+        ServerSidePacketRegistry.INSTANCE.register(SEND_BARTER_PREFIX_POOLS, (ctx, buf) -> {
             int size = buf.readInt();
             for (int i = 0; i < size; i++) {
                 String s = buf.readString(32767);
@@ -38,7 +38,7 @@ public class LilTaterBarterOffers {
                     validBarterPrefixes.add(s);
                 }
             }
-        }));
+        });
     }
 
     public static List<ItemStack> getBarterTater(ItemStack stack) {

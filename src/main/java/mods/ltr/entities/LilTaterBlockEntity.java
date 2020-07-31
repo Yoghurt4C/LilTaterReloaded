@@ -198,7 +198,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             for (int i = 0; i < listTag.size(); ++i) {
                 CompoundTag compoundTag = listTag.getCompound(i);
                 int j = compoundTag.getByte("Slot") & 255;
-                if (j >= 0 && j < stacks.size()) {
+                if (j < stacks.size()) {
                     stacks.set(j, ItemStack.fromTag(compoundTag));
                 }
             }

@@ -122,8 +122,14 @@ public class LilTaterTradeOffers {
         int experience = 2;
         float multiplier = 0.05f;
         try {
-            profession = Registry.VILLAGER_PROFESSION.get(new Identifier(trade.get("profession").getAsString()));
-            profession_level = trade.get("profession_level").getAsInt();
+            JsonElement profE = trade.get("profession");
+            if (profE!=null) {
+                profession = Registry.VILLAGER_PROFESSION.get(new Identifier(trade.get("profession").getAsString()));
+            }
+            JsonElement profLevelE = trade.get("profession_level");
+            if (profLevelE!=null) {
+                profession_level = profLevelE.getAsInt();
+            }
             JsonElement buyE = trade.get("buy");
             if (buyE != null) {
                 JsonObject obj = buyE.getAsJsonObject();
@@ -163,9 +169,18 @@ public class LilTaterTradeOffers {
                     sellTag = StringNbtReader.parse(obj.get("nbt").getAsString());
                 }
             }
-            maxUses = trade.get("maxUses").getAsInt();
-            experience = trade.get("experience").getAsInt();
-            multiplier = trade.get("multiplier").getAsFloat();
+            JsonElement maxUsesE = trade.get("maxUses");
+            if (maxUsesE!=null) {
+                maxUses = maxUsesE.getAsInt();
+            }
+            JsonElement xpE = trade.get("experiience");
+            if (xpE != null) {
+                experience = xpE.getAsInt();
+            }
+            JsonElement multiplierE = trade.get("multiplier");
+            if (multiplierE!=null) {
+                multiplier = multiplierE.getAsFloat();
+            }
         } catch (JsonSyntaxException | CommandSyntaxException e) {
             LOGGER.error("[LTR] Error while parsing Trade Offer '"+id+"'. Stacktrace: " + e);
         } finally {

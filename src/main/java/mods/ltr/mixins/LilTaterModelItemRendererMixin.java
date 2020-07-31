@@ -52,7 +52,7 @@ public abstract class LilTaterModelItemRendererMixin {
                             taterToRender.renderState = getRenderState(fullName);
                         }
                     }
-                    ltr_taterItemRendererCache.put(tag, taterToRender);
+                    ltr_taterItemRendererCache.put(tag.copy(), taterToRender);
                 }
             } else {
                 if (ltr_DUMMYTATER!=null)
