@@ -3,6 +3,7 @@ package mods.ltr.mixins.barter;
 import mods.ltr.items.LilTaterBlockItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.PiglinActivity;
 import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,9 +19,9 @@ public abstract class PiglinEntityMixin extends HostileEntity {
     }
 
     @Inject(method = "getActivity",at = @At("HEAD"), cancellable = true)
-    public void ltr_getTaterAdmirationActivity(CallbackInfoReturnable<PiglinEntity.Activity> ctx){
+    public void ltr_getTaterAdmirationActivity(CallbackInfoReturnable<PiglinActivity> ctx){
         if (this.getOffHandStack().getItem() instanceof LilTaterBlockItem) {
-            ctx.setReturnValue(PiglinEntity.Activity.ADMIRING_ITEM);
+            ctx.setReturnValue(PiglinActivity.ADMIRING_ITEM);
         }
     }
 }

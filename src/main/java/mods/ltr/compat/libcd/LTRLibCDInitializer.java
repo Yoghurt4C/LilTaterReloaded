@@ -1,3 +1,4 @@
+/*
 package mods.ltr.compat.libcd;
 
 import io.github.cottonmc.libcd.api.LibCDInitializer;
@@ -9,3 +10,4 @@ public class LTRLibCDInitializer implements LibCDInitializer {
         manager.addAssistant("mods.ltr.compat.libcd.LilTaterTradeOfferTweaker", new LilTaterTradeOfferTweaker());
     }
 }
+ */

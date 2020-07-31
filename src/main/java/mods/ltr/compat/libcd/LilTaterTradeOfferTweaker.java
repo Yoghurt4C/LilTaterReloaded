@@ -1,3 +1,4 @@
+/*
 package mods.ltr.compat.libcd;
 
 import blue.endless.jankson.JsonObject;
@@ -14,6 +15,7 @@ import net.minecraft.village.VillagerProfession;
 import java.util.concurrent.Executor;
 
 import static mods.ltr.registry.LilTaterTradeOffers.tradeOffers;
+
 
 public class LilTaterTradeOfferTweaker implements Tweaker {
     @Override
@@ -59,3 +61,4 @@ public class LilTaterTradeOfferTweaker implements Tweaker {
         }
     }
 }
+ */

@@ -57,7 +57,7 @@ public class LilTaterReloadedConfig {
                         "logDebugInfo: Toggles logging various information to help cherry-pick possible issues during init or post-init. [Side: BOTH | Default: false]")
         );
 
-        File subFolder = new File(FabricLoader.getInstance().getConfigDirectory(), "powertaters");
+        File subFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "powertaters");
         if (!subFolder.exists() && !subFolder.mkdir()) {
             LOGGER.error("[LTR] Could not create configuration directory: " + subFolder.getAbsolutePath());
         }
