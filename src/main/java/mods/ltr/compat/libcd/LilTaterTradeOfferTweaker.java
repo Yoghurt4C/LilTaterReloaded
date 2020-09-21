@@ -1,10 +1,9 @@
-/*
 package mods.ltr.compat.libcd;
 
-import blue.endless.jankson.JsonObject;
-import io.github.cottonmc.libcd.api.tweaker.Tweaker;
-import io.github.cottonmc.libcd.api.tweaker.recipe.RecipeParser;
-import io.github.cottonmc.libcd.api.tweaker.recipe.RecipeTweaker;
+import com.google.gson.JsonObject;
+import io.github.cottonmc.libdp.api.driver.Driver;
+import io.github.cottonmc.libdp.api.driver.recipe.RecipeDriver;
+import io.github.cottonmc.libdp.api.driver.recipe.RecipeParser;
 import mods.ltr.registry.LilTaterTradeOffers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceManager;
@@ -17,7 +16,7 @@ import java.util.concurrent.Executor;
 import static mods.ltr.registry.LilTaterTradeOffers.tradeOffers;
 
 
-public class LilTaterTradeOfferTweaker implements Tweaker {
+public class LilTaterTradeOfferTweaker implements Driver {
     @Override
     public void prepareReload(ResourceManager resourceManager) {
 
@@ -43,7 +42,7 @@ public class LilTaterTradeOfferTweaker implements Tweaker {
             ItemStack buy = RecipeParser.processItemStack(buyObj);
             ItemStack second_buy = RecipeParser.processItemStack(secondBuyObj);
             ItemStack sell = RecipeParser.processItemStack(sellObj);
-            String id = RecipeTweaker.INSTANCE.getRecipeId(sell).toString();
+            String id = RecipeDriver.INSTANCE.getRecipeId(sell).toString();
             VillagerProfession prof = Registry.VILLAGER_PROFESSION.get(new Identifier(profession));
             if (prof == VillagerProfession.NONE) { throw new Exception(); }
             LilTaterTradeOffers.LTRTradeOfferFactory tradeOfferFactory = new LilTaterTradeOffers.LTRTradeOfferFactory(buy, second_buy, sell, maxUses, experience, multiplier);
@@ -61,4 +60,3 @@ public class LilTaterTradeOfferTweaker implements Tweaker {
         }
     }
 }
- */

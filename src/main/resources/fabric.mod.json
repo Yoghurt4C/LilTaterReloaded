@@ -30,7 +30,7 @@
     "rei_plugins_v0": [
       "mods.ltr.compat.rei.LilTaterReloadedREIPlugin"
     ],
-    "libcd": [
+    "libdp": [
       "mods.ltr.compat.libcd.LTRLibCDInitializer"
     ]
   },
