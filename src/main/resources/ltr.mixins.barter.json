@@ -9,11 +9,11 @@
     "LookTargetUtilMixin",
     "PiglinBrainMixin",
     "PiglinEntityAccessor",
-    "PiglinEntityMixin",
     "StopPiggerGrayonItemEntityMixin"
   ],
   "client": [
-    "ClientPlayNetworkHandleBarterMixin"
+    "ClientPlayNetworkHandleBarterMixin",
+    "PiglinEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

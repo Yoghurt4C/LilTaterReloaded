@@ -79,6 +79,6 @@ public class LilTaterReloadedClient implements ClientModInitializer {
             });
         });
 
-        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> registry.register(LilTaterReloaded.getId("block/imitater_smile")));
+        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> registry.register(LilTaterReloaded.getId("block/imitater_smile")));
     }
 }

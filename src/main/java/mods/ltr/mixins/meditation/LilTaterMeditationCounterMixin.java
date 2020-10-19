@@ -79,7 +79,7 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
     public void ltr_tick(CallbackInfo ctx) {
         if (!world.isClient()) {
             if (!((LilTaterMeditationAbility) this.abilities).ltr_hasMeditated()) {
-                HitResult rtr = this.rayTrace(6, 1f, false);
+                HitResult rtr = this.raycast(6, 1f, false);
                 if (rtr != null) {
                     if (rtr.getType().equals(HitResult.Type.BLOCK)) {
                         BlockHitResult brtr = (BlockHitResult) rtr;

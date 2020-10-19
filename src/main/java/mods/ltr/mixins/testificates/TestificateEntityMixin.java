@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.AbstractTraderEntity;
+import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -25,10 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(VillagerEntity.class)
-public abstract class TestificateEntityMixin extends AbstractTraderEntity implements TestificateTaterAccessor {
+public abstract class TestificateEntityMixin extends MerchantEntity implements TestificateTaterAccessor {
     @Unique private static final TrackedData<ItemStack> ltr_taterStack = DataTracker.registerData(VillagerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
-    public TestificateEntityMixin(EntityType<? extends AbstractTraderEntity> entityType, World world) {
+    public TestificateEntityMixin(EntityType<? extends MerchantEntity> entityType, World world) {
         super(entityType, world);
     }
 

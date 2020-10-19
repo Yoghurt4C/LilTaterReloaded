@@ -33,8 +33,8 @@ import net.minecraft.util.math.Matrix4f;
 public class ImitaterModel {
     private static MinecraftClient client = MinecraftClient.getInstance();
     private static final BlockState defaultState = LilTaterBlocks.LIL_TATER.getDefaultState();
-    private final static Sprite MISSINGNO = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, MissingSprite.getMissingSpriteId()).getSprite();
-    private final static Sprite SMILE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, LilTaterReloaded.getId("block/imitater_smile")).getSprite();
+    private final static Sprite MISSINGNO = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, MissingSprite.getMissingSpriteId()).getSprite();
+    private final static Sprite SMILE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, LilTaterReloaded.getId("block/imitater_smile")).getSprite();
 
     public static void draw(LilTaterBlockEntity tater, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, float r, float g, float b, float a) {
         matrices.push();
