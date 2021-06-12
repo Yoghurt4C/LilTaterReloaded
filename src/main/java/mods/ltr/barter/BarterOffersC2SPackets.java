@@ -3,6 +3,7 @@ package mods.ltr.barter;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.network.PacketByteBuf;
 
@@ -21,13 +22,13 @@ public class BarterOffersC2SPackets {
         Set<String> keySet = taterAtlas.keySet();
         buf.writeInt(keySet.size());
         keySet.forEach(buf::writeString);
-        ClientSidePacketRegistry.INSTANCE.sendToServer(SEND_BARTER_NAME_POOLS, buf);
+        ClientPlayNetworking.send(SEND_BARTER_NAME_POOLS, buf);
     }
 
     public static void sendBarterPrefixPools(){
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeInt(validPrefixes.size());
         validPrefixes.forEach(buf::writeString);
-        ClientSidePacketRegistry.INSTANCE.sendToServer(SEND_BARTER_PREFIX_POOLS, buf);
+        ClientPlayNetworking.send(SEND_BARTER_PREFIX_POOLS, buf);
     }
 }

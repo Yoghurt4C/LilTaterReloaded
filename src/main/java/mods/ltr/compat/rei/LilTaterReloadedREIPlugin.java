@@ -1,7 +1,8 @@
 package mods.ltr.compat.rei;
 
-import me.shedaniel.rei.api.RecipeHelper;
-import me.shedaniel.rei.api.plugins.REIPluginV0;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import mods.ltr.config.LilTaterReloadedConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,12 +15,23 @@ import static mods.ltr.util.RenderStateSetup.toTitleCase;
 import static mods.ltr.util.RenderStateSetup.validPrefixes;
 
 @Environment(EnvType.CLIENT)
-public class LilTaterReloadedREIPlugin implements REIPluginV0 {
+public class LilTaterReloadedREIPlugin implements REIClientPlugin {
     private static final MinecraftClient client = MinecraftClient.getInstance();
     public static final Identifier PLUGIN = getId("rei_plugin");
     public static final Identifier LTR = getId("ltr_catalogue");
     public static boolean SHOW_TATERS = !LilTaterReloadedConfig.isMeditationEnabled();
 
+    @Override
+    public void registerCategories(CategoryRegistry registry) {
+        registry.add(new LilTaterReloadedREICategory());
+    }
+
+    @Override
+    public void registerDisplays(DisplayRegistry registry) {
+
+    }
+
+    /*
     @Override
     public Identifier getPluginIdentifier() {
         return PLUGIN;
@@ -71,4 +83,5 @@ public class LilTaterReloadedREIPlugin implements REIPluginV0 {
     public void registerOthers(RecipeHelper recipeHelper) {
         recipeHelper.removeAutoCraftButton(LTR);
     }
+     */
 }

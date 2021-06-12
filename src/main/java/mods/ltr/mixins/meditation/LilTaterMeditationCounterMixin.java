@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.text.TranslatableText;
@@ -56,20 +56,20 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
         }
     }
 
-    @Inject(method = "readCustomDataFromTag", at = @At("RETURN"))
-    public void ltr_readFromTag(CompoundTag tag, CallbackInfo ctx) {
+    @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
+    public void ltr_readFromTag(NbtCompound tag, CallbackInfo ctx) {
         if (tag.contains("ltr_meditation")) {
-            CompoundTag ltrTag = tag.getCompound("ltr_meditation");
+            NbtCompound ltrTag = tag.getCompound("ltr_meditation");
             if (ltrTag.contains("ticks")) {
                 this.ltr_setMeditationTicks(ltrTag.getInt("ticks"));
             }
         }
     }
 
-    @Inject(method = "writeCustomDataToTag", at = @At("RETURN"))
-    public void ltr_appendToTag(CompoundTag tag, CallbackInfo ctx){
+    @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
+    public void ltr_appendToTag(NbtCompound tag, CallbackInfo ctx){
         if (this.ltr_getMeditationTicks() > 0 && !((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated()) {
-            CompoundTag ltrTag = new CompoundTag();
+            NbtCompound ltrTag = new NbtCompound();
             if (!((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated()) { ltrTag.putInt("ticks", this.ltr_getMeditationTicks()); }
             tag.put("ltr_meditation", ltrTag);
         }

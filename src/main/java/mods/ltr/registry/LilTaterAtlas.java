@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import mods.ltr.registry.LilTaterAtlas.LilTaterResourceListener.LTRResourceCollections;
 import mods.ltr.util.DebugTimer;
 import mods.ltr.util.RenderStateSetup;
 import net.fabricmc.api.EnvType;

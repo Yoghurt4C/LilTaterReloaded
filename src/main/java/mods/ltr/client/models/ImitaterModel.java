@@ -20,13 +20,13 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 
 @Environment(EnvType.CLIENT)
 //not actually a "model", but don't tell anyone
@@ -38,7 +38,7 @@ public class ImitaterModel {
 
     public static void draw(LilTaterBlockEntity tater, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, float r, float g, float b, float a) {
         matrices.push();
-        matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(180));
+        matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(180));
         ItemStack stack = tater.getStack(4);
         Item item = stack.getItem();
         boolean isBlock = !stack.isEmpty() && !(item instanceof LilTaterBlockItem) && item instanceof BlockItem && client.getItemRenderer().getModels().getModel(stack).isSideLit();
@@ -51,7 +51,7 @@ public class ImitaterModel {
             if (item instanceof WallStandingBlockItem) {
                 matrices.scale(0.98f, 0.98f, 0.98f);
             }
-            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED,light,overlay,matrices,vcon);
+            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED,light,overlay,matrices,vcon,42);
             matrices.pop();
         } else {
             matrices.scale(0.25f, -0.4375f, -0.25f);
@@ -69,8 +69,8 @@ public class ImitaterModel {
         float o = 0.4f;
         int red = (int) ((r-o)*255), green = (int) ((g-o)*255), blue = (int) ((b-o)*255), alpha = (int) (a*255);
 
-        matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
-        matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
+        matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(90));
+        matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
         if (isBlock){
             matrices.scale(0.5f, -0.5f, -0.5f);
             matrices.translate(-0.505f, -0.5f, -0.5f);

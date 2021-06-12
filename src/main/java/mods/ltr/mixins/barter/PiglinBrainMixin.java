@@ -75,7 +75,7 @@ public abstract class PiglinBrainMixin {
 
     @Inject(method = "isGoldHoldingPlayer", at = @At("HEAD"), cancellable = true)
     private static void ltr_isTaterHoldingPlayer(LivingEntity target, CallbackInfoReturnable<Boolean> ctx){
-        if (target instanceof PlayerEntity && target.isHolding(item -> item instanceof LilTaterBlockItem)){
+        if (target instanceof PlayerEntity && target.isHolding(item -> item.getItem() instanceof LilTaterBlockItem)){
             ctx.setReturnValue(true);
         }
     }

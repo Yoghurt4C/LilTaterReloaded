@@ -1,6 +1,7 @@
 package mods.ltr.entities;
 
 import it.unimi.dsi.fastutil.ints.IntList;
+import mods.ltr.LilTaterReloaded;
 import mods.ltr.client.models.ImitaterModel;
 import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
@@ -14,13 +15,13 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
@@ -38,20 +40,23 @@ import static mods.ltr.client.LilTaterReloadedClient.isHalloween;
 import static mods.ltr.registry.LilTaterAtlas.taterAccessoryAtlas;
 import static mods.ltr.registry.LilTaterAtlas.taterAtlas;
 
-public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlockEntity> {
+public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTaterBlockEntity> {
     private final MinecraftClient client = MinecraftClient.getInstance();
     private final ModelPart taterModel;
+    public static final EntityModelLayer taterLayer = new EntityModelLayer(LilTaterReloaded.getId("model_layer"), "tater");
     private static final Identifier defaultId = taterAtlas.get("lil_tater").left().isPresent() ? taterAtlas.get("lil_tater").left().get().getLeft().get(0) : getId("textures/block/lil_tater.png");
     private static final BakedModel pot = MinecraftClient.getInstance().getBlockRenderManager().getModel(Blocks.FLOWER_POT.getDefaultState());
     private static final BlockState defaultState = LilTaterBlocks.LIL_TATER.getDefaultState();
     private static final String imitater_lil = I18n.translate("text.ltr.imitater_lil")+" ";
 
-    public LilTaterBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
+    public LilTaterBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+        this.taterModel = ctx.getLayerModelPart(taterLayer);
+        /*
         taterModel = new ModelPart(16, 16, 0, 0);
         taterModel.addCuboid(0.0f, 0.0f, 0.0f, 4.0f, 7.0f, 4.0f);
         taterModel.setPivot(-2.0f, 18.0f, -2.0f);
         taterModel.setTextureSize(32, 32);
+         */
     }
 
     /**
@@ -125,7 +130,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
         if (tater.getWorld() != null) {
             BlockState state = tater.getCachedState();
             rotation = state.get(FACING).asRotation();
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
         }
         float rotationZ = 0f;
         if (!prefix.equals("calm")) {
@@ -136,7 +141,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
             float jumpf = (float) -Math.abs(Math.sin(jump / 10 * Math.PI)) * 0.2f;
             rotationZ = (float) Math.sin(jump / 10 * Math.PI) * 2;
             matrices.translate(0f, jumpf, 0f);
-            matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotationZ));
+            matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotationZ));
         }
 
         matrices.push();
@@ -155,17 +160,17 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                 a = 0.5f;
                 break;
             case "rotated":
-                matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) rot));
+                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) rot));
                 break;
             case "upside-down":
-                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(180));
+                matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(180));
                 matrices.translate(0f, -2.6874f, 0f);
                 break;
             case "potted":
                 matrices.push();
                 matrices.scale(1f, -1f, -1f);
                 matrices.translate(0.5f, -1.5624f, 0.5f);
-                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(180));
+                matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(180));
                 client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, pot, r, g, b, light, overlay);
                 matrices.pop();
                 matrices.translate(0f, -0.25f, 0f);
@@ -195,7 +200,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
             matrices.push();
             matrices.scale(1f, -1f, -1f);
             matrices.translate(0.5f, -1.5624, 0.5f);
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
             BakedModel model = client.getBlockRenderManager().getModels().getModelManager().getModel(taterAtlas.get(name).right().get());
             client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, model, r, g, b, light, overlay);
             matrices.pop();
@@ -212,7 +217,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                         break;
                     case "dinnerbone":
                     case "dinnerbong":
-                        matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+                        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
                         matrices.translate(0, -2.6874, 0);
                         break;
                     case "jeb_":
@@ -246,9 +251,9 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                             i = MathHelper.clamp(rot, -1000, 1000);
                         }
                         if ("counter-clockwise".equals(prefix)) {
-                            matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion((float) ((client.world.getTime() + tickDelta) * i % 360)));
+                            matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion((float) ((client.world.getTime() + tickDelta) * i % 360)));
                         } else
-                            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) ((client.world.getTime() + tickDelta) * i % 360)));
+                            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) ((client.world.getTime() + tickDelta) * i % 360)));
                 }
                 this.taterModel.render(matrices, vcon.getBuffer(layer), light, overlay, r, g, b, a);
             }
@@ -257,7 +262,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
             matrices.push();
             matrices.scale(1f, -1f, -1f);
             matrices.translate(0.5f, -1.5625f, 0.5f);
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
             BakedModel model = client.getBlockRenderManager().getModels().getModelManager().getModel(taterAccessoryAtlas.get(prefix));
             client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, model, r, g, b, light, overlay);
             matrices.pop();
@@ -265,15 +270,15 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
         }
         renderItems(tater, name, nameToRender, nameOffset, matrices, vcon, light, overlay);
         matrices.pop();
-        matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotationZ));
-        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(-rotationZ));
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
         matrices.scale(1f, -1f, -1f);
         renderName(tater, name, nameToRender[0], nameOffset[0], matrices, vcon, light);
     }
 
     public void renderItems(LilTaterBlockEntity tater, String name, String[] nameToRender, float[] nameOffset, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay) {
         matrices.translate(0f, 1f, 0f);
-        matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180f));
+        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180f));
         float s = 1f / 3.5f;
         matrices.scale(s, s, s);
 
@@ -308,7 +313,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                     } else if (isBlock) {
                         matrices.translate(-0.4f, 0.8f, 0f);
                     } else {
-                        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90f));
+                        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90f));
                     }
                     matrices.translate(-0.3f, -1.9f, 0.04f);
                     break;
@@ -326,7 +331,7 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                     } else if (isBlock) {
                         matrices.translate(1f, 0.8f, 1f);
                     } else {
-                        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-90f));
+                        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90f));
                     }
                     matrices.translate(-0.3f, -1.9f, -0.92f);
                     break;
@@ -354,9 +359,9 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
                 matrices.scale(0.5f, 0.5f, 0.5f);
             }
             if (isBlock && i == 2) {
-                matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180f));
+                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180f));
             }
-            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.HEAD, light, overlay, matrices, vcon);
+            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.HEAD, light, overlay, matrices, vcon, 42);
             matrices.pop();
         }
     }
@@ -366,8 +371,8 @@ public class LilTaterBlockEntityRenderer extends BlockEntityRenderer<LilTaterBlo
         if (!name.isEmpty() && !tater.isItem && (LilTaterReloadedConfig.areNamesAlwaysVisible() || (rtr != null && rtr.getType() == HitResult.Type.BLOCK && tater.getPos().equals(((BlockHitResult) rtr).getBlockPos())))) {
             matrices.push();
             matrices.translate(0f, -nameOffset, 0f);
-            matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(client.cameraEntity.yaw));
-            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(client.cameraEntity.pitch));
+            matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(client.cameraEntity.getYaw()));
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(client.cameraEntity.getPitch()));
             float f = 0.016666668f * 0.6f;
             matrices.scale(-f, -f, f);
             matrices.translate(0.0f, 0f / f, 0.0f);

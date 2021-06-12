@@ -2,7 +2,7 @@ package mods.ltr.mixins.meditation;
 
 import mods.ltr.meditation.LilTaterMeditationAbility;
 import net.minecraft.entity.player.PlayerAbilities;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,15 +15,15 @@ public abstract class LilTaterMeditationAbilityMixin implements LilTaterMeditati
     @Unique
     private boolean LTR_HAS_MEDITATED = false;
 
-    @Inject(method = "serialize",at=@At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;put(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void ltr_serialize(CompoundTag tag, CallbackInfo ctx, CompoundTag tag2){
+    @Inject(method = "writeNbt",at=@At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;put(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    public void ltr_serialize(NbtCompound tag, CallbackInfo ctx, NbtCompound tag2){
         if (this.ltr_hasMeditated()) {
             tag2.putBoolean("ltr_hasMeditated", this.ltr_hasMeditated());
         }
     }
 
-    @Inject(method = "deserialize",at=@At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/nbt/CompoundTag;getCompound(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void ltr_deserialize(CompoundTag tag, CallbackInfo ctx, CompoundTag tag2){
+    @Inject(method = "readNbt",at=@At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/nbt/NbtCompound;getCompound(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    public void ltr_deserialize(NbtCompound tag, CallbackInfo ctx, NbtCompound tag2){
         if (tag2.contains("ltr_hasMeditated")) {
             this.ltr_setMeditationState(tag2.getBoolean("ltr_hasMeditated"));
         }

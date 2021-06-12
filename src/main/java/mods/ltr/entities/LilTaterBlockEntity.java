@@ -15,9 +15,9 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.NameTagItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.LiteralText;
@@ -27,15 +27,16 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import static mods.ltr.util.RenderStateSetup.getRenderName;
 import static mods.ltr.util.RenderStateSetup.getRenderState;
 
-public class LilTaterBlockEntity extends BlockEntity implements Inventory, BlockEntityClientSerializable, Tickable {
+public class LilTaterBlockEntity extends BlockEntity implements Inventory, BlockEntityClientSerializable {
     private DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     public Text name = null;
     private final static int JUMP_ACTION = 0;
@@ -49,7 +50,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     public LilTaterRenderState renderState;
     public LilTaterTxAnimState txAnimState;
 
-    public LilTaterBlockEntity() { super(LilTaterBlocks.LIL_TATER_BLOCK_ENTITY); }
+    public LilTaterBlockEntity(BlockPos pos, BlockState state) { super(LilTaterBlocks.LIL_TATER_BLOCK_ENTITY, pos, state); }
 
     public ActionResult onUse(PlayerEntity player, Hand hand, BlockHitResult hit) {
         Direction facing = this.getCachedState().get(LilTaterBlock.FACING);
@@ -97,7 +98,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         }
 
         if (!world.isClient()) {
-            jump();
+            jump(this);
 
             if (sons == 0) {
                 if (this.name!=null && nextSound == 0) {
@@ -134,9 +135,9 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         return ActionResult.SUCCESS;
     }
 
-    private void jump() {
-        if (jumpTicks == 0) {
-            world.addSyncedBlockEvent(getPos(), getCachedState().getBlock(), JUMP_ACTION, 20);
+    private static void jump(LilTaterBlockEntity be) {
+        if (be.jumpTicks == 0) {
+            be.world.addSyncedBlockEvent(be.getPos(), be.getCachedState().getBlock(), JUMP_ACTION, 20);
         }
     }
 
@@ -157,8 +158,8 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         if (tag.getCompound("display")!=null){
             this.name=Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
         }
@@ -166,20 +167,20 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
         if (this.name!=null) {
-            CompoundTag display = new CompoundTag();
-            display.put("Name", StringTag.of(Text.Serializer.toJson(name)));
+            NbtCompound display = new NbtCompound();
+            display.put("Name", NbtString.of(Text.Serializer.toJson(name)));
             tag.put("display", display);
         }
-        Inventories.toTag(tag,this.items);
+        Inventories.writeNbt(tag,this.items);
         return tag;
     }
 
     @Override
-    public void fromClientTag(CompoundTag tag){
-        this.fromTag(getCachedState(), tag);
+    public void fromClientTag(NbtCompound tag){
+        this.readNbt(tag);
         if (this.name!=null) {
             String fullName = this.name.getString().toLowerCase().trim().replace(" ", "_");
             if (this.renderState == null || !this.renderState.fullName.equals(fullName)) {
@@ -189,25 +190,25 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag tag){return this.toTag(tag);}
+    public NbtCompound toClientTag(NbtCompound tag){return this.writeNbt(tag);}
 
-    public static void betterFromTag(CompoundTag tag, DefaultedList<ItemStack> stacks) {
-        ListTag listTag = tag.getList("Items", 10);
+    public static void betterFromTag(NbtCompound tag, DefaultedList<ItemStack> stacks) {
+        NbtList listTag = tag.getList("Items", 10);
 
         if (!listTag.isEmpty()) {
             for (int i = 0; i < listTag.size(); ++i) {
-                CompoundTag compoundTag = listTag.getCompound(i);
-                int j = compoundTag.getByte("Slot") & 255;
+                NbtCompound NbtCompound = listTag.getCompound(i);
+                int j = NbtCompound.getByte("Slot") & 255;
                 if (j < stacks.size()) {
-                    stacks.set(j, ItemStack.fromTag(compoundTag));
+                    stacks.set(j, ItemStack.fromNbt(NbtCompound));
                 }
             }
         } else { stacks.clear(); }
     }
 
     public void readFrom(ItemStack stack) {
-        CompoundTag beTag = stack.getSubTag("BlockEntityTag");
-        CompoundTag displayTag = stack.getSubTag("display");
+        NbtCompound beTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound displayTag = stack.getSubTag("display");
         if (beTag!=null) {betterFromTag(beTag,items);}
         if (displayTag!=null) {this.name = Text.Serializer.fromJson(displayTag.getString("Name"));}
     }
@@ -276,26 +277,26 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     @Override
     public int getMaxCountPerStack() { return 1; }
 
-    @Override
-    public void tick() {
-        if (this.jumpTicks > 0) {
-            this.jumpTicks--;
+    public static void tick(World world, BlockPos pos, BlockState state, BlockEntity b) {
+        LilTaterBlockEntity be = (LilTaterBlockEntity) b;
+        if (be.jumpTicks > 0) {
+            be.jumpTicks--;
         }
 
         if (!world.isClient) {
             if (world.random.nextInt(100) == 0) {
-                jump();
+                jump(be);
             }
-            if (this.nextSound > 0) {
-                this.nextSound--;
+            if (be.nextSound > 0) {
+                be.nextSound--;
             }
         }
     }
 
     public ItemStack getPickStack(ItemStack stack) {
         if (!this.isEmpty()){
-            CompoundTag beTag = stack.getOrCreateSubTag("BlockEntityTag");
-            Inventories.toTag(beTag, this.items);
+            NbtCompound beTag = stack.getOrCreateSubTag("BlockEntityTag");
+            Inventories.writeNbt(beTag, this.items);
         }
         if (this.name!=null) {
             stack.setCustomName(this.name);

@@ -1,6 +1,7 @@
 package mods.ltr.client;
 
 import mods.ltr.LilTaterReloaded;
+import mods.ltr.client.models.TaterModel;
 import mods.ltr.entities.LilTaterBlockEntityRenderer;
 import mods.ltr.registry.LilTaterAtlas;
 import mods.ltr.util.DebugTimer;
@@ -9,6 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
@@ -32,10 +34,11 @@ public class LilTaterReloadedClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockEntityRendererRegistry.INSTANCE.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(LilTaterBlockEntityRenderer.taterLayer, TaterModel::getModel);
         if (date.getMonth() == Month.OCTOBER) { isHalloween = true; }
         LilTaterAtlas.init();
 
-        ModelLoadingRegistry.INSTANCE.registerAppender((manager, consumer) -> {
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> {
             logDebug("Initializing the ModelAppender...");
             Instant start = Instant.now();
             Collection<Identifier> models = manager.findResources("models/tater", s -> s.endsWith(".json"));

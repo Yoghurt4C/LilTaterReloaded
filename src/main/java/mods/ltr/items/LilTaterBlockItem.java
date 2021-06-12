@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,9 +27,9 @@ public class LilTaterBlockItem extends BlockItem {
                 return false;
             }
 
-            CompoundTag beWriteTag = blockEntity.toTag(new CompoundTag());
-            CompoundTag copyTag = beWriteTag.copy();
-            CompoundTag stackTag = stack.getSubTag("BlockEntityTag");
+            NbtCompound beWriteTag = blockEntity.writeNbt(new NbtCompound());
+            NbtCompound copyTag = beWriteTag.copy();
+            NbtCompound stackTag = stack.getSubTag("BlockEntityTag");
             if (stackTag != null) {
                 beWriteTag.copyFrom(stackTag);
             }
@@ -38,7 +38,7 @@ public class LilTaterBlockItem extends BlockItem {
             beWriteTag.putInt("z", pos.getZ());
             beWriteTag.put("display", stack.getSubTag("display"));
             if (!beWriteTag.equals(copyTag)) {
-                blockEntity.fromTag(Block.getBlockFromItem(stack.getItem()).getDefaultState(), beWriteTag);
+                blockEntity.readNbt(beWriteTag);
                 blockEntity.markDirty();
                 return true;
             }

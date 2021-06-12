@@ -9,8 +9,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,8 +24,8 @@ public abstract class FlamingoBlockEntityRendererMixin {
     public void ltr_render(FlamingoBlockEntity flamingo, float tickDelta, MatrixStack matrices, VertexConsumerProvider vcon, int i, int j, CallbackInfo ctx){
         ItemStack taterStack = ((FlamingoAccessor)flamingo).ltr_getTater();
         matrices.scale(1f,-1f,-1f);
-        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
         matrices.translate(0,-0.625,0.15);
-        MinecraftClient.getInstance().getItemRenderer().renderItem(taterStack, ModelTransformation.Mode.FIXED,i,j,matrices,vcon);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(taterStack, ModelTransformation.Mode.FIXED,i,j,matrices,vcon,42);
     }
 }

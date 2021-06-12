@@ -1,5 +1,6 @@
 package mods.ltr.mixins.compat.lambdacontrols;
 
+/*
 import me.lambdaurora.lambdacontrols.client.gui.LambdaControlsHud;
 import mods.ltr.blocks.LilTaterBlock;
 import mods.ltr.entities.LilTaterBlockEntity;
@@ -49,3 +50,6 @@ public abstract class LambdaControlsHudMixin {
         return placeAction;
     }
 }
+
+
+ */

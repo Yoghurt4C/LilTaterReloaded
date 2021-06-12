@@ -5,6 +5,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -25,6 +27,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.event.listener.GameEventListener;
 
 import javax.annotation.Nullable;
 
@@ -106,9 +109,6 @@ public class LilTaterBlock extends Block implements BlockEntityProvider, Waterlo
         SHAPE = Block.createCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 7.0D, 10.0D);
     }
 
-    @Nullable @Override
-    public BlockEntity createBlockEntity(BlockView view) { return new LilTaterBlockEntity(); }
-
     @Override
     public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
         super.onSyncedBlockEvent(state, world, pos, type, data);
@@ -125,5 +125,20 @@ public class LilTaterBlock extends Block implements BlockEntityProvider, Waterlo
             return ((LilTaterBlockEntity) be).getPickStack(stack);
         }
         return stack;
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new LilTaterBlockEntity(pos, state);
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return LilTaterBlockEntity::tick;
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable <T extends BlockEntity> GameEventListener getGameEventListener(World world, T blockEntity) {
+        return null;
     }
 }

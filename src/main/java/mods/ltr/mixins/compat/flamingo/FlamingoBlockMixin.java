@@ -20,7 +20,7 @@ public abstract class FlamingoBlockMixin extends Block {
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (this.hasBlockEntity() && state.getBlock() != newState.getBlock()) {
+        if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = world.getBlockEntity(pos);
             if (be instanceof FlamingoBlockEntity) {
                 ItemStack taterStack = ((FlamingoAccessor) be).ltr_getTater();
