@@ -3,17 +3,22 @@ package mods.ltr.compat.rei;
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.REIHelper;
-import me.shedaniel.rei.api.RecipeCategory;
-import me.shedaniel.rei.api.widgets.Widgets;
-import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.api.client.REIRuntime;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryStack;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import mods.ltr.registry.LilTaterBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -21,23 +26,28 @@ import java.util.List;
 import static mods.ltr.LilTaterReloaded.getId;
 
 @Environment(EnvType.CLIENT)
-public class LilTaterReloadedREICategory implements RecipeCategory<LilTaterReloadedREIDisplay> {
-    public static final EntryStack logo = EntryStack.create(LilTaterBlocks.LIL_TATER.asItem());
+public class LilTaterReloadedREICategory implements DisplayCategory<LilTaterReloadedREIDisplay> {
+    public static final EntryStack<ItemStack> logo = EntryStacks.of(LilTaterBlocks.LIL_TATER.asItem());
     protected static final Identifier TATERDROP = getId("textures/gui/taterdrop.png");
     protected static final Identifier TATERDROP_DARK = getId("textures/gui/taterdrop_dark.png");
     protected static final Identifier RECIPECONTAINER = new Identifier("roughlyenoughitems:textures/gui/recipecontainer.png");
 
     public LilTaterReloadedREICategory() {
     }
-
-    public Identifier getIdentifier() {
+    
+    @Override
+    public CategoryIdentifier<? extends LilTaterReloadedREIDisplay> getCategoryIdentifier() {
         return LilTaterReloadedREIPlugin.LTR;
     }
-
-    public EntryStack getLogo() { return logo; }
-
-    public String getCategoryName() {
-        return I18n.translate("rei.ltr.category");
+    
+    @Override
+    public Renderer getIcon() {
+        return logo; 
+    }
+    
+    @Override
+    public Text getTitle() {
+        return new TranslatableText("rei.ltr.category");
     }
 
     @Override
@@ -45,8 +55,8 @@ public class LilTaterReloadedREICategory implements RecipeCategory<LilTaterReloa
         final Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 13);
         List<Widget> widgets = Lists.newArrayList();
 
-        if (REIHelper.getInstance().isDarkThemeEnabled()) {
-            widgets.add(Widgets.createTexturedWidget(TATERDROP_DARK,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
+        if (REIRuntime.getInstance().isDarkThemeEnabled()) {
+            widgets.add(Widgets.createTexturedWidget(TATERDROP_DARK, startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
         } else
             widgets.add(Widgets.createTexturedWidget(TATERDROP,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
 

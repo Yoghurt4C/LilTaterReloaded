@@ -3,11 +3,11 @@ package mods.ltr.compat.rei;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import mods.ltr.config.LilTaterReloadedConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
 
 import static mods.ltr.LilTaterReloaded.getId;
 import static mods.ltr.registry.LilTaterAtlas.taterAtlas;
@@ -17,8 +17,7 @@ import static mods.ltr.util.RenderStateSetup.validPrefixes;
 @Environment(EnvType.CLIENT)
 public class LilTaterReloadedREIPlugin implements REIClientPlugin {
     private static final MinecraftClient client = MinecraftClient.getInstance();
-    public static final Identifier PLUGIN = getId("rei_plugin");
-    public static final Identifier LTR = getId("ltr_catalogue");
+    public static final CategoryIdentifier<LilTaterReloadedREIDisplay> LTR = CategoryIdentifier.of(getId("ltr_catalogue"));
     public static boolean SHOW_TATERS = !LilTaterReloadedConfig.isMeditationEnabled();
 
     @Override
@@ -28,31 +27,15 @@ public class LilTaterReloadedREIPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-
-    }
-
-    /*
-    @Override
-    public Identifier getPluginIdentifier() {
-        return PLUGIN;
-    }
-
-    @Override
-    public void registerPluginCategories(RecipeHelper recipeHelper) {
-        recipeHelper.registerCategory(new LilTaterReloadedREICategory());
-    }
-
-    @Override
-    public void registerRecipeDisplays(RecipeHelper recipeHelper) {
         taterAtlas.keySet().stream().sorted().forEach(name -> {
             if (!"lil_tater".equals(name)) {
-                recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay(toTitleCase(name), false));
+                registry.add(new LilTaterReloadedREIDisplay(toTitleCase(name), false));
             }
         });
-        recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay("Dinnerbone", false));
-        recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay("Pahimar", false));
-        recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay("Imitater", false));
-        recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay("Rotater", false));
+        registry.add(new LilTaterReloadedREIDisplay("Dinnerbone", false));
+        registry.add(new LilTaterReloadedREIDisplay("Pahimar", false));
+        registry.add(new LilTaterReloadedREIDisplay("Imitater", false));
+        registry.add(new LilTaterReloadedREIDisplay("Rotater", false));
         validPrefixes.forEach(prefix -> {
             switch (prefix) {
                 case "RGB":
@@ -74,14 +57,7 @@ public class LilTaterReloadedREIPlugin implements REIClientPlugin {
                 default:
                     prefix = prefix + "_lil_tater";
             }
-            recipeHelper.registerDisplay(new LilTaterReloadedREIDisplay(toTitleCase(prefix), true));
+            registry.add(new LilTaterReloadedREIDisplay(toTitleCase(prefix), true));
         });
     }
-
-    //todo handle
-    @Override
-    public void registerOthers(RecipeHelper recipeHelper) {
-        recipeHelper.removeAutoCraftButton(LTR);
-    }
-     */
 }
