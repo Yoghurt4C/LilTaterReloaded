@@ -3,6 +3,7 @@ package mods.ltr.registry;
 import mods.ltr.blocks.LilTaterBlock;
 import mods.ltr.entities.LilTaterBlockEntity;
 import mods.ltr.items.LilTaterBlockItem;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -18,7 +19,7 @@ import static mods.ltr.LilTaterReloaded.getId;
 public class LilTaterBlocks {
     public static Block LIL_TATER = new LilTaterBlock(AbstractBlock.Settings.of(Material.TNT).nonOpaque());
 
-    public static final BlockEntityType<LilTaterBlockEntity> LIL_TATER_BLOCK_ENTITY = BlockEntityType.Builder
+    public static final BlockEntityType<LilTaterBlockEntity> LIL_TATER_BLOCK_ENTITY = FabricBlockEntityTypeBuilder
             .create(LilTaterBlockEntity::new, LIL_TATER)
             .build(null);
 

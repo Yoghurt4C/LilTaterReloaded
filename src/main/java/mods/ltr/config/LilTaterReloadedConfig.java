@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -33,7 +34,7 @@ public class LilTaterReloadedConfig {
     }
 
     public static void init() {
-        Object2ObjectOpenHashMap<String, String> map = new Object2ObjectOpenHashMap<>();
+        Object2ObjectOpenHashMap<String, String> cfg = new Object2ObjectOpenHashMap<>();
         ImmutableSet<LTRConfigEntry<?>> entries = ImmutableSet.of(
                 LTRConfigEntry.of("totalMeditationTicks", 72000,
                         "totalMeditationTicks: Amount of meditation ticks a player has to experience. [Side: SERVER | Default: 72000]"),
@@ -57,15 +58,9 @@ public class LilTaterReloadedConfig {
                         "logDebugInfo: Toggles logging various information to help cherry-pick possible issues during init or post-init. [Side: BOTH | Default: false]")
         );
 
-        File subFolder = new File(FabricLoader.getInstance().getConfigDir().toFile(), "powertaters");
-        if (!subFolder.exists() && !subFolder.mkdir()) {
-            LOGGER.error("[LTR] Could not create configuration directory: " + subFolder.getAbsolutePath());
-        }
-        File subFolder2 = new File(subFolder, "liltaterreloaded");
-        if (!subFolder2.exists() && !subFolder2.mkdir()) {
-            LOGGER.error("[LTR] Could not create configuration directory: " + subFolder2.getAbsolutePath());
-        }
-        File configurationFile = new File(subFolder2, "ltr.properties");
+        boolean changed = false;
+        Path path = FabricLoader.getInstance().getConfigDir().resolve("powertaters/liltaterreloaded/ltr.properties");
+        File configurationFile = path.toFile();
         try {
             if (!configurationFile.exists() && !configurationFile.createNewFile()) {
                 LOGGER.error("[LTR] Could not create configuration file: " + configurationFile.getAbsolutePath());
@@ -77,48 +72,51 @@ public class LilTaterReloadedConfig {
         DebugTimer.INSTANCE = new DebugTimer();
         Properties config = new Properties();
         StringBuilder content = new StringBuilder().append("#Lil Tater Configuration.\n");
-        content.append("#Last generated at: ").append(new Date().toString()).append("\n\n");
+        content.append("#Last generated at: ").append(new Date()).append("\n\n");
         try {
             FileInputStream input = new FileInputStream(configurationFile);
             config.load(input);
-            FileWriter fw = new FileWriter(configurationFile, false);
             for (LTRConfigEntry<?> entry : entries) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
                 Class<?> cls = entry.getCls();
-                if (!config.containsKey(key)) {
-                    config.setProperty(key, value.toString());
-                }
                 if (config.containsKey(key)) {
                     Object obj = config.getProperty(key);
                     String s = String.valueOf(obj);
                     if (s.equals(Strings.EMPTY)) {
                         LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
                         LOGGER.error("[LTR] Expected configuration value for " + key + " to be present, found nothing. Using default value \"" + value + "\" instead.");
-                        map.put(key, value.toString());
+                        cfg.put(key, value.toString());
                     } else if (cls.equals(Integer.class)) {
                         try {
                             Integer.parseInt(s);
-                            map.put(key, s);
+                            cfg.put(key, s);
                         } catch (NumberFormatException e) {
                             LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
                             LOGGER.error("[LTR] Expected configuration value for " + key + " to be an integer number, found \"" + s + "\". Using default value \"" + value + "\" instead.");
-                            map.put(key, value.toString());
+                            cfg.put(key, value.toString());
                         }
                     } else if (entry.getCls().equals(Boolean.class)) {
-                        if (!"true".equals(s.toLowerCase()) && !"false".equals(s.toLowerCase())) {
+                        if (!"true".equalsIgnoreCase(s) && !"false".equalsIgnoreCase(s)) {
                             LOGGER.error("[LTR] Error processing configuration file \"" + configurationFile + "\".");
                             LOGGER.error("[LTR] Expected configuration value for " + key + " to be a boolean, found \"" + s + "\". Using default value \"" + value + "\" instead.");
-                            map.put(key, value.toString());
-                        } else map.put(key, s);
+                            cfg.put(key, value.toString());
+                        } else cfg.put(key, s);
                     }
+                } else {
+                    changed = true;
+                    config.setProperty(key, value.toString());
+                    cfg.put(key, value.toString());
                 }
                 content.append("#").append(entry.getComment()).append("\n");
-                content.append(key).append("=").append(map.get(key)).append("\n");
+                content.append(key).append("=").append(cfg.get(key)).append("\n");
             }
-            fw.write(content.toString());
-            fw.close();
-            ltrConfig = new LTRConfig(map);
+            if (changed) {
+                FileWriter fw = new FileWriter(configurationFile, false);
+                fw.write(content.toString());
+                fw.close();
+            }
+            ltrConfig = new LTRConfig(cfg);
             isInitialized = true;
         } catch (IOException e) {
             LOGGER.error("[LTR] Could not read/write config! Stacktrace: "+ e);

@@ -16,7 +16,6 @@ import static mods.ltr.util.RenderStateSetup.validPrefixes;
 
 @Environment(EnvType.CLIENT)
 public class LilTaterReloadedREIPlugin implements REIClientPlugin {
-    private static final MinecraftClient client = MinecraftClient.getInstance();
     public static final CategoryIdentifier<LilTaterReloadedREIDisplay> LTR = CategoryIdentifier.of(getId("ltr_catalogue"));
     public static boolean SHOW_TATERS = !LilTaterReloadedConfig.isMeditationEnabled();
 

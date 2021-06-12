@@ -3,6 +3,7 @@ package mods.ltr.entities;
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.ltr.LilTaterReloaded;
 import mods.ltr.client.models.ImitaterModel;
+import mods.ltr.client.models.TaterModel;
 import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
 import mods.ltr.items.LilTaterBlockItem;
@@ -37,14 +38,14 @@ import java.util.List;
 import static mods.ltr.LilTaterReloaded.getId;
 import static mods.ltr.blocks.LilTaterBlock.FACING;
 import static mods.ltr.client.LilTaterReloadedClient.isHalloween;
+import static mods.ltr.client.LilTaterReloadedClient.taterLayer;
 import static mods.ltr.registry.LilTaterAtlas.taterAccessoryAtlas;
 import static mods.ltr.registry.LilTaterAtlas.taterAtlas;
 
 public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTaterBlockEntity> {
     private final MinecraftClient client = MinecraftClient.getInstance();
     private final ModelPart taterModel;
-    public static final EntityModelLayer taterLayer = new EntityModelLayer(LilTaterReloaded.getId("model_layer"), "tater");
-    private static final Identifier defaultId = taterAtlas.get("lil_tater").left().isPresent() ? taterAtlas.get("lil_tater").left().get().getLeft().get(0) : getId("textures/block/lil_tater.png");
+    public static Identifier defaultId;
     private static final BakedModel pot = MinecraftClient.getInstance().getBlockRenderManager().getModel(Blocks.FLOWER_POT.getDefaultState());
     private static final BlockState defaultState = LilTaterBlocks.LIL_TATER.getDefaultState();
     private static final String imitater_lil = I18n.translate("text.ltr.imitater_lil")+" ";

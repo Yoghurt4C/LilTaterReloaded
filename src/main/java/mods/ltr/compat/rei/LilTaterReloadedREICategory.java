@@ -60,10 +60,7 @@ public class LilTaterReloadedREICategory implements DisplayCategory<LilTaterRelo
         } else
             widgets.add(Widgets.createTexturedWidget(TATERDROP,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
 
-        widgets.add(Widgets.createDrawableWidget((drawableHelper, matrixStack, i, i1, v) -> {
-            MinecraftClient.getInstance().getTextureManager().bindTexture(RECIPECONTAINER);
-            drawableHelper.drawTexture(matrixStack,startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15);
-        }));
+        widgets.add(Widgets.createTexturedWidget(RECIPECONTAINER, startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15));
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x - 4, startPoint.y + 5)).entry(display.getInput()));
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 16, startPoint.y + 14)).entry(display.getAnvil()).disableHighlight().disableBackground());

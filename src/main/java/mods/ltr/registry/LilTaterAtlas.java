@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import mods.ltr.entities.LilTaterBlockEntityRenderer;
 import mods.ltr.registry.LilTaterAtlas.LilTaterResourceListener.LTRResourceCollections;
 import mods.ltr.util.DebugTimer;
 import mods.ltr.util.RenderStateSetup;
@@ -148,6 +149,8 @@ public class LilTaterAtlas {
                         LOGGER.error("Error while loading an LTR model JSON (" + id + "): " + e);
                     }
                 });
+
+                LilTaterBlockEntityRenderer.defaultId = taterAtlas.get("lil_tater").left().isPresent() ? taterAtlas.get("lil_tater").left().get().getLeft().get(0) : getId("textures/block/lil_tater.png");
                 logDebug("Finished initializing the Tater Atlas.");
                 DebugTimer.INSTANCE.addAtlas(start, Instant.now());
                 logDebug("[LTR] Tater Atlas initialization finished in: "+DebugTimer.INSTANCE.getFormattedAtlas()+" seconds. Model initialization finished in: "+DebugTimer.INSTANCE.getFormattedModels()+" seconds.");

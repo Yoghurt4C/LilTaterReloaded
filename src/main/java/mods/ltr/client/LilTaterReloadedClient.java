@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
@@ -30,11 +31,10 @@ import static mods.ltr.registry.LilTaterBlocks.LIL_TATER_BLOCK_ENTITY;
 public class LilTaterReloadedClient implements ClientModInitializer {
     public static LocalDateTime date = LocalDateTime.now();
     public static boolean isHalloween = false;
+    public static final EntityModelLayer taterLayer = new EntityModelLayer(LilTaterReloaded.getId("model_layer"), "tater");
 
     @Override
     public void onInitializeClient() {
-        BlockEntityRendererRegistry.INSTANCE.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(LilTaterBlockEntityRenderer.taterLayer, TaterModel::getModel);
         if (date.getMonth() == Month.OCTOBER) { isHalloween = true; }
         LilTaterAtlas.init();
 
@@ -81,6 +81,10 @@ public class LilTaterReloadedClient implements ClientModInitializer {
                 return null;
             });
         });
+
+        BlockEntityRendererRegistry.INSTANCE.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
+
+        EntityModelLayerRegistry.registerModelLayer(taterLayer, TaterModel::getModel);
 
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> registry.register(LilTaterReloaded.getId("block/imitater_smile")));
     }

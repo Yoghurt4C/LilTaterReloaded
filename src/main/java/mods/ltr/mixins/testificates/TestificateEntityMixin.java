@@ -11,7 +11,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -37,15 +37,15 @@ public abstract class TestificateEntityMixin extends MerchantEntity implements T
         this.dataTracker.startTracking(ltr_taterStack, ItemStack.EMPTY);
     }
 
-    @Inject(method = "readCustomDataFromTag", at=@At("TAIL"))
-    public void ltr_taterStackFromTag(CompoundTag tag, CallbackInfo ctx){
-        this.ltr_setTaterStack(ItemStack.fromTag(tag.getCompound("ltr_TaterStack")));
+    @Inject(method = "readCustomDataFromNbt", at=@At("TAIL"))
+    public void ltr_taterStackFromTag(NbtCompound tag, CallbackInfo ctx){
+        this.ltr_setTaterStack(ItemStack.fromNbt(tag.getCompound("ltr_TaterStack")));
     }
 
-    @Inject(method = "writeCustomDataToTag", at=@At("TAIL"))
-    public void ltr_taterStackToTag(CompoundTag tag, CallbackInfo ctx){
-        CompoundTag taterTag = new CompoundTag();
-        this.ltr_getTaterStack().toTag(taterTag);
+    @Inject(method = "writeCustomDataToNbt", at=@At("TAIL"))
+    public void ltr_taterStackToTag(NbtCompound tag, CallbackInfo ctx){
+        NbtCompound taterTag = new NbtCompound();
+        this.ltr_getTaterStack().writeNbt(taterTag);
         tag.put("ltr_TaterStack", taterTag);
     }
 

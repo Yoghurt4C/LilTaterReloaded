@@ -3,6 +3,7 @@ package mods.ltr.registry;
 import com.google.common.collect.ImmutableList;
 import mods.ltr.LilTaterReloaded;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
@@ -20,7 +21,7 @@ public class LilTaterBarterOffers {
     public static final Identifier SEND_BARTER_PREFIX_POOLS = LilTaterReloaded.getId("send_barter_prefix_pools");
 
     public static void init() {
-        ServerSidePacketRegistry.INSTANCE.register(SEND_BARTER_NAME_POOLS, (ctx, buf) -> {
+        ServerPlayNetworking.registerGlobalReceiver(SEND_BARTER_NAME_POOLS, (server, player, handler, buf, sender) -> {
             int size = buf.readInt();
             for (int i = 0; i < size; i++) {
                 String s = buf.readString(32767);
@@ -30,7 +31,7 @@ public class LilTaterBarterOffers {
             }
         });
 
-        ServerSidePacketRegistry.INSTANCE.register(SEND_BARTER_PREFIX_POOLS, (ctx, buf) -> {
+        ServerPlayNetworking.registerGlobalReceiver(SEND_BARTER_PREFIX_POOLS, (server, player, handler, buf, sender) -> {
             int size = buf.readInt();
             for (int i = 0; i < size; i++) {
                 String s = buf.readString(32767);

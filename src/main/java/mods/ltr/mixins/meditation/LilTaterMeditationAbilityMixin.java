@@ -15,7 +15,7 @@ public abstract class LilTaterMeditationAbilityMixin implements LilTaterMeditati
     @Unique
     private boolean LTR_HAS_MEDITATED = false;
 
-    @Inject(method = "writeNbt",at=@At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;put(Ljava/lang/String;Lnet/minecraft/nbt/Tag;)Lnet/minecraft/nbt/Tag;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "writeNbt",at=@At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;put(Ljava/lang/String;Lnet/minecraft/nbt/NbtElement;)Lnet/minecraft/nbt/NbtElement;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void ltr_serialize(NbtCompound tag, CallbackInfo ctx, NbtCompound tag2){
         if (this.ltr_hasMeditated()) {
             tag2.putBoolean("ltr_hasMeditated", this.ltr_hasMeditated());

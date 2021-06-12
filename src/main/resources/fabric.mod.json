@@ -27,11 +27,8 @@
     "client": [
       "mods.ltr.client.LilTaterReloadedClient"
     ],
-    "rei_plugins_v0": [
+    "rei": [
       "mods.ltr.compat.rei.LilTaterReloadedREIPlugin"
-    ],
-    "libdp": [
-      "mods.ltr.compat.libcd.LTRLibCDInitializer"
     ]
   },
   "mixins": [
@@ -40,14 +37,13 @@
     "ltr.mixins.barter.json",
     "ltr.mixins.trading.json",
     "ltr.mixins.testificates.json",
-    "ltr.mixins.compat.flamingo.json",
-    "ltr.mixins.compat.lambdacontrols.json"
+    "ltr.mixins.compat.flamingo.json"
   ],
 
   "depends": {
     "fabricloader": ">=0.7.2",
     "fabric": "*",
-    "minecraft": "1.16.*"
+    "minecraft": "1.17.*"
   },
   "suggests": {
     "flamingo": "*"
