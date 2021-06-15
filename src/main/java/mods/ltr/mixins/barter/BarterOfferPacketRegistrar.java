@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LilTaterReloaded.class)
 public abstract class BarterOfferPacketRegistrar {
     @Inject(method = "onInitialize()V", at = @At("TAIL"), remap = false)
-    public void registerBarterOfferPackets(CallbackInfo ctx){
+    public void registerBarterOfferPackets(CallbackInfo ctx) {
         LilTaterBarterOffers.init();
     }
 }

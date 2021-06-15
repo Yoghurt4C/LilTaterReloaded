@@ -1,9 +1,7 @@
 package mods.ltr.entities;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-import mods.ltr.LilTaterReloaded;
 import mods.ltr.client.models.ImitaterModel;
-import mods.ltr.client.models.TaterModel;
 import mods.ltr.config.LilTaterReloadedConfig;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
 import mods.ltr.items.LilTaterBlockItem;
@@ -18,7 +16,6 @@ import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.resource.language.I18n;
@@ -35,7 +32,6 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
 
-import static mods.ltr.LilTaterReloaded.getId;
 import static mods.ltr.blocks.LilTaterBlock.FACING;
 import static mods.ltr.client.LilTaterReloadedClient.isHalloween;
 import static mods.ltr.client.LilTaterReloadedClient.taterLayer;
@@ -48,7 +44,7 @@ public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTater
     public static Identifier defaultId;
     private static final BakedModel pot = MinecraftClient.getInstance().getBlockRenderManager().getModel(Blocks.FLOWER_POT.getDefaultState());
     private static final BlockState defaultState = LilTaterBlocks.LIL_TATER.getDefaultState();
-    private static final String imitater_lil = I18n.translate("text.ltr.imitater_lil")+" ";
+    private static final String imitater_lil = I18n.translate("text.ltr.imitater_lil") + " ";
 
     public LilTaterBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         this.taterModel = ctx.getLayerModelPart(taterLayer);
@@ -86,7 +82,9 @@ public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTater
             int animFrametime = (rawAnimFrametime / 20) * 1000;
             int size = idList.size();
             if (size > 1 && rawAnimFrametime > 0) {
-                if (tater.txAnimState == null) { tater.txAnimState = new LilTaterTxAnimState(); }
+                if (tater.txAnimState == null) {
+                    tater.txAnimState = new LilTaterTxAnimState();
+                }
                 int maxFrames = frames.size();
                 return idList.get(frames.getInt(getTimeFrameForAnimation(tater.txAnimState, animFrametime, maxFrames)));
             } else return idList.get(0);

@@ -16,7 +16,9 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(FlamingoBlock.class)
 public abstract class FlamingoBlockMixin extends Block {
 
-    public FlamingoBlockMixin(Settings settings) { super(settings); }
+    public FlamingoBlockMixin(Settings settings) {
+        super(settings);
+    }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {

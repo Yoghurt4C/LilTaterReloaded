@@ -14,19 +14,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin {
 
-    @Inject(method = "readNbt", at=@At(value = "TAIL"))
-    public void ltr_fromTag(NbtCompound tag, CallbackInfo ctx){
-        if ((BlockEntity)(Object)this instanceof FlamingoBlockEntity){
-            ((FlamingoAccessor)this).ltr_setTater(ItemStack.fromNbt(tag.getCompound("ltr_tater")));
+    @Inject(method = "readNbt", at = @At(value = "TAIL"))
+    public void ltr_fromTag(NbtCompound tag, CallbackInfo ctx) {
+        if ((BlockEntity) (Object) this instanceof FlamingoBlockEntity) {
+            ((FlamingoAccessor) this).ltr_setTater(ItemStack.fromNbt(tag.getCompound("ltr_tater")));
         }
     }
 
     @Inject(method = "writeNbt", at = @At(value = "RETURN"))
-    public void ltr_toTag(NbtCompound tag, CallbackInfoReturnable<NbtCompound> ctx){
-        if ((BlockEntity)(Object)this instanceof FlamingoBlockEntity){
+    public void ltr_toTag(NbtCompound tag, CallbackInfoReturnable<NbtCompound> ctx) {
+        if ((BlockEntity) (Object) this instanceof FlamingoBlockEntity) {
             NbtCompound syncTag = new NbtCompound();
-            ((FlamingoAccessor)this).ltr_getTater().writeNbt(syncTag);
-            tag.put("ltr_tater",syncTag);
+            ((FlamingoAccessor) this).ltr_getTater().writeNbt(syncTag);
+            tag.put("ltr_tater", syncTag);
         }
     }
 }

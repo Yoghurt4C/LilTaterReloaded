@@ -10,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
@@ -60,9 +59,10 @@ public abstract class LilTaterModelItemRendererMixin {
                     ltr_taterItemRendererCache.put(tag.copy(), taterToRender);
                 }
             } else {
-                if (ltr_DUMMYTATER!=null)
-                mc.getBlockEntityRenderDispatcher().renderEntity(ltr_DUMMYTATER, matrices, vcon, light, overlay);
-                else ltr_DUMMYTATER = new LilTaterBlockEntity(BlockPos.ORIGIN, LilTaterBlocks.LIL_TATER.getDefaultState());
+                if (ltr_DUMMYTATER != null)
+                    mc.getBlockEntityRenderDispatcher().renderEntity(ltr_DUMMYTATER, matrices, vcon, light, overlay);
+                else
+                    ltr_DUMMYTATER = new LilTaterBlockEntity(BlockPos.ORIGIN, LilTaterBlocks.LIL_TATER.getDefaultState());
             }
         }
     }

@@ -23,10 +23,10 @@ public class TestificateTaterFeatureRenderer<T extends VillagerEntity, M extends
         if (!stack.isEmpty()) {
             matrices.push();
 
-            ((ModelWithHead)this.getContextModel()).getHead().rotate(matrices);
-            matrices.scale(0.501f,-0.572f,-0.501f);
+            ((ModelWithHead) this.getContextModel()).getHead().rotate(matrices);
+            matrices.scale(0.501f, -0.572f, -0.501f);
             matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
-            matrices.translate(0,0.3906f,-0.624f);
+            matrices.translate(0, 0.3906f, -0.624f);
             MinecraftClient.getInstance().getHeldItemRenderer().renderItem(entity, stack, ModelTransformation.Mode.HEAD, false, matrices, vertexConsumers, light);
             matrices.pop();
         }

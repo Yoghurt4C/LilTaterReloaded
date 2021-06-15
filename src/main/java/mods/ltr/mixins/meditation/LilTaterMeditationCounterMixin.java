@@ -28,7 +28,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class LilTaterMeditationCounterMixin extends LivingEntity implements LilTaterMeditationCounter {
-    @Shadow @Final public PlayerAbilities abilities;
+    @Shadow
+    @Final
+    public PlayerAbilities abilities;
 
     @Unique
     private int LTR_MEDITATION;
@@ -37,21 +39,25 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
         super(type, world);
     }
 
-    public int ltr_getMeditationTicks(){ return this.LTR_MEDITATION; }
+    public int ltr_getMeditationTicks() {
+        return this.LTR_MEDITATION;
+    }
 
-    public void ltr_setMeditationTicks(int ticks) { this.LTR_MEDITATION = ticks; }
+    public void ltr_setMeditationTicks(int ticks) {
+        this.LTR_MEDITATION = ticks;
+    }
 
     public void ltr_tickMeditation() {
         int tick = this.ltr_getMeditationTicks() + 1;
         this.ltr_setMeditationTicks(tick);
-        if (tick%(LilTaterReloadedConfig.getTotalMeditationTicks() /20) == 0) {
-            this.sendSystemMessage(new TranslatableText("text.ltr.meditation"+random.nextInt(10)).formatted(Formatting.GRAY, Formatting.ITALIC), this.uuid);
+        if (tick % (LilTaterReloadedConfig.getTotalMeditationTicks() / 20) == 0) {
+            this.sendSystemMessage(new TranslatableText("text.ltr.meditation" + random.nextInt(10)).formatted(Formatting.GRAY, Formatting.ITALIC), this.uuid);
         }
         if (tick >= LilTaterReloadedConfig.getTotalMeditationTicks()) {
-            ((LilTaterMeditationAbility)this.abilities).ltr_setMeditationState(true);
+            ((LilTaterMeditationAbility) this.abilities).ltr_setMeditationState(true);
             MinecraftServer server = this.getServer();
             PlayerManager manager = server.getPlayerManager();
-            LilTaterCriterion.MEDITATION.trigger(manager.getPlayer(this.uuid), ((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated());
+            LilTaterCriterion.MEDITATION.trigger(manager.getPlayer(this.uuid), ((LilTaterMeditationAbility) this.abilities).ltr_hasMeditated());
             MeditationSyncS2CPacket.sendMeditationState(manager.getPlayer(this.uuid));
         }
     }
@@ -67,10 +73,12 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
-    public void ltr_appendToTag(NbtCompound tag, CallbackInfo ctx){
-        if (this.ltr_getMeditationTicks() > 0 && !((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated()) {
+    public void ltr_appendToTag(NbtCompound tag, CallbackInfo ctx) {
+        if (this.ltr_getMeditationTicks() > 0 && !((LilTaterMeditationAbility) this.abilities).ltr_hasMeditated()) {
             NbtCompound ltrTag = new NbtCompound();
-            if (!((LilTaterMeditationAbility)this.abilities).ltr_hasMeditated()) { ltrTag.putInt("ticks", this.ltr_getMeditationTicks()); }
+            if (!((LilTaterMeditationAbility) this.abilities).ltr_hasMeditated()) {
+                ltrTag.putInt("ticks", this.ltr_getMeditationTicks());
+            }
             tag.put("ltr_meditation", ltrTag);
         }
     }

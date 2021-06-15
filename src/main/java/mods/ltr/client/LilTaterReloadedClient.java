@@ -35,7 +35,9 @@ public class LilTaterReloadedClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if (date.getMonth() == Month.OCTOBER) { isHalloween = true; }
+        if (date.getMonth() == Month.OCTOBER) {
+            isHalloween = true;
+        }
         LilTaterAtlas.init();
 
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, consumer) -> {
@@ -45,12 +47,12 @@ public class LilTaterReloadedClient implements ClientModInitializer {
             models.forEach(id -> {
                 try {
                     Identifier input = manager.getResource(id).getId();
-                    String name = input.toString().replace(".json","");
-                    ModelIdentifier modelId = new ModelIdentifier(name,"");
+                    String name = input.toString().replace(".json", "");
+                    ModelIdentifier modelId = new ModelIdentifier(name, "");
                     consumer.accept(modelId);
-                    logDebug(modelId.toString()+ " got accepted without issues.");
+                    logDebug(modelId + " got accepted without issues.");
                 } catch (IOException e) {
-                    LOGGER.error("Error while loading an LTR model JSON ("+id+"): " + e);
+                    LOGGER.error("Error while loading an LTR model JSON (" + id + "): " + e);
                 }
             });
             DebugTimer.INSTANCE.addModels(start, Instant.now());

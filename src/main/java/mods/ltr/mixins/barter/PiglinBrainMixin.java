@@ -28,14 +28,14 @@ public abstract class PiglinBrainMixin {
     @Shadow private static void setAdmiringItem(LivingEntity entity) { }
     @Shadow private static void doBarter(PiglinEntity piglin, List<ItemStack> list) { }
 
-    @Inject(method = "loot",at = @At("HEAD"), cancellable = true)
-    private static void ltr_lootEligibilityCheck(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx){
-        if (!((StopPiggerGrayonInterface)drop).ltr_canBePickedUpByPiggers()) {
+    @Inject(method = "loot", at = @At("HEAD"), cancellable = true)
+    private static void ltr_lootEligibilityCheck(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx) {
+        if (!((StopPiggerGrayonInterface) drop).ltr_canBePickedUpByPiggers()) {
             ctx.cancel();
         }
     }
 
-    @Inject(method = "loot",at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/PiglinBrain;isGoldenItem(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    @Inject(method = "loot", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/PiglinBrain;isGoldenItem(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private static void ltr_lootTater(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx, ItemStack stack) {
         if (stack.getItem() instanceof LilTaterBlockItem) {
             ctx.cancel();
@@ -48,7 +48,7 @@ public abstract class PiglinBrainMixin {
         }
     }
 
-    @Inject(method = "canGather",at = @At("HEAD"), cancellable = true)
+    @Inject(method = "canGather", at = @At("HEAD"), cancellable = true)
     private static void ltr_canGatherTater(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx) {
         if (stack.getItem() instanceof LilTaterBlockItem) {
             if (!hasItemInOffHand(piglin)) {
@@ -57,24 +57,24 @@ public abstract class PiglinBrainMixin {
         }
     }
 
-    @Inject(method = "isWillingToTrade",at = @At("HEAD"), cancellable = true)
-    private static void ltr_method27086(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx){
+    @Inject(method = "isWillingToTrade", at = @At("HEAD"), cancellable = true)
+    private static void ltr_method27086(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx) {
         if (!hasBeenHitByPlayer(piglin) && !isAdmiringItem(piglin) && piglin.isAdult() && stack.getItem() instanceof LilTaterBlockItem) {
             ctx.setReturnValue(true);
         }
     }
 
-    @Inject(method = "consumeOffHandItem",at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/entity/mob/PiglinEntity;isAdult()Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private static void ltr_acceptsForBarter(PiglinEntity piglin, boolean bl, CallbackInfo ctx, ItemStack stack){
-        if (stack.getItem() instanceof LilTaterBlockItem){
+    @Inject(method = "consumeOffHandItem", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/entity/mob/PiglinEntity;isAdult()Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private static void ltr_acceptsForBarter(PiglinEntity piglin, boolean bl, CallbackInfo ctx, ItemStack stack) {
+        if (stack.getItem() instanceof LilTaterBlockItem) {
             ctx.cancel();
             doBarter(piglin, LilTaterBarterOffers.getBarterTater(stack.copy()));
         }
     }
 
     @Inject(method = "isGoldHoldingPlayer", at = @At("HEAD"), cancellable = true)
-    private static void ltr_isTaterHoldingPlayer(LivingEntity target, CallbackInfoReturnable<Boolean> ctx){
-        if (target instanceof PlayerEntity && target.isHolding(item -> item.getItem() instanceof LilTaterBlockItem)){
+    private static void ltr_isTaterHoldingPlayer(LivingEntity target, CallbackInfoReturnable<Boolean> ctx) {
+        if (target instanceof PlayerEntity && target.isHolding(item -> item.getItem() instanceof LilTaterBlockItem)) {
             ctx.setReturnValue(true);
         }
     }

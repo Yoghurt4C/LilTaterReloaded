@@ -19,7 +19,7 @@ public class LilTaterReloaded implements ModInitializer {
     public static String modid = "ltr";
 
     @Override
-    public void onInitialize(){
+    public void onInitialize() {
         LilTaterReloadedConfig.tryInit();
         LilTaterBlocks.init();
         LilTaterSounds.init();

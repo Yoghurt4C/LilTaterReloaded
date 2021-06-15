@@ -7,7 +7,6 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import mods.ltr.config.LilTaterReloadedConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 
 import static mods.ltr.LilTaterReloaded.getId;
 import static mods.ltr.registry.LilTaterAtlas.taterAtlas;
@@ -51,7 +50,7 @@ public class LilTaterReloadedREIPlugin implements REIClientPlugin {
                     prefix = "0.4_" + prefix + "_lil tater";
                     break;
                 case "tinted":
-                    prefix = "0x946DFF_"+ prefix +"_irritated_lil_tater";
+                    prefix = "0x946DFF_" + prefix + "_irritated_lil_tater";
                     break;
                 default:
                     prefix = prefix + "_lil_tater";

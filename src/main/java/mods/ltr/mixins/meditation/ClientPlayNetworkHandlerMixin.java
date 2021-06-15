@@ -15,10 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
 
-    @Shadow @Final private MinecraftClient client;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
-    @Inject(method = "onGameJoin",at = @At("TAIL"))
+    @Inject(method = "onGameJoin", at = @At("TAIL"))
     public void ltr_setMeditationState(GameJoinS2CPacket packet, CallbackInfo ctx) {
-        ((LilTaterMeditationAbility)this.client.player.getAbilities()).ltr_setMeditationState(LilTaterMeditation.ltr_hasMeditated());
+        ((LilTaterMeditationAbility) this.client.player.getAbilities()).ltr_setMeditationState(LilTaterMeditation.ltr_hasMeditated());
     }
 }

@@ -57,7 +57,7 @@ public class LilTaterTradeOffers {
 
         @Override
         public CompletableFuture<Collection<Identifier>> load(ResourceManager manager, Profiler profiler, Executor executor) {
-            return CompletableFuture.supplyAsync(()-> {
+            return CompletableFuture.supplyAsync(() -> {
                 logDebug("Preparing the initialization of the Trade Offers. Collecting resources...");
                 tradeOffers.clear();
 
@@ -66,7 +66,7 @@ public class LilTaterTradeOffers {
                         return s.endsWith(".json");
                     } else return !s.contains("ltr_default_trade_offers") && s.endsWith(".json");
                 });
-                logDebug("Found "+offers.size()+" Trade Offer JSONs. Finished collecting resources.");
+                logDebug("Found " + offers.size() + " Trade Offer JSONs. Finished collecting resources.");
                 return offers;
             }, executor);
         }
@@ -85,11 +85,11 @@ public class LilTaterTradeOffers {
                             String string = id.toString();
                             Matcher matcher = jsonRegex.matcher(string);
                             if (matcher.find()) {
-                                handleTrade(id, id.getNamespace()+":"+matcher.group(1), json);
+                                handleTrade(id, id.getNamespace() + ":" + matcher.group(1), json);
                             }
                         } else {
                             json.entrySet().forEach(entry -> {
-                                String tradeId = id.getNamespace()+":"+entry.getKey();
+                                String tradeId = id.getNamespace() + ":" + entry.getKey();
                                 JsonElement element = entry.getValue();
                                 if (element.isJsonObject()) {
                                     JsonObject trade = GSON.fromJson(element, JsonObject.class);
@@ -123,54 +123,54 @@ public class LilTaterTradeOffers {
         float multiplier = 0.05f;
         try {
             JsonElement profE = trade.get("profession");
-            if (profE!=null) {
+            if (profE != null) {
                 profession = Registry.VILLAGER_PROFESSION.get(new Identifier(trade.get("profession").getAsString()));
             }
             JsonElement profLevelE = trade.get("profession_level");
-            if (profLevelE!=null) {
+            if (profLevelE != null) {
                 profession_level = profLevelE.getAsInt();
             }
             JsonElement buyE = trade.get("buy");
             if (buyE != null) {
                 JsonObject obj = buyE.getAsJsonObject();
-                if (obj.get("item")!=null) {
+                if (obj.get("item") != null) {
                     buy = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
                 }
-                if (obj.get("count")!=null) {
+                if (obj.get("count") != null) {
                     price = obj.get("count").getAsInt();
                 }
-                if (obj.get("nbt")!=null){
+                if (obj.get("nbt") != null) {
                     buyTag = StringNbtReader.parse(obj.get("nbt").getAsString());
                 }
             }
             JsonElement buy2E = trade.get("second_buy");
             if (buy2E != null) {
                 JsonObject obj = buy2E.getAsJsonObject();
-                if (obj.get("item")!=null) {
+                if (obj.get("item") != null) {
                     buy2 = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
                 }
-                if (obj.get("count")!=null) {
+                if (obj.get("count") != null) {
                     price2 = obj.get("count").getAsInt();
                 }
-                if (obj.get("nbt")!=null){
+                if (obj.get("nbt") != null) {
                     buy2Tag = StringNbtReader.parse(obj.get("nbt").getAsString());
                 }
             }
             JsonElement sellE = trade.get("sell");
             if (sellE != null) {
                 JsonObject obj = sellE.getAsJsonObject();
-                if (obj.get("item")!=null) {
+                if (obj.get("item") != null) {
                     sell = Registry.ITEM.get(new Identifier(obj.get("item").getAsString()));
                 }
-                if (obj.get("count")!=null) {
+                if (obj.get("count") != null) {
                     count = obj.get("count").getAsInt();
                 }
-                if (obj.get("nbt")!=null){
+                if (obj.get("nbt") != null) {
                     sellTag = StringNbtReader.parse(obj.get("nbt").getAsString());
                 }
             }
             JsonElement maxUsesE = trade.get("maxUses");
-            if (maxUsesE!=null) {
+            if (maxUsesE != null) {
                 maxUses = maxUsesE.getAsInt();
             }
             JsonElement xpE = trade.get("experiience");
@@ -178,27 +178,28 @@ public class LilTaterTradeOffers {
                 experience = xpE.getAsInt();
             }
             JsonElement multiplierE = trade.get("multiplier");
-            if (multiplierE!=null) {
+            if (multiplierE != null) {
                 multiplier = multiplierE.getAsFloat();
             }
         } catch (JsonSyntaxException | CommandSyntaxException e) {
-            LOGGER.error("[LTR] Error while parsing Trade Offer '"+id+"'. Stacktrace: " + e);
+            LOGGER.error("[LTR] Error while parsing Trade Offer '" + id + "'. Stacktrace: " + e);
         } finally {
             ItemStack buyStack = new ItemStack(buy, price);
             buyStack.setTag(buyTag);
             ItemStack buy2Stack;
-            if (buy2!=null) {
+            if (buy2 != null) {
                 buy2Stack = new ItemStack(buy2, price2);
                 buy2Stack.setTag(buy2Tag);
             } else buy2Stack = ItemStack.EMPTY;
             ItemStack sellStack = new ItemStack(sell, count);
             sellStack.setTag(sellTag);
-            if (profession!=VillagerProfession.NONE && (buy !=Items.EMERALD && sell!=Items.EMERALD)) {
-                if (buy2!=null) {
+            if (profession != VillagerProfession.NONE && (buy != Items.EMERALD && sell != Items.EMERALD)) {
+                if (buy2 != null) {
                     tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, buy2Stack, sellStack, maxUses, experience, multiplier)));
-                } else tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, sellStack, maxUses, experience, multiplier)));
+                } else
+                    tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, sellStack, maxUses, experience, multiplier)));
             } else {
-                LOGGER.error("[LTR] Couldn't add invalid Trade Offer '"+id+"'.");
+                LOGGER.error("[LTR] Couldn't add invalid Trade Offer '" + id + "'.");
             }
         }
     }
@@ -214,11 +215,17 @@ public class LilTaterTradeOffers {
             this.offer = offer;
         }
 
-        public VillagerProfession getProfession() { return this.profession; }
+        public VillagerProfession getProfession() {
+            return this.profession;
+        }
 
-        public int getProfessionLevel() { return this.profession_level; }
+        public int getProfessionLevel() {
+            return this.profession_level;
+        }
 
-        public LTRTradeOfferFactory getOffer() { return this.offer; }
+        public LTRTradeOfferFactory getOffer() {
+            return this.offer;
+        }
     }
 
     public static class LTRTradeOfferFactory implements TradeOffers.Factory {
@@ -248,7 +255,7 @@ public class LilTaterTradeOffers {
         }
 
         public TradeOffer create(Entity entity, Random random) {
-            if (buy2==null) {
+            if (buy2 == null) {
                 return new TradeOffer(buy.copy(), sell.copy(), this.maxUses, this.experience, this.multiplier);
             } else {
                 return new TradeOffer(buy.copy(), buy2.copy(), sell.copy(), this.maxUses, this.experience, this.multiplier);

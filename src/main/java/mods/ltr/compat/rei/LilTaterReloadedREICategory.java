@@ -14,7 +14,6 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import mods.ltr.registry.LilTaterBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -34,17 +33,17 @@ public class LilTaterReloadedREICategory implements DisplayCategory<LilTaterRelo
 
     public LilTaterReloadedREICategory() {
     }
-    
+
     @Override
     public CategoryIdentifier<? extends LilTaterReloadedREIDisplay> getCategoryIdentifier() {
         return LilTaterReloadedREIPlugin.LTR;
     }
-    
+
     @Override
     public Renderer getIcon() {
-        return logo; 
+        return logo;
     }
-    
+
     @Override
     public Text getTitle() {
         return new TranslatableText("rei.ltr.category");
@@ -58,22 +57,22 @@ public class LilTaterReloadedREICategory implements DisplayCategory<LilTaterRelo
         if (REIRuntime.getInstance().isDarkThemeEnabled()) {
             widgets.add(Widgets.createTexturedWidget(TATERDROP_DARK, startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
         } else
-            widgets.add(Widgets.createTexturedWidget(TATERDROP,startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
+            widgets.add(Widgets.createTexturedWidget(TATERDROP, startPoint.x + 55, startPoint.y - 9, 0, 0, 32, 48, 32, 48));
 
         widgets.add(Widgets.createTexturedWidget(RECIPECONTAINER, startPoint.x + 28, startPoint.y + 5, 40, 223, 22, 15));
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x - 4, startPoint.y + 5)).entry(display.getInput()));
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 16, startPoint.y + 14)).entry(display.getAnvil()).disableHighlight().disableBackground());
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 16, startPoint.y - 4)).entry(display.getNameTag()).disableHighlight().disableBackground());
-        widgets.add(Widgets.createLabel(new Point(startPoint.x+16, startPoint.y +10), new LiteralText("+")));
-        widgets.add(new LilTaterWidget(startPoint.x + 56, startPoint.y-8).entry(display.getOutput()).noBackground());
+        widgets.add(Widgets.createLabel(new Point(startPoint.x + 16, startPoint.y + 10), new LiteralText("+")));
+        widgets.add(new LilTaterWidget(startPoint.x + 56, startPoint.y - 8).entry(display.getOutput()).noBackground());
         if (display.isPrefix()) {
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+92, startPoint.y -8), new LiteralText("P")));
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+92, startPoint.y -1), new LiteralText("r")));
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+91, startPoint.y +6), new LiteralText("e")));
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+91, startPoint.y +15), new LiteralText("f")));
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+91, startPoint.y +23), new LiteralText("i")));
-            widgets.add(Widgets.createLabel(new Point(startPoint.x+91, startPoint.y +30), new LiteralText("x")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 92, startPoint.y - 8), new LiteralText("P")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 92, startPoint.y - 1), new LiteralText("r")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 91, startPoint.y + 6), new LiteralText("e")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 91, startPoint.y + 15), new LiteralText("f")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 91, startPoint.y + 23), new LiteralText("i")));
+            widgets.add(Widgets.createLabel(new Point(startPoint.x + 91, startPoint.y + 30), new LiteralText("x")));
         }
         return widgets;
     }

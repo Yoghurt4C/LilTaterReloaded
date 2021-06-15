@@ -37,12 +37,12 @@ import static mods.ltr.util.RenderStateSetup.getRenderName;
 import static mods.ltr.util.RenderStateSetup.getRenderState;
 
 public class LilTaterBlockEntity extends BlockEntity implements Inventory, BlockEntityClientSerializable {
-    private DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     public Text name = null;
     private final static int JUMP_ACTION = 0;
     public int jumpTicks = 0;
     private int nextSound = 0;
-    private Object2IntOpenHashMap<Direction> slotMap = new Object2IntOpenHashMap<>();
+    private final Object2IntOpenHashMap<Direction> slotMap = new Object2IntOpenHashMap<>();
 
     @Environment(EnvType.CLIENT)
     public boolean isItem = false;
@@ -50,12 +50,14 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     public LilTaterRenderState renderState;
     public LilTaterTxAnimState txAnimState;
 
-    public LilTaterBlockEntity(BlockPos pos, BlockState state) { super(LilTaterBlocks.LIL_TATER_BLOCK_ENTITY, pos, state); }
+    public LilTaterBlockEntity(BlockPos pos, BlockState state) {
+        super(LilTaterBlocks.LIL_TATER_BLOCK_ENTITY, pos, state);
+    }
 
     public ActionResult onUse(PlayerEntity player, Hand hand, BlockHitResult hit) {
         Direction facing = this.getCachedState().get(LilTaterBlock.FACING);
         Direction side = hit.getSide();
-        if (this.slotMap.isEmpty() || this.slotMap.getInt(facing)>0) {
+        if (this.slotMap.isEmpty() || this.slotMap.getInt(facing) > 0) {
             rebuildSlotMap(facing);
         }
         int slot = this.slotMap.getInt(side);
@@ -85,15 +87,15 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         }
 
         int sons = 0;
-        for (int i=0; i<size(); i++) {
+        for (int i = 0; i < size(); i++) {
             ItemStack sonCheckStack = getStack(i);
             if (!sonCheckStack.isEmpty() && sonCheckStack.getItem() instanceof LilTaterBlockItem) {
                 sons++;
             }
         }
         if (shouldFX && sons == 0) {
-            for (int i = 0; i < 3; i++){
-                world.addParticle(ParticleTypes.HEART,pos.getX() + Math.random(), pos.getY() - 0.05 + Math.random(), pos.getZ() + Math.random(), 0.015,0.015,0.015);
+            for (int i = 0; i < 3; i++) {
+                world.addParticle(ParticleTypes.HEART, pos.getX() + Math.random(), pos.getY() - 0.05 + Math.random(), pos.getZ() + Math.random(), 0.015, 0.015, 0.015);
             }
         }
 
@@ -101,8 +103,8 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             jump(this);
 
             if (sons == 0) {
-                if (this.name!=null && nextSound == 0) {
-                    if (this.name.getString().replace(" ","_").endsWith("shia_labeouf")) {
+                if (this.name != null && nextSound == 0) {
+                    if (this.name.getString().replace(" ", "_").endsWith("shia_labeouf")) {
                         this.nextSound = 40;
                         world.playSound(null, pos, LilTaterSounds.DO_IT, SoundCategory.BLOCKS, 0.5f, 1f);
                     } else if (this.name.getString().endsWith("honeyboy")) {
@@ -128,9 +130,9 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
                     text.append(sons + " ");
                     text.append(new TranslatableText("text.ltr.mySon_multiple"));
                 }
-                player.sendSystemMessage(text,player.getUuid());
+                player.sendSystemMessage(text, player.getUuid());
             }
-            this.renderColor=null;
+            this.renderColor = null;
         }
         return ActionResult.SUCCESS;
     }
@@ -146,10 +148,10 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         if (id == JUMP_ACTION) {
             jumpTicks = data;
 
-            if (world.isClient()){
-                if (this.renderState!=null && "furious".equals(this.renderState.prefix)) {
-                    for (int i=0; i < 3; i++) {
-                        world.addParticle(ParticleTypes.ANGRY_VILLAGER,pos.getX() + Math.random(), pos.getY() - 0.25 + Math.random(), pos.getZ() + Math.random(), 0.015,0.015,0.015);
+            if (world.isClient()) {
+                if (this.renderState != null && "furious".equals(this.renderState.prefix)) {
+                    for (int i = 0; i < 3; i++) {
+                        world.addParticle(ParticleTypes.ANGRY_VILLAGER, pos.getX() + Math.random(), pos.getY() - 0.25 + Math.random(), pos.getZ() + Math.random(), 0.015, 0.015, 0.015);
                     }
                 }
             }
@@ -160,28 +162,28 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     @Override
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
-        if (tag.getCompound("display")!=null){
-            this.name=Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
+        if (tag.getCompound("display") != null) {
+            this.name = Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
         }
-        betterFromTag(tag,items);
+        betterFromTag(tag, items);
     }
 
     @Override
     public NbtCompound writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
-        if (this.name!=null) {
+        if (this.name != null) {
             NbtCompound display = new NbtCompound();
             display.put("Name", NbtString.of(Text.Serializer.toJson(name)));
             tag.put("display", display);
         }
-        Inventories.writeNbt(tag,this.items);
+        Inventories.writeNbt(tag, this.items);
         return tag;
     }
 
     @Override
-    public void fromClientTag(NbtCompound tag){
+    public void fromClientTag(NbtCompound tag) {
         this.readNbt(tag);
-        if (this.name!=null) {
+        if (this.name != null) {
             String fullName = this.name.getString().toLowerCase().trim().replace(" ", "_");
             if (this.renderState == null || !this.renderState.fullName.equals(fullName)) {
                 this.renderState = getRenderState(fullName);
@@ -190,7 +192,9 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     @Override
-    public NbtCompound toClientTag(NbtCompound tag){return this.writeNbt(tag);}
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return this.writeNbt(tag);
+    }
 
     public static void betterFromTag(NbtCompound tag, DefaultedList<ItemStack> stacks) {
         NbtList listTag = tag.getList("Items", 10);
@@ -203,14 +207,20 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
                     stacks.set(j, ItemStack.fromNbt(NbtCompound));
                 }
             }
-        } else { stacks.clear(); }
+        } else {
+            stacks.clear();
+        }
     }
 
     public void readFrom(ItemStack stack) {
         NbtCompound beTag = stack.getSubTag("BlockEntityTag");
         NbtCompound displayTag = stack.getSubTag("display");
-        if (beTag!=null) {betterFromTag(beTag,items);}
-        if (displayTag!=null) {this.name = Text.Serializer.fromJson(displayTag.getString("Name"));}
+        if (beTag != null) {
+            betterFromTag(beTag, items);
+        }
+        if (displayTag != null) {
+            this.name = Text.Serializer.fromJson(displayTag.getString("Name"));
+        }
     }
 
     @Override
@@ -229,7 +239,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         return true;
     }
 
-    public boolean isInvFull(){
+    public boolean isInvFull() {
         for (int i = 0; i < size(); i++) {
             ItemStack stack = getStack(i);
             if (stack.isEmpty()) {
@@ -244,7 +254,9 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         return this.items.get(slot);
     }
 
-    public ItemStack getStackForSide(Direction side) { return this.items.get(this.slotMap.getInt(side)); }
+    public ItemStack getStackForSide(Direction side) {
+        return this.items.get(this.slotMap.getInt(side));
+    }
 
     @Override
     public ItemStack removeStack(int slot, int count) {
@@ -269,13 +281,19 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     @Override
-    public boolean canPlayerUse(PlayerEntity player) { return true; }
+    public boolean canPlayerUse(PlayerEntity player) {
+        return true;
+    }
 
     @Override
-    public void clear() { items.clear(); }
+    public void clear() {
+        items.clear();
+    }
 
     @Override
-    public int getMaxCountPerStack() { return 1; }
+    public int getMaxCountPerStack() {
+        return 1;
+    }
 
     public static void tick(World world, BlockPos pos, BlockState state, BlockEntity b) {
         LilTaterBlockEntity be = (LilTaterBlockEntity) b;
@@ -294,17 +312,17 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     public ItemStack getPickStack(ItemStack stack) {
-        if (!this.isEmpty()){
+        if (!this.isEmpty()) {
             NbtCompound beTag = stack.getOrCreateSubTag("BlockEntityTag");
             Inventories.writeNbt(beTag, this.items);
         }
-        if (this.name!=null) {
+        if (this.name != null) {
             stack.setCustomName(this.name);
         }
         return stack;
     }
 
-    private void rebuildSlotMap(Direction facing){
+    private void rebuildSlotMap(Direction facing) {
         this.slotMap.clear();
         this.slotMap.put(facing, 0);
         this.slotMap.put(facing.rotateYCounterclockwise(), 1);
@@ -325,7 +343,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         public String renderName;
         public double rot;
 
-        public LilTaterRenderState(String fullName, String prefix, String name, double rot){
+        public LilTaterRenderState(String fullName, String prefix, String name, double rot) {
             this.fullName = fullName;
             this.prefix = prefix;
             this.name = name;
@@ -342,6 +360,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         public long frametime = 0;
         public int currentframe = 0;
 
-        public LilTaterTxAnimState(){}
+        public LilTaterTxAnimState() {
+        }
     }
 }

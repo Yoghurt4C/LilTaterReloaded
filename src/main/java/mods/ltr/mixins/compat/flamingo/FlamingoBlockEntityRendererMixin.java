@@ -20,12 +20,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FlamingoBlockEntityRenderer.class)
 public abstract class FlamingoBlockEntityRendererMixin {
 
-    @Inject(method = "render", at=@At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
-    public void ltr_render(FlamingoBlockEntity flamingo, float tickDelta, MatrixStack matrices, VertexConsumerProvider vcon, int i, int j, CallbackInfo ctx){
-        ItemStack taterStack = ((FlamingoAccessor)flamingo).ltr_getTater();
-        matrices.scale(1f,-1f,-1f);
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
+    public void ltr_render(FlamingoBlockEntity flamingo, float tickDelta, MatrixStack matrices, VertexConsumerProvider vcon, int i, int j, CallbackInfo ctx) {
+        ItemStack taterStack = ((FlamingoAccessor) flamingo).ltr_getTater();
+        matrices.scale(1f, -1f, -1f);
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
-        matrices.translate(0,-0.625,0.15);
-        MinecraftClient.getInstance().getItemRenderer().renderItem(taterStack, ModelTransformation.Mode.FIXED,i,j,matrices,vcon,42);
+        matrices.translate(0, -0.625, 0.15);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(taterStack, ModelTransformation.Mode.FIXED, i, j, matrices, vcon, 42);
     }
 }

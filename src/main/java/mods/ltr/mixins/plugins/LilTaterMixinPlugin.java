@@ -41,7 +41,7 @@ public class LilTaterMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
         if (LilTaterReloadedConfig.shouldLogDebugInfo()) {
-            LilTaterReloadedConfig.LOGGER.info("[LTR Debug] "+mixinInfo.getName()+ " was applied successfully.");
+            LilTaterReloadedConfig.LOGGER.info("[LTR Debug] " + mixinInfo.getName() + " was applied successfully.");
         }
     }
 }

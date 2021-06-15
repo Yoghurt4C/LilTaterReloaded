@@ -41,7 +41,7 @@ public class LilTaterBlocks {
         return item;
     }
 
-    public static BlockEntityType<?> register(String name, BlockEntityType<?> type){
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE,getId(name), type);
+    public static BlockEntityType<?> register(String name, BlockEntityType<?> type) {
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, getId(name), type);
     }
 }

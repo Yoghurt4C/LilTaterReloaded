@@ -17,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(LookTargetUtil.class)
 public abstract class LookTargetUtilMixin {
 
-    @Inject(method = "give",at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void ltr_stopPiggerGrayons(LivingEntity entity, ItemStack stack, Vec3d vec3d, CallbackInfo ctx, double d, ItemEntity ientity){
+    @Inject(method = "give", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void ltr_stopPiggerGrayons(LivingEntity entity, ItemStack stack, Vec3d vec3d, CallbackInfo ctx, double d, ItemEntity ientity) {
         if (entity instanceof PiglinEntity && stack.getItem() instanceof LilTaterBlockItem) {
-            ((StopPiggerGrayonInterface)ientity).ltr_setPiggerPickupEligibility(false);
+            ((StopPiggerGrayonInterface) ientity).ltr_setPiggerPickupEligibility(false);
         }
     }
 }

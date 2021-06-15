@@ -30,7 +30,9 @@ public class LilTaterReloadedConfig {
     }
 
     public static void tryInit() {
-        if (!isInitialized()) { init(); }
+        if (!isInitialized()) {
+            init();
+        }
     }
 
     public static void init() {
@@ -128,7 +130,7 @@ public class LilTaterReloadedConfig {
             ltrConfig = new LTRConfig(cfg);
             isInitialized = true;
         } catch (IOException e) {
-            LOGGER.error("[LTR] Could not read/write config! Stacktrace: "+ e);
+            LOGGER.error("[LTR] Could not read/write config! Stacktrace: " + e);
         }
     }
 
@@ -158,18 +160,49 @@ public class LilTaterReloadedConfig {
         }
     }
 
-    public static boolean isInitialized() { return isInitialized; }
+    public static boolean isInitialized() {
+        return isInitialized;
+    }
 
-    public static int getTotalMeditationTicks() { return ltrConfig.totalMeditationTicks; }
-    public static boolean areNamesAlwaysVisible() { return ltrConfig.areNamesAlwaysVisible; }
-    public static boolean isMeditationEnabled() { return ltrConfig.enableMeditation; }
-    public static boolean isTaterBarterEnabled() { return ltrConfig.enableTaterBarter; }
-    public static boolean isTaterTradingEnabled() { return ltrConfig.enableTaterTrading; }
-    public static boolean areDefaultTradingOffersLoaded() { return ltrConfig.loadDefaultTradingOffers; }
-    public static int getTaterItemRendererCacheSize() { return ltrConfig.taterItemRendererCacheSize; }
-    public static boolean isLambdaControlsCompatEnabled() { return ltrConfig.loadLambdaControlsCompat; }
-    public static boolean isSecretTestificateFeatureEnabled() { return ltrConfig.enableTestificateSecret; }
-    public static boolean shouldLogDebugInfo() { return ltrConfig.logDebugInfo; }
+    public static int getTotalMeditationTicks() {
+        return ltrConfig.totalMeditationTicks;
+    }
+
+    public static boolean areNamesAlwaysVisible() {
+        return ltrConfig.areNamesAlwaysVisible;
+    }
+
+    public static boolean isMeditationEnabled() {
+        return ltrConfig.enableMeditation;
+    }
+
+    public static boolean isTaterBarterEnabled() {
+        return ltrConfig.enableTaterBarter;
+    }
+
+    public static boolean isTaterTradingEnabled() {
+        return ltrConfig.enableTaterTrading;
+    }
+
+    public static boolean areDefaultTradingOffersLoaded() {
+        return ltrConfig.loadDefaultTradingOffers;
+    }
+
+    public static int getTaterItemRendererCacheSize() {
+        return ltrConfig.taterItemRendererCacheSize;
+    }
+
+    public static boolean isLambdaControlsCompatEnabled() {
+        return ltrConfig.loadLambdaControlsCompat;
+    }
+
+    public static boolean isSecretTestificateFeatureEnabled() {
+        return ltrConfig.enableTestificateSecret;
+    }
+
+    public static boolean shouldLogDebugInfo() {
+        return ltrConfig.logDebugInfo;
+    }
 
     private static class LTRConfigEntry<T> {
         private final String key;
@@ -192,9 +225,20 @@ public class LilTaterReloadedConfig {
             return new LTRConfigEntry<>(key, value, comment, Boolean.class);
         }
 
-        public String getKey() { return key; }
-        public T getValue() { return value; }
-        public String getComment() { return comment.get(); }
-        public Class<T> getCls() { return cls; }
+        public String getKey() {
+            return key;
+        }
+
+        public T getValue() {
+            return value;
+        }
+
+        public String getComment() {
+            return comment.get();
+        }
+
+        public Class<T> getCls() {
+            return cls;
+        }
     }
 }

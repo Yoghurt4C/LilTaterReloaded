@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class UseFlamingoCallbackRegistrar {
 
     @Inject(method = "onInitialize()V", at = @At("TAIL"), remap = false)
-    public void registerUseFlamingoCallback(CallbackInfo ctx){
+    public void registerUseFlamingoCallback(CallbackInfo ctx) {
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             BlockPos pos = hitResult.getBlockPos();
             BlockEntity be = world.getBlockEntity(pos);

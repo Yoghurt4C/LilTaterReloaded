@@ -18,8 +18,8 @@ public abstract class PiglinEntityMixin extends AbstractPiglinEntity {
         super(entityType, world);
     }
 
-    @Inject(method = "getActivity",at = @At("HEAD"), cancellable = true)
-    public void ltr_getTaterAdmirationActivity(CallbackInfoReturnable<PiglinActivity> ctx){
+    @Inject(method = "getActivity", at = @At("HEAD"), cancellable = true)
+    public void ltr_getTaterAdmirationActivity(CallbackInfoReturnable<PiglinActivity> ctx) {
         if (this.getOffHandStack().getItem() instanceof LilTaterBlockItem) {
             ctx.setReturnValue(PiglinActivity.ADMIRING_ITEM);
         }

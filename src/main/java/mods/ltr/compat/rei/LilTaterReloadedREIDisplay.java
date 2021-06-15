@@ -20,13 +20,13 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class LilTaterReloadedREIDisplay implements Display {
-    private EntryStack<ItemStack> input = EntryStacks.of(LilTaterBlocks.LIL_TATER.asItem());
-    private EntryStack<ItemStack> nameTag;
-    private EntryStack<ItemStack> anvil;
-    private EntryStack<ItemStack> result;
-    private boolean isPrefix;
+    private final EntryStack<ItemStack> input = EntryStacks.of(LilTaterBlocks.LIL_TATER.asItem());
+    private final EntryStack<ItemStack> nameTag;
+    private final EntryStack<ItemStack> anvil;
+    private final EntryStack<ItemStack> result;
+    private final boolean isPrefix;
 
-    public LilTaterReloadedREIDisplay(String name, boolean isPrefix){
+    public LilTaterReloadedREIDisplay(String name, boolean isPrefix) {
         Text nameTag = new LiteralText(name);
         this.nameTag = EntryStacks.of(new ItemStack(Items.NAME_TAG).setCustomName(nameTag));
         this.anvil = EntryStacks.of(new ItemStack(Items.ANVIL).setCustomName(nameTag));
@@ -42,15 +42,21 @@ public class LilTaterReloadedREIDisplay implements Display {
         return this.input;
     }
 
-    public final EntryStack<ItemStack> getNameTag() { return this.nameTag; }
+    public final EntryStack<ItemStack> getNameTag() {
+        return this.nameTag;
+    }
 
-    public final EntryStack<ItemStack> getAnvil() { return this.anvil; }
+    public final EntryStack<ItemStack> getAnvil() {
+        return this.anvil;
+    }
 
     public final EntryStack<ItemStack> getOutput() {
         return this.result;
     }
 
-    public final boolean isPrefix() {return this.isPrefix;}
+    public final boolean isPrefix() {
+        return this.isPrefix;
+    }
 
     @Override
     public List<EntryIngredient> getInputEntries() {

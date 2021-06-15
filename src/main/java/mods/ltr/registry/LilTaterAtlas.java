@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import mods.ltr.entities.LilTaterBlockEntityRenderer;
-import mods.ltr.registry.LilTaterAtlas.LilTaterResourceListener.LTRResourceCollections;
 import mods.ltr.util.DebugTimer;
 import mods.ltr.util.RenderStateSetup;
 import net.fabricmc.api.EnvType;
@@ -57,15 +56,15 @@ public class LilTaterAtlas {
 
         @Override
         public CompletableFuture<LTRResourceCollections> load(ResourceManager manager, Profiler profiler, Executor executor) {
-            return CompletableFuture.supplyAsync(()-> {
+            return CompletableFuture.supplyAsync(() -> {
                 logDebug("Preparing the initialization of the Tater Atlas. Collecting resources...");
                 Instant start = Instant.now();
                 taterAtlas.clear();
                 taterAccessoryAtlas.clear();
                 Collection<Identifier> resources = manager.findResources("powertaters/liltaterreloaded", s -> s.endsWith(".json"));
-                logDebug("Found "+resources.size()+" skin definition JSONs.");
+                logDebug("Found " + resources.size() + " skin definition JSONs.");
                 Collection<Identifier> models = manager.findResources("models/tater", s -> s.endsWith(".json"));
-                logDebug("Found "+models.size()+" model JSONs. Finished collecting resources.");
+                logDebug("Found " + models.size() + " model JSONs. Finished collecting resources.");
                 DebugTimer.INSTANCE.addAtlas(start, Instant.now());
                 return new LTRResourceCollections(resources, models);
             }, executor);
@@ -106,7 +105,7 @@ public class LilTaterAtlas {
                                     } else {
                                         int spriteIndex = Integer.parseInt(nestedEntry.getKey());
                                         String sprite = nestedEntry.getValue().getAsString();
-                                        idList.add(spriteIndex, new Identifier(id.getNamespace(),"textures/tater/" + sprite));
+                                        idList.add(spriteIndex, new Identifier(id.getNamespace(), "textures/tater/" + sprite));
                                     }
                                 });
                                 taterAtlas.put(name, Either.left(Triple.of(idList, frames, frametime[0])));
@@ -116,7 +115,7 @@ public class LilTaterAtlas {
                                     LOGGER.warn("Warning! The sprite identifier for \"" + name + "\" in " + br + " does not end with '.png'! Sprite will not be loaded!");
                                 }// hopefully there's no race condition and the overwrites happen intentionally
                                 if (!name.equals("LTRSyntaxComment")) {
-                                    idList.add(new Identifier(id.getNamespace(),"textures/tater/" + sprite));
+                                    idList.add(new Identifier(id.getNamespace(), "textures/tater/" + sprite));
                                     taterAtlas.put(name, Either.left(Triple.of(idList, frames, 0)));
                                 }
                             }
@@ -153,7 +152,7 @@ public class LilTaterAtlas {
                 LilTaterBlockEntityRenderer.defaultId = taterAtlas.get("lil_tater").left().isPresent() ? taterAtlas.get("lil_tater").left().get().getLeft().get(0) : getId("textures/block/lil_tater.png");
                 logDebug("Finished initializing the Tater Atlas.");
                 DebugTimer.INSTANCE.addAtlas(start, Instant.now());
-                logDebug("[LTR] Tater Atlas initialization finished in: "+DebugTimer.INSTANCE.getFormattedAtlas()+" seconds. Model initialization finished in: "+DebugTimer.INSTANCE.getFormattedModels()+" seconds.");
+                logDebug("[LTR] Tater Atlas initialization finished in: " + DebugTimer.INSTANCE.getFormattedAtlas() + " seconds. Model initialization finished in: " + DebugTimer.INSTANCE.getFormattedModels() + " seconds.");
             }, executor);
         }
 
@@ -161,7 +160,7 @@ public class LilTaterAtlas {
             Collection<Identifier> resources;
             Collection<Identifier> models;
 
-            public LTRResourceCollections(Collection<Identifier> resources, Collection<Identifier> models){
+            public LTRResourceCollections(Collection<Identifier> resources, Collection<Identifier> models) {
                 this.resources = resources;
                 this.models = models;
             }

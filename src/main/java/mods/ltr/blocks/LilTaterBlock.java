@@ -29,8 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.event.listener.GameEventListener;
 
-import javax.annotation.Nullable;
-
 public class LilTaterBlock extends Block implements BlockEntityProvider, Waterloggable {
     public static final BooleanProperty WATERLOGGED;
     public static final DirectionProperty FACING;
@@ -40,14 +38,14 @@ public class LilTaterBlock extends Block implements BlockEntityProvider, Waterlo
         super(settings);
         this.setDefaultState((this.getStateManager().getDefaultState())
                 .with(FACING, Direction.NORTH)
-                .with(WATERLOGGED,false));
+                .with(WATERLOGGED, false));
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.getBlockEntity(pos)!=null) {
+        if (world.getBlockEntity(pos) != null) {
             LilTaterBlockEntity tater = (LilTaterBlockEntity) world.getBlockEntity(pos);
-            return tater.onUse(player,hand,hit);
+            return tater.onUse(player, hand, hit);
         } else return ActionResult.PASS;
     }
 
@@ -113,7 +111,7 @@ public class LilTaterBlock extends Block implements BlockEntityProvider, Waterlo
     public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
         super.onSyncedBlockEvent(state, world, pos, type, data);
         BlockEntity be = world.getBlockEntity(pos);
-        return be!=null && be.onSyncedBlockEvent(type, data);
+        return be != null && be.onSyncedBlockEvent(type, data);
     }
 
     @Override
@@ -121,7 +119,7 @@ public class LilTaterBlock extends Block implements BlockEntityProvider, Waterlo
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         final BlockEntity be = world.getBlockEntity(pos);
         ItemStack stack = new ItemStack(state.getBlock());
-        if (be instanceof LilTaterBlockEntity){
+        if (be instanceof LilTaterBlockEntity) {
             return ((LilTaterBlockEntity) be).getPickStack(stack);
         }
         return stack;

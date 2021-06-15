@@ -35,17 +35,17 @@ public class RenderStateSetup {
         Matcher matcher = pattern.matcher(fullName);
         if (matcher.find()) {
             String num = matcher.group(1);
-            if (num.startsWith("0x")){
+            if (num.startsWith("0x")) {
                 rot = Integer.parseInt(num.substring(2), 16);
             } else {
                 rot = Double.parseDouble(num);
             }
-            trimmedName = trimmedName.replace(num+"_", "");
+            trimmedName = trimmedName.replace(num + "_", "");
             if (trimmedName.startsWith("_")) trimmedName = trimmedName.substring(1);
         }
         String prefix = getPrefix(trimmedName).toLowerCase();
-        prefix = !prefix.isEmpty() && trimmedName.startsWith(prefix) ? prefix.substring(0, prefix.length()-1) : "";
-        String name = prefix.isEmpty() ? trimmedName : trimmedName.substring(prefix.length()+1);
+        prefix = !prefix.isEmpty() && trimmedName.startsWith(prefix) ? prefix.substring(0, prefix.length() - 1) : "";
+        String name = prefix.isEmpty() ? trimmedName : trimmedName.substring(prefix.length() + 1);
         return new LilTaterRenderState(fullName, prefix, name, rot);
     }
 
@@ -54,24 +54,24 @@ public class RenderStateSetup {
         StringBuilder stringBuilder = new StringBuilder();
         for (String string : splitString) {
             if (!string.isEmpty()) {
-                stringBuilder.append(WordUtils.capitalize(string,'-','.')).append(" ");
+                stringBuilder.append(WordUtils.capitalize(string, '-', '.')).append(" ");
             }
         }
         if (givenString.endsWith("_")) {
-            stringBuilder.deleteCharAt(stringBuilder.length()-1);
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             stringBuilder.append("_");
         }
         return stringBuilder.toString().trim();
     }
 
-    private static boolean nameStartsWith(String name, String match){
+    private static boolean nameStartsWith(String name, String match) {
         return name.equals(match) || name.startsWith(match);
     }
 
     public static String getPrefix(String name) {
-        for (String prefix: validPrefixes){
-            if (nameStartsWith(name,prefix.toLowerCase())){
-                return prefix+"_";
+        for (String prefix : validPrefixes) {
+            if (nameStartsWith(name, prefix.toLowerCase())) {
+                return prefix + "_";
             }
         }
         return "";
@@ -79,8 +79,8 @@ public class RenderStateSetup {
 
     public static String getRenderName(String name, String prefix, double rot) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (rot!=0) {
-            if (prefix.equals("tinted")){
+        if (rot != 0) {
+            if (prefix.equals("tinted")) {
                 int t = (int) rot;
                 String sRot = Integer.toHexString(t).toUpperCase();
                 stringBuilder.append("0x");
@@ -95,7 +95,7 @@ public class RenderStateSetup {
             }
             if (name.equals("rotater") || prefix.equals("rotated")) {
                 stringBuilder.append("°");
-            } else if (prefix.equals("pehkui") && rot<1) {
+            } else if (prefix.equals("pehkui") && rot < 1) {
                 stringBuilder.append("x");
             }
             stringBuilder.append(" ");

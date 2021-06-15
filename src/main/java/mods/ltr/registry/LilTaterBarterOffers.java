@@ -2,7 +2,6 @@ package mods.ltr.registry;
 
 import com.google.common.collect.ImmutableList;
 import mods.ltr.LilTaterReloaded;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
@@ -21,22 +20,17 @@ public class LilTaterBarterOffers {
     public static final Identifier SEND_BARTER_PREFIX_POOLS = LilTaterReloaded.getId("send_barter_prefix_pools");
 
     public static void init() {
-        ServerPlayNetworking.registerGlobalReceiver(SEND_BARTER_NAME_POOLS, (server, player, handler, buf, sender) -> {
-            int size = buf.readInt();
-            for (int i = 0; i < size; i++) {
-                String s = buf.readString(32767);
-                if (!validBarterNames.contains(s)) {
-                    validBarterNames.add(s);
-                }
-            }
-        });
+        register(SEND_BARTER_NAME_POOLS, validBarterNames);
+        register(SEND_BARTER_PREFIX_POOLS, validBarterPrefixes);
+    }
 
-        ServerPlayNetworking.registerGlobalReceiver(SEND_BARTER_PREFIX_POOLS, (server, player, handler, buf, sender) -> {
+    private static void register(Identifier id, List<String> list) {
+        ServerPlayNetworking.registerGlobalReceiver(id, (server, player, handler, buf, sender) -> {
             int size = buf.readInt();
             for (int i = 0; i < size; i++) {
                 String s = buf.readString(32767);
-                if (!validBarterPrefixes.contains(s)) {
-                    validBarterPrefixes.add(s);
+                if (!list.contains(s)) {
+                    list.add(s);
                 }
             }
         });
@@ -46,8 +40,8 @@ public class LilTaterBarterOffers {
         MutableText text = new LiteralText("");
         Random random = new Random();
         if (!validBarterPrefixes.isEmpty()) {
-            if (random.nextInt(4)%4==0)
-            text.append(validBarterPrefixes.get(random.nextInt(validBarterPrefixes.size()))).append("_");
+            if (random.nextInt(4) % 4 == 0)
+                text.append(validBarterPrefixes.get(random.nextInt(validBarterPrefixes.size()))).append("_");
         }
         if (!validBarterNames.isEmpty()) {
             text.append(validBarterNames.get(random.nextInt(validBarterNames.size())));

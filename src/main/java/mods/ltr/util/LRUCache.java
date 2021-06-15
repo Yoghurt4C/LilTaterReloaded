@@ -14,7 +14,7 @@ public class LRUCache<R, T> {
     }
 
     public T get(R key) {
-        if(map.get(key)==null){
+        if (map.get(key) == null) {
             return null;
         }
 
@@ -28,15 +28,15 @@ public class LRUCache<R, T> {
     }
 
     public void put(R key, T value) {
-        if(map.containsKey(key)){
+        if (map.containsKey(key)) {
             LRUNode<R, T> t = map.get(key);
             t.value = value;
 
             //move to tail
             removeNode(t);
             offerNode(t);
-        }else{
-            if(map.size()>=cap){
+        } else {
+            if (map.size() >= cap) {
                 //delete head
                 map.remove(head.key);
                 removeNode(head);
@@ -49,28 +49,26 @@ public class LRUCache<R, T> {
         }
     }
 
-    public void remove(R key){
-        if (map.containsKey(key)){
-            map.remove(key);
-        }
+    public void remove(R key) {
+        map.remove(key);
     }
 
-    private void removeNode(LRUNode<R, T> n){
-        if(n.prev!=null){
+    private void removeNode(LRUNode<R, T> n) {
+        if (n.prev != null) {
             n.prev.next = n.next;
-        }else{
+        } else {
             head = n.next;
         }
 
-        if(n.next!=null){
+        if (n.next != null) {
             n.next.prev = n.prev;
-        }else{
+        } else {
             tail = n.prev;
         }
     }
 
-    private void offerNode(LRUNode<R, T> n){
-        if(tail!=null){
+    private void offerNode(LRUNode<R, T> n) {
+        if (tail != null) {
             tail.next = n;
         }
 
@@ -78,20 +76,20 @@ public class LRUCache<R, T> {
         n.next = null;
         tail = n;
 
-        if(head == null){
+        if (head == null) {
             head = tail;
         }
     }
 
-    private static class LRUNode<R, T>{
+    private static class LRUNode<R, T> {
         R key;
         T value;
         LRUNode<R, T> prev;
         LRUNode<R, T> next;
 
-        public LRUNode(R key, T value){
-            this.key=key;
-            this.value=value;
+        public LRUNode(R key, T value) {
+            this.key = key;
+            this.value = value;
         }
     }
 }

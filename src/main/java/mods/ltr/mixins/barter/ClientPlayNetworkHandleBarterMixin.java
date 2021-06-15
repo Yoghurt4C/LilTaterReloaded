@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandleBarterMixin {
 
-    @Inject(method = "onGameJoin",at = @At("TAIL"))
-    public void ltr_sendBarterOffers(GameJoinS2CPacket packet, CallbackInfo ctx){
+    @Inject(method = "onGameJoin", at = @At("TAIL"))
+    public void ltr_sendBarterOffers(GameJoinS2CPacket packet, CallbackInfo ctx) {
         BarterOffersC2SPackets.sendBarterNamePools();
         BarterOffersC2SPackets.sendBarterPrefixPools();
     }

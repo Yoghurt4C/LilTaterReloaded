@@ -31,7 +31,7 @@ import net.minecraft.util.math.Vec3f;
 @Environment(EnvType.CLIENT)
 //not actually a "model", but don't tell anyone
 public class ImitaterModel {
-    private static MinecraftClient client = MinecraftClient.getInstance();
+    private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final BlockState defaultState = LilTaterBlocks.LIL_TATER.getDefaultState();
     private final static Sprite MISSINGNO = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, MissingSprite.getMissingSpriteId()).getSprite();
     private final static Sprite SMILE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, LilTaterReloaded.getId("block/imitater_smile")).getSprite();
@@ -51,14 +51,14 @@ public class ImitaterModel {
             if (item instanceof WallStandingBlockItem) {
                 matrices.scale(0.98f, 0.98f, 0.98f);
             }
-            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED,light,overlay,matrices,vcon,42);
+            client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vcon, 42);
             matrices.pop();
         } else {
             matrices.scale(0.25f, -0.4375f, -0.25f);
             matrices.translate(-0.5f, -3.573f, -0.5f);
             sprite = MISSINGNO;
             BakedModel missingno = client.getBakedModelManager().getMissingModel();
-            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, missingno, r, g, b, light , overlay);
+            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vcon.getBuffer(RenderLayers.getEntityBlockLayer(defaultState, true)), null, missingno, r, g, b, light, overlay);
         }
 
         int colorOffset = ColorSniffer.getAverageColor(sprite);
@@ -67,11 +67,11 @@ public class ImitaterModel {
         int smileB = colorOffset & 0xFF;
 
         float o = 0.4f;
-        int red = (int) ((r-o)*255), green = (int) ((g-o)*255), blue = (int) ((b-o)*255), alpha = (int) (a*255);
+        int red = (int) ((r - o) * 255), green = (int) ((g - o) * 255), blue = (int) ((b - o) * 255), alpha = (int) (a * 255);
 
         matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(90));
         matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
-        if (isBlock){
+        if (isBlock) {
             matrices.scale(0.5f, -0.5f, -0.5f);
             matrices.translate(-0.502f, -0.5f, -0.5f);
         } else {
@@ -85,10 +85,10 @@ public class ImitaterModel {
         matrices.pop();
     }
 
-    private static void drawHorizontalFace(VertexConsumer v, Matrix4f model, Matrix3f normal, int red, int green, int blue, int alpha, int light, int overlay){
-        v.vertex(model, 0, 0, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,0,1).next();
-        v.vertex(model, 0, 2, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal,0,1,1).next();
-        v.vertex(model, 0, 2, 0).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal,0,1,0).next();
-        v.vertex(model, 0, 0, 0).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal,0,0,0).next();
+    private static void drawHorizontalFace(VertexConsumer v, Matrix4f model, Matrix3f normal, int red, int green, int blue, int alpha, int light, int overlay) {
+        v.vertex(model, 0, 0, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal, 0, 0, 1).next();
+        v.vertex(model, 0, 2, 1.145f).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMaxV()).light(light).overlay(overlay).normal(normal, 0, 1, 1).next();
+        v.vertex(model, 0, 2, 0).color(red, green, blue, alpha).texture(SMILE.getMaxU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal, 0, 1, 0).next();
+        v.vertex(model, 0, 0, 0).color(red, green, blue, alpha).texture(SMILE.getMinU(), SMILE.getMinV()).light(light).overlay(overlay).normal(normal, 0, 0, 0).next();
     }
 }
