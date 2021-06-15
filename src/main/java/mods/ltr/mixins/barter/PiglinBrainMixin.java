@@ -8,7 +8,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,22 +35,22 @@ public abstract class PiglinBrainMixin {
         }
     }
 
-    @Inject(method = "loot",at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private static void ltr_lootTater(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx, ItemStack itemStack2, Item item) {
-        if (item instanceof LilTaterBlockItem) {
+    @Inject(method = "loot",at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/PiglinBrain;isGoldenItem(Lnet/minecraft/item/ItemStack;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private static void ltr_lootTater(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx, ItemStack stack) {
+        if (stack.getItem() instanceof LilTaterBlockItem) {
             ctx.cancel();
             if (hasItemInOffHand(piglin)) {
                 piglin.dropStack(piglin.getStackInHand(Hand.OFF_HAND));
             }
 
-            ((PiglinEntityAccessor) piglin).ltr_equipToOffHand(itemStack2);
+            ((PiglinEntityAccessor) piglin).ltr_equipToOffHand(stack);
             setAdmiringItem(piglin);
         }
     }
 
-    @Inject(method = "canGather",at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private static void ltr_canGatherTater(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx, Item item) {
-        if (item instanceof LilTaterBlockItem) {
+    @Inject(method = "canGather",at = @At("HEAD"), cancellable = true)
+    private static void ltr_canGatherTater(PiglinEntity piglin, ItemStack stack, CallbackInfoReturnable<Boolean> ctx) {
+        if (stack.getItem() instanceof LilTaterBlockItem) {
             if (!hasItemInOffHand(piglin)) {
                 ctx.setReturnValue(true);
             } else ctx.setReturnValue(false);
