@@ -29,8 +29,6 @@ import static mods.ltr.util.RenderStateSetup.getRenderState;
 @Environment(EnvType.CLIENT)
 @Mixin(BuiltinModelItemRenderer.class)
 public abstract class LilTaterModelItemRendererMixin {
-    private final MinecraftClient mc = MinecraftClient.getInstance();
-
     @Unique
     private LilTaterBlockEntity ltr_DUMMYTATER;
 
@@ -40,6 +38,7 @@ public abstract class LilTaterModelItemRendererMixin {
     @Inject(method = "render", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/Block;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void renderLilTaterBlockItem(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, CallbackInfo ctx, Item item, Block block) {
         if (block instanceof LilTaterBlock) {
+            final MinecraftClient mc = MinecraftClient.getInstance();
             if (stack.hasTag()) {
                 NbtCompound tag = stack.getTag();
                 if (ltr_taterItemRendererCache.get(tag) != null) {
