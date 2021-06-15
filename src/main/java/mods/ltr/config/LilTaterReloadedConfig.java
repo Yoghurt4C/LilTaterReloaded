@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -59,14 +60,24 @@ public class LilTaterReloadedConfig {
         );
 
         boolean changed = false;
-        Path path = FabricLoader.getInstance().getConfigDir().resolve("powertaters/liltaterreloaded/ltr.properties");
-        File configurationFile = path.toFile();
+        Path path = FabricLoader.getInstance().getConfigDir().resolve("powertaters/liltaterreloaded");
+        File dir = path.toFile();
+        File configurationFile = path.resolve("ltr.properties").toFile();
         try {
-            if (!configurationFile.exists() && !configurationFile.createNewFile()) {
-                LOGGER.error("[LTR] Could not create configuration file: " + configurationFile.getAbsolutePath());
+            if (!configurationFile.exists() && dir.mkdirs() && configurationFile.createNewFile()) {
+                LOGGER.info("[LTR] Successfully created the configuration file.");
             }
         } catch (IOException e) {
-            LOGGER.error("[LTR] Error while writing configuration file: " + e);
+            LOGGER.error("[LTR] Could not create configuration file: " + configurationFile.getAbsolutePath() + ". Something might be up with write permissions. Using default values internally!");
+            // in case of failure, use default values. don't write because there's no file
+            for (LTRConfigEntry<?> entry : entries) {
+                cfg.put(entry.key, entry.value.toString());
+            }
+            ltrConfig = new LTRConfig(cfg);
+            return;
+        } finally {
+            isInitialized = true;
+
         }
 
         DebugTimer.INSTANCE = new DebugTimer();
