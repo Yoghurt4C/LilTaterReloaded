@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -74,13 +73,12 @@ public class LilTaterReloadedConfig {
                 cfg.put(entry.key, entry.value.toString());
             }
             ltrConfig = new LTRConfig(cfg);
+            isInitialized = true;
             return;
         } finally {
-            isInitialized = true;
+            DebugTimer.INSTANCE = new DebugTimer();
 
         }
-
-        DebugTimer.INSTANCE = new DebugTimer();
         Properties config = new Properties();
         StringBuilder content = new StringBuilder().append("#Lil Tater Configuration.\n");
         content.append("#Last generated at: ").append(new Date()).append("\n\n");
