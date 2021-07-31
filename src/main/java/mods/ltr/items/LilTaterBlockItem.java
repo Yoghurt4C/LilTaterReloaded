@@ -22,21 +22,21 @@ public class LilTaterBlockItem extends BlockItem {
             return false;
         }
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity != null && stack.hasTag()) {
+        if (blockEntity != null && stack.hasNbt()) {
             if (!world.isClient && blockEntity.copyItemDataRequiresOperator() && (player == null || !player.isCreativeLevelTwoOp())) {
                 return false;
             }
 
             NbtCompound beWriteTag = blockEntity.writeNbt(new NbtCompound());
             NbtCompound copyTag = beWriteTag.copy();
-            NbtCompound stackTag = stack.getSubTag("BlockEntityTag");
+            NbtCompound stackTag = stack.getSubNbt("BlockEntityTag");
             if (stackTag != null) {
                 beWriteTag.copyFrom(stackTag);
             }
             beWriteTag.putInt("x", pos.getX());
             beWriteTag.putInt("y", pos.getY());
             beWriteTag.putInt("z", pos.getZ());
-            beWriteTag.put("display", stack.getSubTag("display"));
+            beWriteTag.put("display", stack.getSubNbt("display"));
             if (!beWriteTag.equals(copyTag)) {
                 blockEntity.readNbt(beWriteTag);
                 blockEntity.markDirty();

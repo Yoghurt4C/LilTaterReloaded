@@ -75,7 +75,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             if (!player.isSneaking()) {
                 if (stack.getItem() instanceof NameTagItem && stack.hasCustomName() && !stack.getName().equals(this.name)) {
                     if (!world.isClient()) {
-                        this.name = Text.Serializer.fromJson(stack.getSubTag("display").getString("Name"));
+                        this.name = Text.Serializer.fromJson(stack.getSubNbt("display").getString("Name"));
                     }
                     stack.decrement(1);
                 } else {
@@ -213,8 +213,8 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
     }
 
     public void readFrom(ItemStack stack) {
-        NbtCompound beTag = stack.getSubTag("BlockEntityTag");
-        NbtCompound displayTag = stack.getSubTag("display");
+        NbtCompound beTag = stack.getSubNbt("BlockEntityTag");
+        NbtCompound displayTag = stack.getSubNbt("display");
         if (beTag != null) {
             betterFromTag(beTag, items);
         }
@@ -313,7 +313,7 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
 
     public ItemStack getPickStack(ItemStack stack) {
         if (!this.isEmpty()) {
-            NbtCompound beTag = stack.getOrCreateSubTag("BlockEntityTag");
+            NbtCompound beTag = stack.getOrCreateSubNbt("BlockEntityTag");
             Inventories.writeNbt(beTag, this.items);
         }
         if (this.name != null) {

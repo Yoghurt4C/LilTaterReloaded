@@ -17,7 +17,7 @@ public class MeditationCriterion extends AbstractCriterion<MeditationCriterion.C
     }
 
     public void trigger(ServerPlayerEntity player, boolean bool) {
-        this.test(player, (conditions) -> conditions.matches(bool));
+        this.trigger(player, (conditions) -> conditions.matches(bool));
     }
 
     @Override

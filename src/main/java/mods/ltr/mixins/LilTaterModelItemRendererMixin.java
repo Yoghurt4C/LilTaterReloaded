@@ -39,8 +39,8 @@ public abstract class LilTaterModelItemRendererMixin {
     public void renderLilTaterBlockItem(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vcon, int light, int overlay, CallbackInfo ctx, Item item, Block block) {
         if (block instanceof LilTaterBlock) {
             final MinecraftClient mc = MinecraftClient.getInstance();
-            if (stack.hasTag()) {
-                NbtCompound tag = stack.getTag();
+            if (stack.hasNbt()) {
+                NbtCompound tag = stack.getNbt();
                 if (ltr_taterItemRendererCache.get(tag) != null) {
                     LilTaterBlockEntity taterToRender = ltr_taterItemRendererCache.get(tag);
                     mc.getBlockEntityRenderDispatcher().renderEntity(taterToRender, matrices, vcon, light, overlay);

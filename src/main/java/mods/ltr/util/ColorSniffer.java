@@ -50,7 +50,7 @@ public class ColorSniffer {
         for (int i = 0; i < tater.size(); i++) {
             if (!tater.getStack(i).isEmpty()) {
                 ItemStack stack = tater.getStack(i);
-                Sprite sprite = MinecraftClient.getInstance().getItemRenderer().getModels().getSprite(stack);
+                Sprite sprite = MinecraftClient.getInstance().getItemRenderer().getModels().getModelParticleSprite(stack);
                 int spriteColor = getAverageColor(sprite);
                 int spriteR = ((spriteColor >> 16) & 0xFF);
                 int spriteG = ((spriteColor >> 8) & 0xFF);
@@ -80,7 +80,7 @@ public class ColorSniffer {
         for (int i = 0; i < tater.size(); i++) {
             if (!tater.getStack(i).isEmpty()) {
                 ItemStack stack = tater.getStack(i);
-                Sprite sprite = MinecraftClient.getInstance().getItemRenderer().getModels().getSprite(stack);
+                Sprite sprite = MinecraftClient.getInstance().getItemRenderer().getModels().getModelParticleSprite(stack);
                 int spriteColor = getAverageColor(sprite);
                 int spriteR = ((spriteColor >> 16) & 0xFF);
                 int spriteG = ((spriteColor >> 8) & 0xFF);

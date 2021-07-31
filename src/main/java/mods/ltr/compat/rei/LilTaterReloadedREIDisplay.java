@@ -33,7 +33,7 @@ public class LilTaterReloadedREIDisplay implements Display {
         ItemStack taterStack = new ItemStack(LilTaterBlocks.LIL_TATER.asItem());
         NbtCompound display = new NbtCompound();
         display.put("Name", NbtString.of(Text.Serializer.toJson(nameTag)));
-        taterStack.putSubTag("display", display);
+        taterStack.setSubNbt("display", display);
         this.result = EntryStacks.of(taterStack);
         this.isPrefix = isPrefix;
     }

@@ -185,14 +185,14 @@ public class LilTaterTradeOffers {
             LOGGER.error("[LTR] Error while parsing Trade Offer '" + id + "'. Stacktrace: " + e);
         } finally {
             ItemStack buyStack = new ItemStack(buy, price);
-            buyStack.setTag(buyTag);
+            buyStack.setNbt(buyTag);
             ItemStack buy2Stack;
             if (buy2 != null) {
                 buy2Stack = new ItemStack(buy2, price2);
-                buy2Stack.setTag(buy2Tag);
+                buy2Stack.setNbt(buy2Tag);
             } else buy2Stack = ItemStack.EMPTY;
             ItemStack sellStack = new ItemStack(sell, count);
-            sellStack.setTag(sellTag);
+            sellStack.setNbt(sellTag);
             if (profession != VillagerProfession.NONE && (buy != Items.EMERALD && sell != Items.EMERALD)) {
                 if (buy2 != null) {
                     tradeOffers.put(tradeId, new LTRTradeOffer(profession, profession_level, new LTRTradeOfferFactory(buyStack, buy2Stack, sellStack, maxUses, experience, multiplier)));

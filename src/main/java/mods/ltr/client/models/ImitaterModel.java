@@ -46,7 +46,7 @@ public class ImitaterModel {
         if (isBlock) {
             matrices.scale(0.5f, -0.875f, -0.5f);
             matrices.translate(0f, -1.5351f, 0f);
-            sprite = client.getItemRenderer().getModels().getModel(stack).getSprite();
+            sprite = client.getItemRenderer().getModels().getModel(stack).getParticleSprite();
             matrices.push();
             if (item instanceof WallStandingBlockItem) {
                 matrices.scale(0.98f, 0.98f, 0.98f);
