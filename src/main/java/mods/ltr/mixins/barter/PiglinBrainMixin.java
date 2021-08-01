@@ -22,11 +22,20 @@ import java.util.List;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
-    @Shadow private static boolean hasItemInOffHand(PiglinEntity piglin) { return false; }
-    @Shadow private static boolean hasBeenHitByPlayer(PiglinEntity piglin) { return false; }
-    @Shadow private static boolean isAdmiringItem(PiglinEntity piglin) { return false; }
-    @Shadow private static void setAdmiringItem(LivingEntity entity) { }
-    @Shadow private static void doBarter(PiglinEntity piglin, List<ItemStack> list) { }
+    @Shadow
+    private static boolean hasItemInOffHand(PiglinEntity piglin) { return false; }
+
+    @Shadow
+    private static boolean hasBeenHitByPlayer(PiglinEntity piglin) { return false; }
+
+    @Shadow
+    private static boolean isAdmiringItem(PiglinEntity piglin) { return false; }
+
+    @Shadow
+    private static void setAdmiringItem(LivingEntity entity) { }
+
+    @Shadow
+    private static void doBarter(PiglinEntity piglin, List<ItemStack> list) { }
 
     @Inject(method = "loot", at = @At("HEAD"), cancellable = true)
     private static void ltr_lootEligibilityCheck(PiglinEntity piglin, ItemEntity drop, CallbackInfo ctx) {

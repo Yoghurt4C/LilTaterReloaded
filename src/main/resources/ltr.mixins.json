@@ -7,7 +7,6 @@
     "CriterionsInvoker"
   ],
   "client": [
-    "LilTaterModelItemRendererMixin",
     "SpriteAccessor"
   ],
   "injectors": {
