@@ -2,7 +2,7 @@ package mods.ltr.entities;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.ltr.client.models.ImitaterModel;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import mods.ltr.entities.LilTaterBlockEntity.LilTaterTxAnimState;
 import mods.ltr.items.LilTaterBlockItem;
 import mods.ltr.registry.LilTaterBlocks;
@@ -48,12 +48,6 @@ public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTater
 
     public LilTaterBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         this.taterModel = ctx.getLayerModelPart(taterLayer);
-        /*
-        taterModel = new ModelPart(16, 16, 0, 0);
-        taterModel.addCuboid(0.0f, 0.0f, 0.0f, 4.0f, 7.0f, 4.0f);
-        taterModel.setPivot(-2.0f, 18.0f, -2.0f);
-        taterModel.setTextureSize(32, 32);
-         */
     }
 
     /**
@@ -367,7 +361,7 @@ public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTater
 
     private void renderName(LilTaterBlockEntity tater, String name, String nameToRender, float nameOffset, MatrixStack matrices, VertexConsumerProvider vcon, int light) {
         HitResult rtr = client.crosshairTarget;
-        if (!name.isEmpty() && !tater.isItem && (LilTaterReloadedConfig.areNamesAlwaysVisible() || (rtr != null && rtr.getType() == HitResult.Type.BLOCK && tater.getPos().equals(((BlockHitResult) rtr).getBlockPos())))) {
+        if (!name.isEmpty() && !tater.isItem && (Config.areNamesAlwaysVisible || (rtr != null && rtr.getType() == HitResult.Type.BLOCK && tater.getPos().equals(((BlockHitResult) rtr).getBlockPos())))) {
             matrices.push();
             matrices.translate(0f, -nameOffset, 0f);
             matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(client.cameraEntity.getYaw()));
@@ -378,14 +372,14 @@ public class LilTaterBlockEntityRenderer implements BlockEntityRenderer<LilTater
             int halfWidth = client.textRenderer.getWidth(nameToRender) / 2;
             float opacity = client.options.getTextBackgroundOpacity(0.25f);
             int opacityRGB = (int) (opacity * 255.0f) << 24;
-            client.textRenderer.draw(nameToRender, -halfWidth, 0, 0x20ffffff, false, matrices.peek().getModel(), vcon, true, opacityRGB, light);
-            client.textRenderer.draw(nameToRender, -halfWidth, 0, 0xffffffff, false, matrices.peek().getModel(), vcon, false, 0, light);
+            client.textRenderer.draw(nameToRender, -halfWidth, 0, 0x20ffffff, false, matrices.peek().getPositionMatrix(), vcon, true, opacityRGB, light);
+            client.textRenderer.draw(nameToRender, -halfWidth, 0, 0xffffffff, false, matrices.peek().getPositionMatrix(), vcon, false, 0, light);
             if (name.equals("pahimar") || name.equals("soaryn")) {
                 matrices.translate(0f, 14f, 0f);
                 String str = name.equals("pahimar") ? "[WIP]" : "(soon)";
                 halfWidth = client.textRenderer.getWidth(str) / 2;
-                client.textRenderer.draw(str, -halfWidth, 0, 0x20ffffff, false, matrices.peek().getModel(), vcon, true, opacityRGB, light);
-                client.textRenderer.draw(str, -halfWidth, 0, 0xffffffff, false, matrices.peek().getModel(), vcon, false, 0, light);
+                client.textRenderer.draw(str, -halfWidth, 0, 0x20ffffff, false, matrices.peek().getPositionMatrix(), vcon, true, opacityRGB, light);
+                client.textRenderer.draw(str, -halfWidth, 0, 0xffffffff, false, matrices.peek().getPositionMatrix(), vcon, false, 0, light);
             }
             matrices.pop();
         }

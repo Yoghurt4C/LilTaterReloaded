@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'org.jetbrains.gradle.plugin.idea-ext' version '0.7'
 }
 
-sourceCompatibility = 1.16
-targetCompatibility = 1.16
+sourceCompatibility = 1.17
+targetCompatibility = 1.17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version+"+"+project.minecraft_version
@@ -26,7 +26,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
+	//modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	modImplementation ("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { exclude(module: "ModMenu") }
 	implementation 'org.jetbrains:annotations:15.0'
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
@@ -43,17 +43,17 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.property "version", project.mod_version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": project.mod_version
 	}
 }
 
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
-	it.options.release = 16
+	it.options.release = 17
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

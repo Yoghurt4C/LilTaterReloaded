@@ -17,7 +17,7 @@ public class LilTaterBlockItem extends BlockItem {
         super(block, settings);
     }
 
-    public static boolean writeTagToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
+    public static boolean writeNbtToBlockEntity(World world, @Nullable PlayerEntity player, BlockPos pos, ItemStack stack) {
         if (world.getServer() == null) {
             return false;
         }
@@ -27,7 +27,7 @@ public class LilTaterBlockItem extends BlockItem {
                 return false;
             }
 
-            NbtCompound beWriteTag = blockEntity.writeNbt(new NbtCompound());
+            NbtCompound beWriteTag = blockEntity.createNbt();
             NbtCompound copyTag = beWriteTag.copy();
             NbtCompound stackTag = stack.getSubNbt("BlockEntityTag");
             if (stackTag != null) {
@@ -48,6 +48,6 @@ public class LilTaterBlockItem extends BlockItem {
 
     @Override
     protected boolean postPlacement(BlockPos pos, World world, PlayerEntity player, ItemStack stack, BlockState placementState) {
-        return writeTagToBlockEntity(world, player, pos, stack);
+        return writeNbtToBlockEntity(world, player, pos, stack);
     }
 }

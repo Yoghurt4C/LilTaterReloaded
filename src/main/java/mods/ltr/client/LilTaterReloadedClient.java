@@ -2,7 +2,7 @@ package mods.ltr.client;
 
 import mods.ltr.LilTaterReloaded;
 import mods.ltr.client.models.TaterModel;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import mods.ltr.entities.LilTaterBlockEntity;
 import mods.ltr.entities.LilTaterBlockEntityRenderer;
 import mods.ltr.registry.LilTaterAtlas;
@@ -13,9 +13,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -29,8 +29,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Collection;
 
-import static mods.ltr.config.LilTaterReloadedConfig.LOGGER;
-import static mods.ltr.config.LilTaterReloadedConfig.logDebug;
+import static mods.ltr.config.Config.logDebug;
 import static mods.ltr.registry.LilTaterBlocks.LIL_TATER_BLOCK_ENTITY;
 
 @Environment(EnvType.CLIENT)
@@ -39,7 +38,7 @@ public class LilTaterReloadedClient implements ClientModInitializer {
     public static boolean isHalloween = false;
     public static final EntityModelLayer taterLayer = new EntityModelLayer(LilTaterReloaded.getId("model_layer"), "tater");
     public static LilTaterBlockEntity DUMMYTATER;
-    public static LRUCache<NbtCompound, LilTaterBlockEntity> taterItemRendererCache = new LRUCache<>(LilTaterReloadedConfig.getTaterItemRendererCacheSize());
+    public static LRUCache<NbtCompound, LilTaterBlockEntity> taterItemRendererCache = new LRUCache<>(Config.taterItemRendererCacheSize);
 
     @Override
     public void onInitializeClient() {
@@ -60,7 +59,7 @@ public class LilTaterReloadedClient implements ClientModInitializer {
                     consumer.accept(modelId);
                     logDebug(modelId + " got accepted without issues.");
                 } catch (IOException e) {
-                    LOGGER.error("Error while loading an LTR model JSON (" + id + "): " + e);
+                    Config.LOGGER.error("Error while loading an LTR model JSON (" + id + "): " + e);
                 }
             });
             DebugTimer.INSTANCE.addModels(start, Instant.now());
@@ -92,7 +91,7 @@ public class LilTaterReloadedClient implements ClientModInitializer {
             });
         });
 
-        BlockEntityRendererRegistry.INSTANCE.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(LIL_TATER_BLOCK_ENTITY, LilTaterBlockEntityRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(taterLayer, TaterModel::getModel);
 

@@ -4,7 +4,6 @@ import com.reddit.user.koppeh.flamingo.FlamingoBlockEntity;
 import mods.ltr.LilTaterReloaded;
 import mods.ltr.compat.flamingo.FlamingoAccessor;
 import mods.ltr.items.LilTaterBlockItem;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
@@ -36,7 +35,7 @@ public abstract class UseFlamingoCallbackRegistrar {
                     flamingoAccessor.ltr_setTater(stack.split(1));
                 } else world.addSyncedBlockEvent(pos, world.getBlockState(pos).getBlock(), 0, 0);
                 if (!world.isClient()) {
-                    ((BlockEntityClientSerializable) be).sync();
+                    be.markDirty();
                 }
                 return ActionResult.SUCCESS;
             } else return ActionResult.PASS;

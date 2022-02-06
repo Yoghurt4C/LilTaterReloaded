@@ -2,7 +2,7 @@ package mods.ltr;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import mods.ltr.registry.LilTaterBlocks;
 import mods.ltr.registry.LilTaterCriterion;
 import mods.ltr.registry.LilTaterSounds;
@@ -20,7 +20,7 @@ public class LilTaterReloaded implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LilTaterReloadedConfig.tryInit();
+        Config.tryInit();
         LilTaterBlocks.init();
         LilTaterSounds.init();
         LilTaterCriterion.init();

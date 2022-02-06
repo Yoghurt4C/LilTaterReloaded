@@ -7,7 +7,6 @@ import mods.ltr.registry.LilTaterBlocks;
 import mods.ltr.registry.LilTaterSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +17,11 @@ import net.minecraft.item.NameTagItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
@@ -32,11 +35,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import static mods.ltr.util.RenderStateSetup.getRenderName;
 import static mods.ltr.util.RenderStateSetup.getRenderState;
 
-public class LilTaterBlockEntity extends BlockEntity implements Inventory, BlockEntityClientSerializable {
+public class LilTaterBlockEntity extends BlockEntity implements Inventory {
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(6, ItemStack.EMPTY);
     public Text name = null;
     private final static int JUMP_ACTION = 0;
@@ -115,7 +119,6 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             }
 
             this.markDirty();
-            this.sync();
         } else {
             if (sons > 0) {
                 MutableText text;
@@ -164,12 +167,18 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
         super.readNbt(tag);
         if (tag.getCompound("display") != null) {
             this.name = Text.Serializer.fromJson(tag.getCompound("display").getString("Name"));
+            if (world != null && world.isClient && this.name != null) {
+                String fullName = this.name.getString().toLowerCase().trim().replace(" ", "_");
+                if (this.renderState == null || !this.renderState.fullName.equals(fullName)) {
+                    this.renderState = getRenderState(fullName);
+                }
+            }
         }
         betterFromTag(tag, items);
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         if (this.name != null) {
             NbtCompound display = new NbtCompound();
@@ -177,9 +186,15 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             tag.put("display", display);
         }
         Inventories.writeNbt(tag, this.items);
-        return tag;
     }
 
+    @Override
+    public void markDirty() {
+        ((ServerWorld) world).getChunkManager().markForUpdate(pos);
+        super.markDirty();
+    }
+
+    /*
     @Override
     public void fromClientTag(NbtCompound tag) {
         this.readNbt(tag);
@@ -190,10 +205,17 @@ public class LilTaterBlockEntity extends BlockEntity implements Inventory, Block
             }
         }
     }
+     */
 
     @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return this.writeNbt(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        return this.createNbt();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     public static void betterFromTag(NbtCompound tag, DefaultedList<ItemStack> stacks) {

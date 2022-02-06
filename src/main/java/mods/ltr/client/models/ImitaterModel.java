@@ -78,8 +78,8 @@ public class ImitaterModel {
             matrices.scale(1f, -1f, -1f);
             matrices.translate(-0.001f, -1f, -1f);
         }
-        Matrix4f model = matrices.peek().getModel();
-        Matrix3f normal = matrices.peek().getNormal();
+        Matrix4f model = matrices.peek().getPositionMatrix();
+        Matrix3f normal = matrices.peek().getNormalMatrix();
         VertexConsumer v = vcon.getBuffer(RenderLayer.getCutout());
         ImitaterModel.drawHorizontalFace(v, model, normal, Math.max(0, smileR - red), Math.max(0, smileG - green), Math.max(0, smileB - blue), alpha, light, overlay);
         matrices.pop();

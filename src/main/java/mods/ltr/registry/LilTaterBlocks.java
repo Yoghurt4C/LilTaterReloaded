@@ -21,7 +21,7 @@ public class LilTaterBlocks {
 
     public static final BlockEntityType<LilTaterBlockEntity> LIL_TATER_BLOCK_ENTITY = FabricBlockEntityTypeBuilder
             .create(LilTaterBlockEntity::new, LIL_TATER)
-            .build(null);
+            .build();
 
     public static void init() {
         register("lil_tater", LIL_TATER);

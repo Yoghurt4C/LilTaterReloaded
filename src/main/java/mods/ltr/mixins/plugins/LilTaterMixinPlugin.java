@@ -1,6 +1,6 @@
 package mods.ltr.mixins.plugins;
 
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -16,7 +16,7 @@ public class LilTaterMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        LilTaterReloadedConfig.tryInit();
+        Config.tryInit();
     }
 
     @Override
@@ -40,8 +40,8 @@ public class LilTaterMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-        if (LilTaterReloadedConfig.shouldLogDebugInfo()) {
-            LilTaterReloadedConfig.LOGGER.info("[LTR Debug] " + mixinInfo.getName() + " was applied successfully.");
+        if (Config.logDebugInfo) {
+            Config.LOGGER.info("[LTR Debug] " + mixinInfo.getName() + " was applied successfully.");
         }
     }
 }

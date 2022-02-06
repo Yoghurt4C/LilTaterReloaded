@@ -33,8 +33,8 @@ import java.util.regex.Matcher;
 
 import static mods.ltr.LilTaterReloaded.GSON;
 import static mods.ltr.LilTaterReloaded.getId;
-import static mods.ltr.config.LilTaterReloadedConfig.LOGGER;
-import static mods.ltr.config.LilTaterReloadedConfig.logDebug;
+import static mods.ltr.config.Config.LOGGER;
+import static mods.ltr.config.Config.logDebug;
 import static mods.ltr.util.RenderStateSetup.jsonRegex;
 
 @Environment(EnvType.CLIENT)

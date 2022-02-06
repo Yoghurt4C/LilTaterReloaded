@@ -7,7 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import mods.ltr.LilTaterReloaded;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleResourceReloadListener;
 import net.minecraft.entity.Entity;
@@ -36,8 +36,8 @@ import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
 
 import static mods.ltr.LilTaterReloaded.GSON;
-import static mods.ltr.config.LilTaterReloadedConfig.LOGGER;
-import static mods.ltr.config.LilTaterReloadedConfig.logDebug;
+import static mods.ltr.config.Config.LOGGER;
+import static mods.ltr.config.Config.logDebug;
 import static mods.ltr.util.RenderStateSetup.jsonRegex;
 
 public class LilTaterTradeOffers {
@@ -62,7 +62,7 @@ public class LilTaterTradeOffers {
                 tradeOffers.clear();
 
                 Collection<Identifier> offers = manager.findResources("trades/tater", s -> {
-                    if (LilTaterReloadedConfig.areDefaultTradingOffersLoaded()) {
+                    if (Config.loadDefaultTradingOffers) {
                         return s.endsWith(".json");
                     } else return !s.contains("ltr_default_trade_offers") && s.endsWith(".json");
                 });

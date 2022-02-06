@@ -4,7 +4,7 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -16,7 +16,7 @@ import static mods.ltr.util.RenderStateSetup.validPrefixes;
 @Environment(EnvType.CLIENT)
 public class LilTaterReloadedREIPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<LilTaterReloadedREIDisplay> LTR = CategoryIdentifier.of(getId("ltr_catalogue"));
-    public static boolean SHOW_TATERS = !LilTaterReloadedConfig.isMeditationEnabled();
+    public static boolean SHOW_TATERS = !Config.enableMeditation;
 
     @Override
     public void registerCategories(CategoryRegistry registry) {

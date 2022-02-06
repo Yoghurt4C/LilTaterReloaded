@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(AdmireItemTask.class)
 public abstract class AdmireItemTaskMixin {
 
-    @Inject(method = "shouldRun", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    @Inject(method = "shouldRun*", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void ltr_shouldRun(ServerWorld world, PiglinEntity piglin, CallbackInfoReturnable<Boolean> ctx, ItemEntity ientity) {
         if (((StopPiggerGrayonInterface) ientity).ltr_canBePickedUpByPiggers() && ientity.getStack().getItem() instanceof LilTaterBlockItem) {
             ctx.setReturnValue(true);

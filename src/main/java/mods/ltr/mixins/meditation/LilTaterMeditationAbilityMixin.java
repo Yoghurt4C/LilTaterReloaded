@@ -22,7 +22,7 @@ public abstract class LilTaterMeditationAbilityMixin implements LilTaterMeditati
         }
     }
 
-    @Inject(method = "readNbt", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/nbt/NbtCompound;getCompound(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "readNbt", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/nbt/NbtCompound;getCompound(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void ltr_deserialize(NbtCompound tag, CallbackInfo ctx, NbtCompound tag2) {
         if (tag2.contains("ltr_hasMeditated")) {
             this.ltr_setMeditationState(tag2.getBoolean("ltr_hasMeditated"));

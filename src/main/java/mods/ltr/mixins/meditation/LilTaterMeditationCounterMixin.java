@@ -1,7 +1,7 @@
 package mods.ltr.mixins.meditation;
 
 import mods.ltr.blocks.LilTaterBlock;
-import mods.ltr.config.LilTaterReloadedConfig;
+import mods.ltr.config.Config;
 import mods.ltr.meditation.LilTaterMeditationAbility;
 import mods.ltr.meditation.LilTaterMeditationCounter;
 import mods.ltr.meditation.MeditationSyncS2CPacket;
@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LilTaterMeditationCounterMixin extends LivingEntity implements LilTaterMeditationCounter {
     @Shadow
     @Final
-    public PlayerAbilities abilities;
+    private PlayerAbilities abilities;
 
     @Unique
     private int LTR_MEDITATION;
@@ -50,10 +50,10 @@ public abstract class LilTaterMeditationCounterMixin extends LivingEntity implem
     public void ltr_tickMeditation() {
         int tick = this.ltr_getMeditationTicks() + 1;
         this.ltr_setMeditationTicks(tick);
-        if (tick % (LilTaterReloadedConfig.getTotalMeditationTicks() / 20) == 0) {
+        if (tick % (Config.totalMeditationTicks / 20) == 0) {
             this.sendSystemMessage(new TranslatableText("text.ltr.meditation" + random.nextInt(10)).formatted(Formatting.GRAY, Formatting.ITALIC), this.uuid);
         }
-        if (tick >= LilTaterReloadedConfig.getTotalMeditationTicks()) {
+        if (tick >= Config.totalMeditationTicks) {
             ((LilTaterMeditationAbility) this.abilities).ltr_setMeditationState(true);
             MinecraftServer server = this.getServer();
             PlayerManager manager = server.getPlayerManager();
